@@ -2,6 +2,12 @@ import './style.css'
 import javascriptLogo from './javascript.svg'
 import viteLogo from '/vite.svg'
 import { setupCounter } from './counter.js'
+import { evalString } from 'bobbi-lisp-core/src/interpreter'
+import core_clj from './src/clj/core.clj?raw'
+
+evalString("(do " + core_clj + ")")
+
+console.log(evalString('(map str [1 2] [3 4])'))
 
 document.querySelector('#app').innerHTML = `
   <div>
