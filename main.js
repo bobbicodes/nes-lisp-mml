@@ -4,9 +4,11 @@ import core_clj from './src/clj/core.clj?raw'
 import game from './game.clj?raw'
 
 const start = document.getElementById("start")
+const sound_1 = document.getElementById("sound-1")
 
 start.addEventListener('click', function () {
   var audioCtx = new AudioContext();
+  sound_1.play()
 })
 
 
