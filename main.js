@@ -6,12 +6,14 @@ import game from './game.clj?raw'
 const start = document.getElementById("start")
 const sound_1 = document.getElementById("sound-1")
 
+let audioCtx = new AudioContext();
+
 start.addEventListener('click', function () {
-  var audioCtx = new AudioContext();
+  if (audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
   sound_1.play()
 })
-
-
 
 evalString("(do " + core_clj + ")")
 
