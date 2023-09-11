@@ -17,34 +17,28 @@ let view = new EditorView({
 })
 
 const start = document.getElementById("start")
-const sound_1 = document.getElementById("sound-1")
-const sound_2 = document.getElementById("sound-2")
-const sound_3 = document.getElementById("sound-3")
-const sound_4 = document.getElementById("sound-4")
-const sound_5 = document.getElementById("sound-5")
-const sound_6 = document.getElementById("sound-6")
-const sound_7 = document.getElementById("sound-7")
-const sound_8 = document.getElementById("sound-8")
-const sound_9 = document.getElementById("sound-9")
-const sound_10 = document.getElementById("sound-10")
-const sound_11 = document.getElementById("sound-11")
-const sound_12 = document.getElementById("sound-12")
-const sound_13 = document.getElementById("sound-13")
-const sound_14 = document.getElementById("sound-14")
-const sound_15 = document.getElementById("sound-15")
-const sound_16 = document.getElementById("sound-16")
-const sound_17 = document.getElementById("sound-17")
-const sound_18 = document.getElementById("sound-18")
 
+const ctx = new AudioContext();
 
-let audioCtx = new AudioContext();
+let buffers = []
+
+function fetchAudio(file) {
+  fetch(file).then(data => data.arrayBuffer())
+             .then(arrayBuffer => ctx.decodeAudioData(arrayBuffer))
+             .then(decodedAudio => {
+              buffers.push(decodedAudio)
+            })
+}
+
+for (let i = 1; i < 19; i++) {
+  fetchAudio(i + ".mp3")
+}
 
 start.addEventListener('click', function () {
-  if (audioCtx.state === 'suspended') {
-    audioCtx.resume();
-  }
-  let sample =audioCtx.createMediaElementSource(sound_15);
-  sample.connect(audioCtx.destination);
+  let source = ctx.createBufferSource();
+  source.buffer = buffers[5]
+  source.connect(ctx.destination);
+  source.start();
 })
 
 evalString("(do " + core_clj + ")")
