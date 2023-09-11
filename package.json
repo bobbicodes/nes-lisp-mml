@@ -12,6 +12,9 @@
     "vite": "^4.4.5"
   },
   "dependencies": {
-    "bobbi-lisp-core": "^0.0.1"
+    "@lezer/common": "^1.0.4",
+    "@nextjournal/lezer-clojure": "^1.0.0",
+    "bobbi-lisp-core": "^0.0.1",
+    "codemirror": "^6.0.1"
   }
 }
