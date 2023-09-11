@@ -1,8 +1,8 @@
 import { Prec, EditorSelection } from '@codemirror/state'
 import { keymap } from '@codemirror/view'
 import { syntaxTree } from "@codemirror/language"
-import { evalString } from 'bobbi-lisp-core/src/interpreter'
-import { out_buffer, appendBuffer, clearBuffer } from 'bobbi-lisp-core/src/core'
+import { evalString } from 'bobbi-lisp-core'
+import { out_buffer, appendBuffer, clearBuffer } from 'bobbi-lisp-core/core'
 
 const up = (node) => node.parent;
 const isTopType = (nodeType) => nodeType.isTop

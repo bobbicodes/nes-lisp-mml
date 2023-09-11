@@ -2,12 +2,11 @@ import './style.css'
 import { EditorView, basicSetup } from 'codemirror'
 import { EditorState } from '@codemirror/state'
 import { clojure } from "./src/clojure"
-import { evalString } from 'bobbi-lisp-core/src/interpreter'
-import core_clj from './src/clj/core.clj?raw'
+import { evalString } from 'bobbi-lisp-core'
 import game from './game.clj?raw'
 
 let editorState = EditorState.create({
-  doc: `(range 5)`,
+  doc: `(map str [1 2] [3 4])`,
   extensions: [basicSetup, clojure()]
 })
 
@@ -40,8 +39,6 @@ start.addEventListener('click', function () {
   source.connect(ctx.destination);
   source.start();
 })
-
-evalString("(do " + core_clj + ")")
 
 var heading = `<div>
   <h3>Hello bobbi-lisp!</h3>
