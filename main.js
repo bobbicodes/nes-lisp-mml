@@ -23,5 +23,5 @@ var song = [{instrument: "1.mp3", pitch: 60, time: 0},
             {instrument: "1.mp3", pitch: 62, time: 1}]
 
 start.addEventListener('click', function () {
-  playSong(song, 180)
+  playSong(song, 60)
 })

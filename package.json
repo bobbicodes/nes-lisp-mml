@@ -14,7 +14,7 @@
   "dependencies": {
     "@lezer/common": "^1.0.4",
     "@nextjournal/lezer-clojure": "^1.0.0",
-    "bobbi-lisp-audio": "^0.0.2",
+    "bobbi-lisp-audio": "^0.0.3",
     "bobbi-lisp-core": "^0.0.2",
     "codemirror": "^6.0.1"
   }
