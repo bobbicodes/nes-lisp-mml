@@ -77,12 +77,3 @@ var song = [{instrument: "1.mp3", pitch: 60, time: 0},
 start.addEventListener('click', function () {
   playSong(song)
 })
-
-var heading = `<div>
-  <h3>Hello bobbi-lisp!</h3>
-  <p>Evaluating: game.clj</p>
-</div>
-`
-
-//document.querySelector('#app').innerHTML = heading + 
-//'<div>' + evalString('(do ' + game + ')') + '</div>'
