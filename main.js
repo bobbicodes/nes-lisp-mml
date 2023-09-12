@@ -5,6 +5,7 @@ import { clojure } from "./src/clojure"
 import { evalString } from 'bobbi-lisp-core'
 import {playSong} from 'bobbi-lisp-audio'
 import game from './game.clj?raw'
+import confuzion from './confuzion.json'
 
 let editorState = EditorState.create({
   doc: game,
@@ -24,8 +25,10 @@ function jsonParser(blob) {
   return parsed;
 }
 
-var song = jsonParser(evalString("(do " + game + ")"))
+//var song = jsonParser(evalString("(do " + game + ")"))
+var song = confuzion
+
 
 start.addEventListener('click', function () {
-  playSong(song, 150)
+  playSong(song, 160)
 })
