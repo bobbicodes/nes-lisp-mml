@@ -19,8 +19,6 @@ const start = document.getElementById("start")
 
 const ctx = new AudioContext();
 
-console.log(ctx)
-
 let buffers = {}
 
 function fetchAudio(file) {
@@ -35,10 +33,34 @@ for (let i = 1; i < 19; i++) {
   fetchAudio(i + ".mp3")
 }
 
+function addSemitone(rate) {
+  return rate * Math.pow(2, 1/12)
+}
+
+function subSemitone(rate) {
+  return rate * Math.pow(2, -1/12)
+}
+
+function incRate(semis) {
+  return Array(semis).fill(1).reduce(addSemitone)
+}
+
+function decRate(semis) {
+  return Array(semis).fill(1).reduce(subSemitone)
+}
+
+function pitchToRate(midiNum) {
+  if (midiNum > 66) {
+    return incRate(midiNum - 66)
+  } else {
+    return decRate(68 - midiNum)
+  }
+}
+
 start.addEventListener('click', function () {
   let source = ctx.createBufferSource();
   source.buffer = buffers["1.mp3"]
-  source.playbackRate.setValueAtTime(1.75, ctx.currentTime)
+  source.playbackRate.setValueAtTime(pitchToRate(58), ctx.currentTime)
   source.connect(ctx.destination);
   source.start();
 })
