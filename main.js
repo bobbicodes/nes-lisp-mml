@@ -57,12 +57,25 @@ function pitchToRate(midiNum) {
   }
 }
 
-start.addEventListener('click', function () {
+function playSampleAt(instrument, pitch, time) {
   let source = ctx.createBufferSource();
-  source.buffer = buffers["1.mp3"]
-  source.playbackRate.setValueAtTime(pitchToRate(58), ctx.currentTime)
+  source.buffer = buffers[instrument]
+  source.playbackRate.setValueAtTime(pitchToRate(pitch), ctx.currentTime)
   source.connect(ctx.destination);
-  source.start();
+  source.start(time);
+}
+
+function playSong(notes) {
+  for (let note = 0; note < notes.length; note++) {
+    playSampleAt(notes[note].instrument, notes[note].pitch, ctx.currentTime + notes[note].time)
+  }
+}
+
+var song = [{instrument: "1.mp3", pitch: 60, time: 0},
+            {instrument: "1.mp3", pitch: 62, time: 1}]
+
+start.addEventListener('click', function () {
+  playSong(song)
 })
 
 var heading = `<div>
