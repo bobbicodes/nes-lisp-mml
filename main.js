@@ -19,13 +19,15 @@ const start = document.getElementById("start")
 
 const ctx = new AudioContext();
 
-let buffers = []
+console.log(ctx)
+
+let buffers = {}
 
 function fetchAudio(file) {
   fetch(file).then(data => data.arrayBuffer())
              .then(arrayBuffer => ctx.decodeAudioData(arrayBuffer))
              .then(decodedAudio => {
-              buffers.push(decodedAudio)
+              buffers[file] = decodedAudio
             })
 }
 
@@ -35,7 +37,8 @@ for (let i = 1; i < 19; i++) {
 
 start.addEventListener('click', function () {
   let source = ctx.createBufferSource();
-  source.buffer = buffers[5]
+  source.buffer = buffers["1.mp3"]
+  source.playbackRate.setValueAtTime(1.75, ctx.currentTime)
   source.connect(ctx.destination);
   source.start();
 })
