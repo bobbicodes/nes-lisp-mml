@@ -1,8 +1,9 @@
-import { Prec, EditorSelection } from '@codemirror/state'
+import { Prec } from '@codemirror/state'
 import { keymap } from '@codemirror/view'
 import { syntaxTree } from "@codemirror/language"
-import { evalString } from 'bobbi-lisp-core'
-import { out_buffer, appendBuffer, clearBuffer } from 'bobbi-lisp-core/core'
+import { evalString, repl_env, repp, PRINT } from "./interpreter"
+import { out_buffer, appendBuffer, clearBuffer } from './core'
+import { _symbol } from './types.js'
 
 const up = (node) => node.parent;
 const isTopType = (nodeType) => nodeType.isTop
@@ -50,69 +51,6 @@ const topLevelNode = (state) => {
 const cursorNodeString = (state) => rangeStr(state, nodeAtCursor(state))
 const topLevelString = (state) => rangeStr(state, topLevelNode(state))
 
-function right(node) {
-    return up(node).childAfter(node.to)
-}
-
-function left(node) {
-    return up(node).childBefore(node.from)
-}
-
-function rights(node) {
-    var rs = []
-    if (right(node) != null) {
-        rs.push(right(node))
-        node = right(node)
-    }
-    return rs
-}
-
-function lefts(node) {
-    var ls = []
-    if (left(node) != null) {
-        ls.push(left(node))
-        node = left(node)
-    }
-    return ls
-}
-
-function slurp(view) {
-    var doc = view.state.doc.toString()
-    var pos = mainSelection(view.state).from
-    var node = tree(view.state, pos)
-    var parent = up(node)
-    console.log("rights")
-    var target = rights(node)[0]
-    var edge = parent.lastChild
-    var s1 = right(node).from
-    var e1 = right(node).to
-    var s2 = node.from + 1
-    var e2 = node.to
-    view.dispatch({
-        changes: { from: pos, to: 7,
-            insert: doc.substring(s1, e1) + doc.substring(s2, e2)}
-    })
-    return true
-}
-
-function barf(view) {
-    var doc = view.state.doc.toString()
-    var pos = mainSelection(view.state).from
-    var node = tree(view.state, pos)
-    var parent = up(node)
-    var target = lefts(node)[0]
-    var edge = parent.lastChild
-    var s1 = node.to - 1
-    var e1 = node.to
-    var s2 = node.from + 1
-    var e2 = node.to - 1
-    view.dispatch({
-        changes: { from: pos, to: 7,
-            insert: doc.substring(s1, e1) + doc.substring(s2, e2)}
-    })
-    return true
-}
-
 var evalResult = ""
 var codeBeforeEval = ""
 export var testCodeBeforeEval = ""
@@ -146,15 +84,43 @@ export function tryEval(s) {
     //console.log("Trying to eval", s)
     try {
         //console.log("evalPretty:", evalPretty(s))
-        return evalString(s)
-        //return repp(s)
+        //return evalString(s)
+        return repp(s)
     } catch (err) {
         console.log(err)
         return "\nError: " + err.message
     }
 }
 
+//const docBar = document.getElementById("results")
+//const docBar2 = document.getElementById("doc")
+
+/* export function updateDocBar(view) {
+    var pos = view.state.selection.main.head
+    var sym = cursorNodeString(view.state)
+    if (syntaxTree(view.state).resolveInner(pos, -1).name === 'Symbol'
+        && Object.hasOwn(repl_env.data, sym)
+        && Object.hasOwn(repl_env.data[sym], '__meta__')
+        && repl_env.data[sym].__meta__ != null) {
+        var cljDoc = repl_env.data[sym].__meta__.get("ʞdoc")
+        if (repl_env.data[sym].__meta__.has("ʞarglists")) {
+            var arglists = repl_env.data[sym].__meta__.get("ʞarglists")
+            docBar.innerHTML = sym + " " + (PRINT(arglists) || "")
+        } else {
+            docBar.innerHTML = sym
+        }
+        docBar.style.color = '#0437F2';
+        docBar2.innerHTML = cljDoc || ""
+        docBar2.style.color = '#0437F2';
+    } else {
+        docBar.innerHTML = ''
+        docBar2.innerHTML = ''
+    }
+} */
+
 export const clearEval = (view) => {
+    var pos = view.state.selection.main.head
+    //updateDocBar(view)
     const parent = view.dom.parentElement.id
     if (parent === 'app' && lastEditorEvaluated === 'app') {
         var previousDoc = codeBeforeEval
@@ -172,6 +138,12 @@ export const clearEval = (view) => {
             updateEditor(view, previousTestDoc, previousTestPos)
         }
     }
+}
+
+function clearAll(view) {
+    clearEval(view)
+    docBar.innerHTML = ''
+    docBar2.innerHTML = ''
 }
 
 export const evalAtCursor = (view) => {
@@ -274,9 +246,7 @@ export const evalExtension =
         [{ key: "Alt-Enter", run: evalCell },
         { key: "Mod-Enter", run: evalAtCursor },
         { key: "Shift-Enter", run: evalTopLevel },
-        { key: "Shift-ArrowRight", run: slurp},
-        { key: "Shift-ArrowLeft", run: barf},
-        { key: "Escape", run: clearEval },
+        { key: "Escape", run: clearAll },
         { key: "ArrowLeft", run: clearEval },
         { key: "ArrowRight", run: clearEval },
         { key: "ArrowUp", run: clearEval },

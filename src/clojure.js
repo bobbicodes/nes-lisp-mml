@@ -2,6 +2,7 @@ import { parser, props } from "@nextjournal/lezer-clojure"
 import { styleTags, tags } from "@lezer/highlight"
 import { indentNodeProp, foldNodeProp, foldInside, LRLanguage, LanguageSupport } from "@codemirror/language"
 import { evalExtension } from "./eval-region"
+import { repl_env } from "./interpreter";
 
 const { coll } = props
 
@@ -49,8 +50,26 @@ export const clojureLanguage = LRLanguage.define({
   languageData: { commentTokens: { line: ";;" } }
 })
 
+function getCompletions(env) {
+  let vars =  [{label: 'macroexpand'}, {label: 'defmacro'}]
+  for (const sym of Object.keys(repl_env.data)) {
+    vars.push({label: sym})
+  }
+  return vars
+}
+
+function myCompletions(context) {
+  let word = context.matchBefore(/\w*/)
+  if (word.from == word.to && !context.explicit)
+    return null
+  return {
+    from: word.from,
+    options: getCompletions(repl_env)
+  }
+}
+
 export function clojure() {
   return new LanguageSupport(clojureLanguage, 
-    [evalExtension]
+    [clojureLanguage.data.of({autocomplete: myCompletions}), evalExtension]
     )
 }
