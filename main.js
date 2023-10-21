@@ -7,8 +7,16 @@ let editorState = EditorState.create({
   doc: `(defn make-path [points]
   (str "M" (apply str (interpose " " points))))
 
-(let [points [10 10 50 10 50 50 10 50 10 10]
-      _ (clear-svg)]
+(def points
+  (apply concat
+    (for [x (range 0 150 40) y (range 0 150 40)]
+      [(+ x 10) (+ y 10)
+       (+ x 50) (+ y 10)
+       (+ x 50) (+ y 50)
+       (+ x 10) (+ y 50)
+       (+ x 10) (+ y 10)])))
+
+(let [_ (clear-svg)]
   (append-path (make-path points)))`,
   extensions: [basicSetup, clojure()]
 })
