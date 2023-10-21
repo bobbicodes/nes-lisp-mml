@@ -1038,7 +1038,8 @@ function _map(f, colls) {
 }
 
 var svgDiv = document.getElementById("svg_out")
-svgDiv.setAttribute("width", "500")
+svgDiv.setAttribute("width", "1000")
+svgDiv.setAttribute("height", "1000")
 var svgGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
 svgDiv.appendChild(svgGroup);
 

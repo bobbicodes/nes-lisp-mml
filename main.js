@@ -5,10 +5,9 @@ import { clojure } from "./src/clojure"
 
 let editorState = EditorState.create({
   doc: `(defn make-path [points]
-  (str "M" (apply str (interpose " " (for [x (range (count points))]
-                                         (str x " " (- 150 (nth points x))))))))
+  (str "M" (apply str (interpose " " points))))
 
-(let [points [0 0 1 1 2 2 3 3 4 4]
+(let [points [10 10 50 10 50 50 10 50 10 10]
       _ (clear-svg)]
   (append-path (make-path points)))`,
   extensions: [basicSetup, clojure()]
