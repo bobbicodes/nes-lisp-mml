@@ -1048,23 +1048,13 @@ function appendPath(d, color) {
     newElement.setAttribute("d", d)
     newElement.style.stroke = color || "black"
     newElement.style.strokeWidth = "1";
-    newElement.style.fill = "none";
+    newElement.style.fill = "lightgreen";
     newElement.setAttribute("transform", "scale(1)")
     svgGroup.appendChild(newElement);
 }
 
 function clearSVG() {
     svgGroup.innerHTML = ""
-}
-
-function renderSVG(paths) {
-    for (const colorPath of paths) {
-        var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        path.setAttribute("d", colorPath.path)
-        path.setAttribute("stroke", colorPath.color)
-        path.setAttribute("stroke-width", "1")
-        g.appendChild(path);
-    }
 }
 
 let x = 1
