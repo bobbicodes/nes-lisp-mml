@@ -1043,16 +1043,16 @@ svgDiv.setAttribute("height", "1000")
 var svgGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
 svgDiv.appendChild(svgGroup);
 
-function appendPath(d, color, x, y) {
+function appendPath(d, color, x, y, scale) {
     var newElement = document.createElementNS("http://www.w3.org/2000/svg", 'path');
     newElement.setAttribute("d", d)
     newElement.style.stroke = color || "black"
     newElement.style.strokeWidth = "1";
     newElement.style.fill = "lightgreen";
-    if (typeof x === 'number') {
+    if (scale) {
+        newElement.setAttribute("transform", "translate(" + x.toString() + "," + y.toString() + ") scale(" + scale + ")")
+    } else if (typeof x === 'number') {
         newElement.setAttribute("transform", "translate(" + x.toString() + "," + y.toString() + ")")
-    } else {
-        newElement.setAttribute("transform", "scale(1)")
     }
     svgGroup.appendChild(newElement);
 }
