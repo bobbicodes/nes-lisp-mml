@@ -1,4 +1,4 @@
-(ns simlispy.core)
+(ns simlispy.core {:clj-kondo/ignore true})
 
 (defn isometric->screen [x y]
    [(* (- x y)  (/ 1 2))
@@ -33,3 +33,4 @@
     (append-path path color x y 2)))
 
 (factory 0 0)
+
