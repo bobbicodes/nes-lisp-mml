@@ -11,7 +11,11 @@ let editorState = EditorState.create({
 (for [{:keys [length time]} drums]
   (play (fade (noise 60 length)) (/ (+ 3 time) 2.5)))
   
-(play (pulse0 60 1))`,
+(for [{:keys [pitch length time]} lead1]
+  (play (pulse0 pitch length) (/ (+ 3 time) 2.5)))
+  
+(for [{:keys [pitch length time]} lead2]
+  (play (pulse2 pitch length) (/ (- time 30) 2.5)))`,
   extensions: [basicSetup, clojure()]
 })
 

@@ -4043,3 +4043,73 @@
  {:length 0.07
   :pitch 77
   :time 528}])
+
+(def lead1 [{:time 1.5, :length 0.3, :pitch 69}
+            {:time 2, :length 0.3, :pitch 71}
+            {:time 2.5, :length 0.3, :pitch 74}
+            {:time 3, :length 0.3, :pitch 76}
+            {:time 3.5, :length 0.6, :pitch 78}
+            {:time 5, :length 0.3, :pitch 76}
+            {:time 6, :length 0.3, :pitch 74}
+            {:time 6.5, :length 0.2, :pitch 76}
+            {:time 7.5, :length 0.2, :pitch 74}
+            {:time 7.75, :length 0.3, :pitch 76}
+            {:time 8, :length 0.6, :pitch 74}
+            {:time 9.5, :length 0.3, :pitch 71}
+            {:time 10.0, :length 0.1, :pitch 71}
+            {:time 10.1, :length 0.1, :pitch 70}
+            {:time 10.2, :length 0.1, :pitch 69}
+            {:time 10.3, :length 0.1, :pitch 68}
+            {:time 10.4, :length 0.1, :pitch 67}
+            {:time 10.5, :length 0.1, :pitch 66}
+            {:time 10.6, :length 0.1, :pitch 65} 
+            {:time 10.7, :length 0.1, :pitch 64}
+            {:time 10.8, :length 0.1, :pitch 63}
+            {:time 10.9, :length 0.1, :pitch 62} 
+            {:time 11.0, :length 0.1, :pitch 61} 
+            {:time 11.1, :length 0.1, :pitch 60} 
+            {:time 11.2, :length 0.1, :pitch 60}
+            {:time 11.299999999999999, :length 0.1, :pitch 60}
+            {:time 12, :length 0.3, :pitch 74} 
+            {:time 12.5, :length 0.3, :pitch 74}
+            {:time 13.5, :length 0.3, :pitch 74} 
+            {:time 14.5, :length 0.3, :pitch 71} 
+            {:time 15.5, :length 0.3, :pitch 69} 
+            {:time 16, :length 0.3, :pitch 71} 
+            {:time 16.0, :length 0.1, :pitch 71}
+            {:time 16.1, :length 0.1, :pitch 70}
+            {:time 16.2, :length 0.1, :pitch 69}
+            {:time 16.3, :length 0.1, :pitch 68} 
+            {:time 16.4, :length 0.1, :pitch 67}
+            {:time 16.5, :length 0.1, :pitch 66}
+            {:time 16.6, :length 0.1, :pitch 65}
+            {:time 16.7, :length 0.1, :pitch 64}
+            {:time 16.8, :length 0.1, :pitch 64}
+            {:time 16.9, :length 0.1, :pitch 64}
+            {:time 17.5, :length 0.3, :pitch 64}
+            {:time 18, :length 0.3, :pitch 66}
+            {:time 18.5, :length 0.3, :pitch 69} 
+            {:time 19, :length 0.3, :pitch 71}
+            {:time 20, :length 0.3, :pitch 71}
+            {:time 20.5, :length 0.3, :pitch 73} 
+            {:time 21.5, :length 0.6, :pitch 69} 
+            {:time 24, :length 0.3, :pitch 66}
+            {:time 24.5, :length 0.3, :pitch 64} 
+            {:time 25.5, :length 0.6, :pitch 64}])
+
+(def lead2 [{:time 32, :length 0.5, :pitch 66}
+            {:time 33.5, :length 1, :pitch 71}
+            {:time 39, :length 0.5, :pitch 71}
+            {:time 40, :length 0.3, :pitch 71}
+            {:time 40.5, :length 0.5, :pitch 69} 
+            {:time 41.5, :length 1, :pitch 64}
+            {:time 47, :length 0.5, :pitch 66}
+            {:time 48, :length 0.2, :pitch 67}
+            {:time 48.5, :length 0.2, :pitch 64}
+            {:time 49, :length 0.2, :pitch 59}
+            {:time 49.5, :length 1, :pitch 64}
+            {:time 53, :length 0.2, :pitch 61}
+            {:time 53.5, :length 0.2, :pitch 61}
+            {:time 54.5, :length 0.5, :pitch 62} 
+            {:time 56, :length 0.5, :pitch 66}
+            {:time 57.5, :length 1, :pitch 64}])
