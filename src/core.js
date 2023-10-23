@@ -1151,7 +1151,7 @@ function _noise(note, dur) {
     var noise = []
     for (let i = 0; i < bufferSize; i++) {
         x = feedback(x)
-        noise.push(x / 32767 * 2 - 1)
+        noise.push(0.5 * x / 32767 * 2 - 1)
     }
     return audioBuffer(noise)
 }
@@ -1177,6 +1177,46 @@ function tri(note, dur) {
         } else {
             buf.push(q)
         }
+    }
+    return audioBuffer(buf)
+}
+
+function _pulse0(note, dur) {
+    const freq = midiToFreq(note)
+    var bufferSize = ctx.sampleRate * dur;
+    var buf = []
+    for (let i = 0; i < bufferSize; i++) {
+        buf.push(0.2 * pulse0[Math.floor(i / (1 / (freq / 6000))) % 8])
+    }
+    return audioBuffer(buf)
+}
+
+function _pulse1(note, dur) {
+    const freq = midiToFreq(note)
+    var bufferSize = ctx.sampleRate * dur;
+    var buf = []
+    for (let i = 0; i < bufferSize; i++) {
+        buf.push(0.2 * pulse1[Math.floor(i / (1 / (freq / 6000))) % 8])
+    }
+    return audioBuffer(buf)
+}
+
+function _pulse2(note, dur) {
+    const freq = midiToFreq(note)
+    var bufferSize = ctx.sampleRate * dur;
+    var buf = []
+    for (let i = 0; i < bufferSize; i++) {
+        buf.push(0.2 * pulse2[Math.floor(i / (1 / (freq / 6000))) % 8])
+    }
+    return audioBuffer(buf)
+}
+
+function _pulse3(note, dur) {
+    const freq = midiToFreq(note)
+    var bufferSize = ctx.sampleRate * dur;
+    var buf = []
+    for (let i = 0; i < bufferSize; i++) {
+        buf.push(0.2 * pulse3[Math.floor(i / (1 / (freq / 6000))) % 8])
     }
     return audioBuffer(buf)
 }
@@ -1311,6 +1351,10 @@ export var ns = {
     'map-tiles': mapTiles,
     'fade': fade,
     'noise': _noise,
+    'pulse0': _pulse0,
+    'pulse1': _pulse1,
+    'pulse2': _pulse2,
+    'pulse3': _pulse3,
     'play': playBuffer,
     'sq': sq,
     'tri': tri,
