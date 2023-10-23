@@ -1116,15 +1116,6 @@ function channelData(buffer, channel) {
     return buffer.getChannelData(channel)
 }
 
-function playNoise() {
-    ctx.resume()
-    const noise = new AudioBufferSourceNode(ctx, {
-        buffer: noiseBuffer,
-    });
-    noise.connect(ctx.destination);
-    noise.start();
-}
-
 function playBuffer(buffer, time) {
     ctx.resume()
     const noise = new AudioBufferSourceNode(ctx, {
@@ -1155,6 +1146,25 @@ function quantizeTri(sample) {
     }
 }
 
+function _noise(note, dur) {
+    var bufferSize = ctx.sampleRate * dur;
+    var noise = []
+    for (let i = 0; i < bufferSize; i++) {
+        x = feedback(x)
+        noise.push(x / 32767 * 2 - 1)
+    }
+    return audioBuffer(noise)
+}
+
+function fade(buf) {
+    var data = buf.getChannelData(0)
+    for (let i = 0; i < data.length; i++) {
+        var multiplier = 1 - (i * (1 / data.length))
+        data[i] = data[i] * multiplier
+    }
+    return audioBuffer(data)
+}
+
 function tri(note, dur) {
     const freq = midiToFreq(note)
     let buf = []
@@ -1167,10 +1177,9 @@ function tri(note, dur) {
         } else {
             buf.push(q)
         }
-        
     }
     return audioBuffer(buf)
-} 
+}
 
 /* function tri(notes) {
     // `notes` is an array of arrays, each containing 3 values,
@@ -1300,7 +1309,8 @@ var mapTiles = "M430 25 450 15 470 25 450 35 430 25M410 35 430 25 450 35 430 45 
 export var ns = {
     'env': printEnv,
     'map-tiles': mapTiles,
-    'noise': playNoise,
+    'fade': fade,
+    'noise': _noise,
     'play': playBuffer,
     'sq': sq,
     'tri': tri,

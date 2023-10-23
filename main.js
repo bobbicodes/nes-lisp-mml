@@ -4,8 +4,7 @@ import { EditorState } from '@codemirror/state'
 import { clojure } from "./src/clojure"
 
 let editorState = EditorState.create({
-  doc: `(for [{:keys [pitch length time]} (bass1 0)]
-  (play (tri (- pitch 26) length) (/ (+ 3 time) 2.5)))`,
+  doc: `(play (fade (noise 60 0.01)))`,
   extensions: [basicSetup, clojure()]
 })
 
