@@ -1151,7 +1151,7 @@ function _noise(note, dur) {
     var noise = []
     for (let i = 0; i < bufferSize; i++) {
         x = feedback(x)
-        noise.push(0.5 * x / 32767 * 2 - 1)
+        noise.push(0.4 * x / 32767 * 2 - 1)
     }
     return audioBuffer(noise)
 }
@@ -1169,7 +1169,7 @@ function tri(note, dur) {
     const freq = midiToFreq(note)
     let buf = []
     for (let i = 0; i < ctx.sampleRate * dur; i++) {
-        var q = quantizeTri(triangleWave(1 / ctx.sampleRate * i, 1 / freq))
+        var q = 0.8 * quantizeTri(triangleWave(1 / ctx.sampleRate * i, 1 / freq))
         if (i < 150) {
             buf.push(q / (500 / i))
         } else if (i > (ctx.sampleRate * dur) - 200) {
@@ -1186,7 +1186,7 @@ function _pulse0(note, dur) {
     var bufferSize = ctx.sampleRate * dur;
     var buf = []
     for (let i = 0; i < bufferSize; i++) {
-        buf.push(0.2 * pulse0[Math.floor(i / (1 / (freq / 6000))) % 8])
+        buf.push(0.1 * pulse0[Math.floor(i / (1 / (freq / (ctx.sampleRate / 8)))) % 8])
     }
     return audioBuffer(buf)
 }
@@ -1196,7 +1196,7 @@ function _pulse1(note, dur) {
     var bufferSize = ctx.sampleRate * dur;
     var buf = []
     for (let i = 0; i < bufferSize; i++) {
-        buf.push(0.2 * pulse1[Math.floor(i / (1 / (freq / 6000))) % 8])
+        buf.push(0.1 * pulse1[Math.floor(i / (1 / (freq / (ctx.sampleRate / 8)))) % 8])
     }
     return audioBuffer(buf)
 }
@@ -1206,7 +1206,7 @@ function _pulse2(note, dur) {
     var bufferSize = ctx.sampleRate * dur;
     var buf = []
     for (let i = 0; i < bufferSize; i++) {
-        buf.push(0.2 * pulse2[Math.floor(i / (1 / (freq / 6000))) % 8])
+        buf.push(0.1 * pulse2[Math.floor(i / (1 / (freq / (ctx.sampleRate / 8)))) % 8])
     }
     return audioBuffer(buf)
 }
@@ -1216,7 +1216,7 @@ function _pulse3(note, dur) {
     var bufferSize = ctx.sampleRate * dur;
     var buf = []
     for (let i = 0; i < bufferSize; i++) {
-        buf.push(0.2 * pulse3[Math.floor(i / (1 / (freq / 6000))) % 8])
+        buf.push(0.1 * pulse3[Math.floor(i / (1 / (freq / (ctx.sampleRate / 8)))) % 8])
     }
     return audioBuffer(buf)
 }

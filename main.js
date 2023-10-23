@@ -6,7 +6,7 @@ import confuzion from './confuzion.json'
 
 let editorState = EditorState.create({
   doc: `(for [{:keys [pitch length time]} bass]
-  (play (tri (- pitch 26) length) (/ (+ 3 time) 2.5)))
+  (play (tri (- pitch 26) (* 0.8 length)) (/ (+ 3 time) 2.5)))
 
 (for [{:keys [length time]} drums]
   (play (fade (noise 60 length)) (/ (+ 3 time) 2.5)))

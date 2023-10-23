@@ -164,9 +164,9 @@
 (def bass-pat-5
   (concat (bass1 424) (bass1 440) (bass1 456) (bass1 472) (bass1 488) (bass1 504) (bass1 520)))
 
-#_(def bass (concat bass-pat-1 bass-pat-2 bass-pat-3 bass-pat-4 bass-pat-5))
+(def bass (concat bass-pat-1 bass-pat-2 bass-pat-3 bass-pat-4 bass-pat-5))
 
-(def bass [{:time 0
+#_(def bass [{:time 0
             :length 0.5
             :pitch 71}
            {:time 1.5
@@ -4156,19 +4156,6 @@
             {:time 89.5, :length 0.5, :pitch 68}
             {:time 91.5, :length 1, :pitch 69}])
 
-(def lead4 [{:time 93.5, :length 0.2, :pitch 64}
-            {:time 94, :length 0.2, :pitch 66}
-            {:time 94.5, :length 0.2, :pitch 69}
-            {:time 95, :length 0.2, :pitch 71}
-            {:time 95.5, :length 0.7, :pitch 73}
-            {:time 97, :length 0.5, :pitch 71}
-            {:time 98, :length 0.2, :pitch 69}
-            {:time 98.5, :length 0.4, :pitch 71}
-            {:time 99.5, :length 0.1, :pitch 69}
-            {:time 99.75, :length 0.2, :pitch 71}
-            {:time 100, :length 0.6, :pitch 69}
-            {:time 101.5, :length 1, :pitch 66}])
-
 (def lead5 [{:time 93.5, :length 0.2, :pitch 64}
             {:time 94, :length 0.2, :pitch 66}
             {:time 94.5, :length 0.2, :pitch 69}
@@ -4204,21 +4191,21 @@
             {:time 116, :length 0.2, :pitch 71}
             {:time 116.5, :length 0.5, :pitch 69}
             {:time 117.5, :length 0.2, :pitch 69}
-            {:time 118, :length 0.5, :pitch 66}
+            {:time 118, :length 0.5, :pitch 62}
             {:time 119, :length 0.5, :pitch 74}
             {:time 120, :length 1, :pitch 73}])
 
-(def lead6 [{:time 176, :length 0.3, :pitch 74}
-            {:time 176.5, :length 0.5, :pitch 74}
-            {:time 178, :length 0.5, :pitch 74}
-            {:time 179, :length 1, :pitch 74}
-            {:time 181, :length 1, :pitch 73}
-            {:time 184, :length 0.3, :pitch 74}
-            {:time 184.5, :length 0.4, :pitch 74}
-            {:time 186, :length 0.3, :pitch 74}
-            {:time 187, :length 0.5, :pitch 76}
-            {:time 188, :length 0.2, :pitch 78}
-            {:time 188.5, :length 1, :pitch 76}
+(def lead6 [{:time 176, :length 0.5, :pitch 74}
+            {:time 177, :length 0.5, :pitch 74}
+            {:time 178, :length 1, :pitch 74}
+            {:time 179.5, :length 0.5, :pitch 74}
+            {:time 180.5, :length 1, :pitch 73}
+            {:time 184, :length 0.5, :pitch 74}
+            {:time 185, :length 0.5, :pitch 74}
+            {:time 186, :length 1, :pitch 74}
+            {:time 188, :length 0.5, :pitch 76}
+            {:time 189, :length 0.2, :pitch 78}
+            {:time 189.5, :length 1, :pitch 76}
             {:time 193.5, :length 0.2, :pitch 76}
             {:time 194, :length 0.2, :pitch 76}
             {:time 194.5, :length 0.2, :pitch 74}
@@ -4236,8 +4223,7 @@
             {:time 203.5, :length 0.1, :pitch 74}
             {:time 203.75, :length 0.1, :pitch 76}
             {:time 204, :length 0.8, :pitch 74}
-            {:time 205.5, :length 0.1, :pitch 71}
-            {:time 206.0, :length 0.1, :pitch 71}
+            {:time 205.5, :length 0.2, :pitch 71}
             {:time 206.1, :length 0.1, :pitch 70}
             {:time 206.2, :length 0.1, :pitch 69}
             {:time 206.3, :length 0.1, :pitch 68}
@@ -4257,7 +4243,6 @@
             {:time 210.5, :length 0.2, :pitch 71}
             {:time 211.5, :length 0.2, :pitch 69}
             {:time 212, :length 0.1, :pitch 71}
-            {:time 212.0, :length 0.1, :pitch 71}
             {:time 212.1, :length 0.1, :pitch 70}
             {:time 212.2, :length 0.1, :pitch 69}
             {:time 212.3, :length 0.1, :pitch 68}
@@ -4300,7 +4285,7 @@
             {:time 264, :length 0.5, :pitch 73} 
             {:time 265, :length 0.2, :pitch 74} 
             {:time 265.5, :length 1, :pitch 71} 
-            {:time 269.5, :length 0.2, :pitch 71} 
+            {:time 269.5, :length 0.1, :pitch 71} 
             {:time 270, :length 0.5, :pitch 71} 
             {:time 271, :length 0.5, :pitch 71} 
             {:time 272, :length 0.2, :pitch 71} 
@@ -4315,20 +4300,8 @@
             {:time 281.5, :length 1, :pitch 66} 
             {:time 284, :length 0.2, :pitch 65} 
             {:time 284.5, :length 0.5, :pitch 66} 
-            {:time 285.5, :length 0.5, :pitch 68} 
-            {:time 287, :length 1, :pitch 69}])
-(def lead10 [{:time 289.5, :length 0.2, :pitch 64} 
-            {:time 290, :length 0.2, :pitch 66} 
-            {:time 290.5, :length 0.2, :pitch 69} 
-            {:time 291, :length 0.2, :pitch 71} 
-            {:time 291.5, :length 1, :pitch 73} 
-            {:time 293, :length 0.4, :pitch 71} 
-            {:time 294, :length 0.2, :pitch 69} 
-            {:time 294.5, :length 0.4, :pitch 71} 
-            {:time 295.5, :length 0.1, :pitch 69} 
-            {:time 295.75, :length 0.1, :pitch 71} 
-            {:time 296, :length 0.5, :pitch 69} 
-            {:time 297.5, :length 1, :pitch 66}])
+            {:time 285.5, :length 1, :pitch 68} 
+            {:time 287.5, :length 1, :pitch 69}])
 (def lead11 [{:time 289.5, :length 0.2, :pitch 64} 
             {:time 290, :length 0.2, :pitch 66} 
             {:time 290.5, :length 0.2, :pitch 69} 
@@ -4367,17 +4340,17 @@
             {:time 314, :length 0.4, :pitch 66} 
             {:time 315, :length 0.5, :pitch 74} 
             {:time 316, :length 1, :pitch 73}])
-(def lead12 [{:time 372, :length 0.2, :pitch 74} 
-            {:time 372.5, :length 0.4, :pitch 74} 
-            {:time 374, :length 0.6, :pitch 74} 
-            {:time 375, :length 0.6, :pitch 74} 
+(def lead12 [{:time 372, :length 0.5, :pitch 74} 
+            {:time 373, :length 0.5, :pitch 74} 
+            {:time 374, :length 1, :pitch 74} 
+            {:time 375.5, :length 0.5, :pitch 74} 
             {:time 376.5, :length 1, :pitch 73} 
-            {:time 380, :length 0.2, :pitch 74} 
-            {:time 380.5, :length 0.4, :pitch 74} 
-            {:time 381.5, :length 0.3, :pitch 74} 
-            {:time 383, :length 0.4, :pitch 76} 
-            {:time 384, :length 0.2, :pitch 78} 
-            {:time 384.5, :length 1, :pitch 76} 
+            {:time 380, :length 0.5, :pitch 74} 
+            {:time 381, :length 0.5, :pitch 74} 
+            {:time 382, :length 1, :pitch 74} 
+            {:time 384, :length 0.4, :pitch 76} 
+            {:time 385, :length 0.2, :pitch 78} 
+            {:time 385.5, :length 1, :pitch 76} 
             {:time 389.5, :length 0.2, :pitch 76} 
             {:time 390, :length 0.2, :pitch 76} 
             {:time 390.5, :length 0.2, :pitch 74} 
@@ -4394,8 +4367,7 @@
             {:time 399.5, :length 0.1, :pitch 74} 
             {:time 399.75, :length 0.1, :pitch 76} 
             {:time 400, :length 0.4, :pitch 74} 
-            {:time 401.5, :length 0.1, :pitch 71} 
-            {:time 402.0, :length 0.1, :pitch 71} 
+            {:time 401, :length 0.5, :pitch 71} 
             {:time 402.1, :length 0.1, :pitch 70} 
             {:time 402.2, :length 0.1, :pitch 69} 
             {:time 402.3, :length 0.1, :pitch 68} 
@@ -4410,11 +4382,11 @@
             {:time 403.2, :length 0.1, :pitch 60} 
             {:time 403.3, :length 0.2, :pitch 60} 
             {:time 404, :length 0.2, :pitch 74} 
-            {:time 404.5, :length 0.5, :pitch 74} 
+            {:time 404.5, :length 0.5, :pitch 74}
+            {:time 405.5, :length 0.2, :pitch 74} 
             {:time 406.5, :length 0.2, :pitch 71} 
             {:time 407.5, :length 0.4, :pitch 69} 
             {:time 408, :length 0.2, :pitch 71} 
-            {:time 408.0, :length 0.1, :pitch 71} 
             {:time 408.1, :length 0.1, :pitch 70} 
             {:time 408.2, :length 0.1, :pitch 69} 
             {:time 408.3, :length 0.1, :pitch 68} 
@@ -4636,12 +4608,28 @@
             {:time 535.5, :length 0.2, :pitch 71} 
             {:time 535.5, :length 0.2, :pitch 76}])
 
-(def lead (concat lead1 lead2 lead3 lead4 lead5 lead6 lead7 lead8 lead9 lead10 lead11 lead12 lead13 lead14 lead15 lead16 lead17 lead18))
+(def lead (concat lead1 lead2 lead3 lead5 lead6 lead7 lead8 lead9 lead11 lead12 lead13 lead14 lead15 lead16 lead17 lead18))
 
 
 (defn gb1 [time]
   (map (fn [m] (update m :time #(+ % time)))
-       [{:time 102, :length 0.5, :pitch 66} {:time 103, :length 0.5, :pitch 74} {:time 104, :length 0.5, :pitch 73} {:time 118, :length 0.5, :pitch 66} {:time 119, :length 0.5, :pitch 74} {:time 120, :length 0.5, :pitch 73} {:time 125.5, :length 0.5, :pitch 71} {:time 126, :length 0.5, :pitch 71} {:time 126.5, :length 0.5, :pitch 71} {:time 128, :length 0.5, :pitch 71} {:time 128.5, :length 0.5, :pitch 73} {:time 129.5, :length 0.5, :pitch 69} {:time 133.5, :length 0.5, :pitch 69} {:time 134, :length 0.5, :pitch 69} {:time 135, :length 0.5, :pitch 66} {:time 136, :length 0.5, :pitch 69} {:time 137.5, :length 0.5, :pitch 68}]))
+       [{:time 102, :length 0.5, :pitch 66}
+        {:time 103, :length 0.5, :pitch 74}
+        {:time 104, :length 0.5, :pitch 73}
+        {:time 118, :length 0.5, :pitch 66}
+        {:time 119, :length 0.5, :pitch 74}
+        {:time 120, :length 0.5, :pitch 73} 
+        {:time 125.5, :length 0.15, :pitch 71}
+        {:time 126, :length 0.15, :pitch 71}
+        {:time 126.5, :length 0.5, :pitch 71}
+        {:time 128, :length 0.5, :pitch 71}
+        {:time 128.5, :length 0.5, :pitch 73}
+        {:time 129.5, :length 0.5, :pitch 69}
+        {:time 133.5, :length 0.5, :pitch 69}
+        {:time 134, :length 0.5, :pitch 69}
+        {:time 135, :length 0.5, :pitch 66} 
+        {:time 136, :length 0.5, :pitch 69} 
+        {:time 137.5, :length 0.5, :pitch 68}]))
 
 (defn plane1 [time]
   (map (fn [m] (update m :time #(+ % time)))
@@ -4649,11 +4637,28 @@
 
 (defn flower1 [time]
   (map (fn [m] (update m :time #(+ % time)))
-       [{:time 144, :length 0.5, :pitch 78} {:time 144.5, :length 0.5, :pitch 74} {:time 145, :length 0.5, :pitch 71} {:time 145.5, :length 0.5, :pitch 78} {:time 146.5, :length 0.5, :pitch 74} {:time 147, :length 0.5, :pitch 71} {:time 147.5, :length 0.5, :pitch 76} {:time 148.5, :length 0.5, :pitch 73} {:time 149.5, :length 0.5, :pitch 71} {:time 150, :length 0.5, :pitch 69} {:time 152, :length 0.5, :pitch 80} {:time 152.5, :length 0.5, :pitch 76} {:time 153, :length 0.5, :pitch 73} {:time 153.5, :length 0.5, :pitch 80} {:time 154.5, :length 0.5, :pitch 76} {:time 155.5, :length 0.5, :pitch 78}]))
+       [{:time 144, :length 0.3, :pitch 66}
+        {:time 144.5, :length 0.3, :pitch 62}
+        {:time 145, :length 0.3, :pitch 59}
+        {:time 145.5, :length 0.5, :pitch 66} 
+        {:time 146.5, :length 0.3, :pitch 62} 
+        {:time 147, :length 0.3, :pitch 59} 
+        {:time 147.5, :length 0.5, :pitch 64} 
+        {:time 148.5, :length 0.5, :pitch 61} 
+        {:time 149.5, :length 0.3, :pitch 59} 
+        {:time 150, :length 0.5, :pitch 57}
+        {:time 152, :length 0.3, :pitch 68}
+        {:time 152.5, :length 0.3, :pitch 64}
+        {:time 153, :length 0.3, :pitch 61} 
+        {:time 153.5, :length 0.5, :pitch 68}
+        {:time 154.5, :length 0.5, :pitch 64}
+        {:time 155.5, :length 0.5, :pitch 66}]))
 
 (defn star1 [time]
   (map (fn [m] (update m :time #(+ % time)))
-       [{:time 157, :length 0.5, :pitch 70} {:time 158, :length 0.5, :pitch 71} {:time 159, :length 0.5, :pitch 73} {:time 157, :length 0.5, :pitch 70} {:time 158, :length 0.5, :pitch 71} {:time 159, :length 0.5, :pitch 73}]))
+       [{:time 157, :length 0.5, :pitch 70}
+        {:time 158, :length 0.5, :pitch 71}
+        {:time 159, :length 0.5, :pitch 73}]))
 
 (def leadA (concat (gb1 0) (plane1 0) (flower1 0) 
                    (map (fn [m] (update m :time #(+ % 16)))
