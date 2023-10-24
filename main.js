@@ -5,9 +5,13 @@ import { clojure } from "./src/clojure"
 import confuzion from './confuzion.json'
 
 let editorState = EditorState.create({
-  doc: `(play (tri-seq bass))
-(play (drum-seq drums))
-(spit-wav "drums.wav" (drum-seq drums))`,
+  doc: `(def buffers
+  [(tri-seq bass)
+  (drum-seq drums)
+  (pulse0-seq pulse-0)
+  (pulse2-seq pulse-2)])
+
+(spit-wav "confuzion.wav" (mix buffers))`,
   extensions: [basicSetup, clojure()]
 })
 
