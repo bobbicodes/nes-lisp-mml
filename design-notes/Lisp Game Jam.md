@@ -12,7 +12,7 @@
 - Zoomed all the way out:
 - ![image.png](./assets/image_1697842723481_0.png)
 - I won't have any terrain, it will just be a boring, flat plain (which when I played the game, always wanted anyway).
-- See [Isometric Tiles Math](./Isometric Tiles Math.md)
+- See [Isometric Tiles Math](./Isometric%20Tiles%20Math.md)
 - The SimLispy repo seems to still have the old project setup, where I was trying to load bobbi-lisp-core, so I need to update it.
 - Cool, that seems to be good to go, I've got the kitty rendered
 - So first... we'll just make a regular SVG grid. After that, we'll extrude it into 2.5 dimensions.
