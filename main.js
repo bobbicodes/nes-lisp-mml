@@ -5,17 +5,7 @@ import { clojure } from "./src/clojure"
 import confuzion from './confuzion.json'
 
 let editorState = EditorState.create({
-  doc: `(for [{:keys [pitch length time]} bass]
-  (play (tri (- pitch 26) (* 0.8 length)) (/ (+ 3 time) 2.5)))
-
-(for [{:keys [length time]} drums]
-  (play (fade (noise 60 length)) (/ (+ 3 time) 2.5)))
-
-(for [{:keys [pitch length time]} lead]
-  (play (pulse0 (- pitch 2) length) (/ (+ 3 time) 2.5)))
-
-(for [{:keys [pitch length time]} leadA]
-  (play (pulse2 (- pitch 2) length) (/ (+ 3 time) 2.5)))`,
+  doc: `(play (tri-seq bass))`,
   extensions: [basicSetup, clojure()]
 })
 

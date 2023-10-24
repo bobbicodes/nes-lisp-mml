@@ -1174,7 +1174,7 @@ function tri_seq(notes) {
     // loop through notes
     for (let i = 0; i < notes.length; i++) {
         // loop through the note's samples
-        const start = notes[i].get("ʞtime") * ctx.sampleRate
+        const start = Math.floor(notes[i].get("ʞtime") * ctx.sampleRate)
          for (let j = 0; j < Math.ceil(notes[i].get("ʞlength") * ctx.sampleRate); j++) {
             const freq = midiToFreq(notes[i].get("ʞpitch"))
             const amplitude = 0.8 * quantizeTri(triangleWave(1 / ctx.sampleRate * j, 1 / freq))
