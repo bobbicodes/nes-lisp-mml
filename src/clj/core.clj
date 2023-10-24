@@ -172,6 +172,16 @@ supplied, the name is prefix# where # is some unique number. If
 prefix is not supplied, the prefix is 'G__'."
      :arglists '([] [prefix])}))
 
+;; prints elapsed time twice for some reason
+(defmacro time [exp]
+  (let* [start (gensym)
+         ret   (gensym)]
+        `(let* [~start (time-ms)
+                       ~ret   ~exp]
+               (do
+                 (println "Elapsed time:" (- (time-ms) ~start) "msecs")
+                 ~ret))))
+
 ;; first define let, loop, fn without destructuring
 
 (defmacro let [bindings & body]

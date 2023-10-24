@@ -1146,6 +1146,51 @@ function quantizeTri(sample) {
     }
 }
 
+function tri(note, dur) {
+    const freq = midiToFreq(note)
+    let buf = []
+    for (let i = 0; i < ctx.sampleRate * dur; i++) {
+        var q = 0.8 * quantizeTri(triangleWave(1 / ctx.sampleRate * i, 1 / freq))
+        if (i < 150) {
+            buf.push(q / (500 / i))
+        } else if (i > (ctx.sampleRate * dur) - 200) {
+            buf.push(q / (500 / (ctx.sampleRate * dur - i)))
+        } else {
+            buf.push(q)
+        }
+    }
+    return audioBuffer(buf)
+}
+
+function tri_seq(notes) {
+    const lastNote = notes.reduce(
+        (prev, current) => {
+          return prev.get("ʞtime") > current.get("ʞtime") ? prev : current
+        }
+      );
+    const bufferLength = Math.ceil(ctx.sampleRate * lastNote.get("ʞtime") + lastNote.get("ʞlength"))
+    // initialize buffer of proper length filled with zeros
+    let buf = Array(bufferLength).fill(0)
+    // loop through notes
+    for (let i = 0; i < notes.length; i++) {
+        // loop through the note's samples
+        const start = notes[i].get("ʞtime") * ctx.sampleRate
+         for (let j = 0; j < Math.ceil(notes[i].get("ʞlength") * ctx.sampleRate); j++) {
+            const freq = midiToFreq(notes[i].get("ʞpitch"))
+            const amplitude = 0.8 * quantizeTri(triangleWave(1 / ctx.sampleRate * j, 1 / freq))
+            const duration = ctx.sampleRate * notes[i].get("ʞlength")
+            if (j < 150) {
+                buf[start+j] = amplitude / (500 / j)
+            } else if (j > duration - 200) {
+                buf[start+j] = amplitude / (500 / (duration - j))
+            } else {
+                buf[start+j] = amplitude
+            }
+        }
+    }
+    return audioBuffer(buf)
+}
+
 function _noise(note, dur) {
     var bufferSize = ctx.sampleRate * dur;
     var noise = []
@@ -1163,22 +1208,6 @@ function fade(buf) {
         data[i] = data[i] * multiplier
     }
     return audioBuffer(data)
-}
-
-function tri(note, dur) {
-    const freq = midiToFreq(note)
-    let buf = []
-    for (let i = 0; i < ctx.sampleRate * dur; i++) {
-        var q = 0.8 * quantizeTri(triangleWave(1 / ctx.sampleRate * i, 1 / freq))
-        if (i < 150) {
-            buf.push(q / (500 / i))
-        } else if (i > (ctx.sampleRate * dur) - 200) {
-            buf.push(q / (500 / (ctx.sampleRate * dur - i)))
-        } else {
-            buf.push(q)
-        }
-    }
-    return audioBuffer(buf)
 }
 
 function _pulse0(note, dur) {
@@ -1280,7 +1309,6 @@ function playBufferAt(buffer, pitch, time) {
 
 function make_download(name, abuffer) {
     var new_file = URL.createObjectURL(bufferToWave(abuffer, abuffer.length));
-    console.log("created wave file:", new_file)
     var downloadAnchorNode = document.createElement('a');
     downloadAnchorNode.setAttribute("href", new_file);
     downloadAnchorNode.setAttribute("download", name);
@@ -1291,6 +1319,7 @@ function make_download(name, abuffer) {
 
 // Convert an AudioBuffer to a Blob using WAVE representation
 function bufferToWave(abuffer, len) {
+    console.log("calling bufferToWave")
     var numOfChan = abuffer.numberOfChannels,
         length = len * numOfChan * 2 + 44,
         buffer = new ArrayBuffer(length),
@@ -1328,7 +1357,6 @@ function bufferToWave(abuffer, len) {
         }
         offset++                                     // next source sample
     }
-
     // create Blob
     return new Blob([buffer], { type: "audio/wav" });
 
@@ -1358,6 +1386,7 @@ export var ns = {
     'play': playBuffer,
     'sq': sq,
     'tri': tri,
+    'tri-seq': tri_seq,
     'sample-rate': ctx.sampleRate,
     'channel-data': channelData,
     'pitch->rate': pitchToRate,
@@ -1434,7 +1463,7 @@ export var ns = {
     '*': product,
     '/': divide,
     'inc': function (a) { return a + 1; },
-    "time": time_ms,
+    "time-ms": time_ms,
     'max': max,
     'min': min,
     'range': range,
