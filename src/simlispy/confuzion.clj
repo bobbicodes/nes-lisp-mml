@@ -168,1414 +168,1414 @@
 
 (def bass [{:pitch 45
             :length 0.5
+            :time 0}
+           {:pitch 45
+            :length 0.25
+            :time 0.6}
+           {:pitch 45
+            :length 0.5
+            :time 0.8}
+           {:pitch 47
+            :length 0.25
             :time 1.2}
-           {:pitch 45
+           {:pitch 43
             :length 0.25
-            :time 1.8}
-           {:pitch 45
+            :time 1.4}
+           {:pitch 43
             :length 0.5
-            :time 2}
-           {:pitch 47
+            :time 1.6}
+           {:pitch 43
             :length 0.25
+            :time 2.2}
+           {:pitch 43
+            :length 0.5
             :time 2.4}
-           {:pitch 43
-            :length 0.25
-            :time 2.6}
-           {:pitch 43
-            :length 0.5
-            :time 2.8}
-           {:pitch 43
-            :length 0.25
-            :time 3.4}
-           {:pitch 43
-            :length 0.5
-            :time 3.6}
            {:pitch 38
             :length 0.5
-            :time 4.4}
+            :time 3.2}
            {:pitch 38
             :length 0.25
-            :time 5}
+            :time 3.8}
            {:pitch 38
             :length 0.5
-            :time 5.2}
+            :time 4}
            {:pitch 38
             :length 0.5
-            :time 6}
+            :time 4.8}
            {:pitch 38
             :length 0.25
-            :time 6.6}
+            :time 5.4}
            {:pitch 38
             :length 0.5
-            :time 6.8}
+            :time 5.6}
            {:pitch 45
             :length 0.5
-            :time 7.6}
+            :time 6.4}
            {:pitch 45
             :length 0.25
-            :time 8.2}
+            :time 7}
            {:pitch 45
             :length 0.5
-            :time 8.4}
+            :time 7.2}
            {:pitch 47
             :length 0.25
+            :time 7.6}
+           {:pitch 43
+            :length 0.25
+            :time 7.8}
+           {:pitch 43
+            :length 0.5
+            :time 8}
+           {:pitch 43
+            :length 0.25
+            :time 8.6}
+           {:pitch 43
+            :length 0.5
             :time 8.8}
-           {:pitch 43
-            :length 0.25
-            :time 9}
-           {:pitch 43
-            :length 0.5
-            :time 9.2}
-           {:pitch 43
-            :length 0.25
-            :time 9.8}
-           {:pitch 43
-            :length 0.5
-            :time 10}
            {:pitch 38
             :length 0.5
-            :time 10.8}
+            :time 9.6}
            {:pitch 38
             :length 0.25
-            :time 11.4}
+            :time 10.2}
            {:pitch 38
             :length 0.5
-            :time 11.6}
+            :time 10.4}
            {:pitch 38
             :length 0.5
-            :time 12.4}
+            :time 11.2}
            {:pitch 38
             :length 0.25
-            :time 13}
+            :time 11.8}
            {:pitch 38
             :length 0.5
-            :time 13.2}
+            :time 12}
            {:pitch 45
             :length 0.5
-            :time 14}
+            :time 12.8}
            {:pitch 40
             :length 0.25
-            :time 14.6}
+            :time 13.4}
            {:pitch 38
             :length 0.25
-            :time 14.8}
+            :time 13.6}
            {:pitch 36
             :length 0.5
-            :time 15}
+            :time 13.8}
            {:pitch 33
             :length 0.5
-            :time 15.4}
+            :time 14.2}
            {:pitch 40
             :length 0.25
-            :time 16.2}
+            :time 15}
            {:pitch 38
             :length 0.5
-            :time 16.4}
+            :time 15.2}
            {:pitch 36
             :length 0.5
-            :time 16.8}
+            :time 15.6}
            {:pitch 43
             :length 0.5
-            :time 17.2}
+            :time 16}
            {:pitch 38
             :length 0.25
-            :time 17.8}
+            :time 16.6}
            {:pitch 36
             :length 0.25
-            :time 18}
+            :time 16.8}
            {:pitch 35
             :length 0.5
-            :time 18.2}
+            :time 17}
            {:pitch 31
             :length 0.5
-            :time 18.6}
+            :time 17.4}
            {:pitch 38
             :length 0.25
-            :time 19.4}
+            :time 18.2}
            {:pitch 36
             :length 0.5
-            :time 19.6}
+            :time 18.4}
            {:pitch 35
             :length 0.5
-            :time 20}
+            :time 18.8}
            {:pitch 38
             :length 0.5
-            :time 20.4}
+            :time 19.2}
            {:pitch 38
             :length 0.25
+            :time 19.8}
+           {:pitch 38
+            :length 0.5
+            :time 20.2}
+           {:pitch 40
+            :length 0.25
+            :time 20.4}
+           {:pitch 41
+            :length 0.5
+            :time 20.6}
+           {:pitch 40
+            :length 0.25
             :time 21}
+           {:pitch 38
+            :length 0.25
+            :time 21.2}
            {:pitch 38
             :length 0.5
             :time 21.4}
            {:pitch 40
-            :length 0.25
-            :time 21.6}
-           {:pitch 41
             :length 0.5
             :time 21.8}
-           {:pitch 40
-            :length 0.25
-            :time 22.2}
-           {:pitch 38
-            :length 0.25
-            :time 22.4}
-           {:pitch 38
-            :length 0.5
-            :time 22.6}
-           {:pitch 40
-            :length 0.5
-            :time 23}
            {:pitch 41
             :length 0.5
-            :time 23.2}
+            :time 22}
            {:pitch 43
             :length 0.5
-            :time 23.6}
+            :time 22.4}
            {:pitch 43
             :length 0.25
-            :time 24.2}
+            :time 23}
            {:pitch 43
+            :length 0.5
+            :time 23.2}
+           {:pitch 38
             :length 0.5
             :time 24.4}
+           {:pitch 43
+            :length 0.5
+            :time 24.6}
            {:pitch 38
+            :length 0.25
+            :time 25.2}
+           {:pitch 40
             :length 0.5
             :time 25.6}
-           {:pitch 43
-            :length 0.5
-            :time 25.8}
-           {:pitch 38
-            :length 0.25
-            :time 26.4}
            {:pitch 40
+            :length 0.25
+            :time 26.2}
+           {:pitch 40
+            :length 0.5
+            :time 26.4}
+           {:pitch 43
             :length 0.5
             :time 26.8}
-           {:pitch 40
-            :length 0.25
-            :time 27.4}
-           {:pitch 40
+           {:pitch 38
             :length 0.5
-            :time 27.6}
-           {:pitch 43
+            :time 27.2}
+           {:pitch 38
+            :length 0.25
+            :time 27.8}
+           {:pitch 38
             :length 0.5
             :time 28}
            {:pitch 38
             :length 0.5
-            :time 28.4}
+            :time 28.8}
            {:pitch 38
             :length 0.25
-            :time 29}
+            :time 29.4}
            {:pitch 38
             :length 0.5
-            :time 29.2}
-           {:pitch 38
+            :time 29.6}
+           {:pitch 35
             :length 0.5
             :time 30}
-           {:pitch 38
-            :length 0.25
-            :time 30.6}
-           {:pitch 38
+           {:pitch 36
             :length 0.5
-            :time 30.8}
-           {:pitch 35
+            :time 30.4}
+           {:pitch 36
+            :length 0.25
+            :time 31}
+           {:pitch 36
             :length 0.5
             :time 31.2}
            {:pitch 36
             :length 0.5
-            :time 31.6}
+            :time 32}
            {:pitch 36
             :length 0.25
-            :time 32.2}
+            :time 32.6}
            {:pitch 36
             :length 0.5
-            :time 32.4}
-           {:pitch 36
-            :length 0.5
-            :time 33.2}
-           {:pitch 36
-            :length 0.25
-            :time 33.8}
-           {:pitch 36
-            :length 0.5
-            :time 34}
+            :time 32.8}
            {:pitch 35
             :length 0.5
-            :time 34.8}
+            :time 33.6}
            {:pitch 35
             :length 0.25
-            :time 35.4}
+            :time 34.2}
            {:pitch 35
             :length 0.5
-            :time 35.6}
+            :time 34.4}
            {:pitch 35
             :length 0.5
-            :time 36.4}
+            :time 35.2}
            {:pitch 47
             :length 0.5
-            :time 37}
+            :time 35.8}
            {:pitch 45
+            :length 0.25
+            :time 36.2}
+           {:pitch 43
+            :length 0.25
+            :time 36.4}
+           {:pitch 42
+            :length 0.25
+            :time 36.6}
+           {:pitch 40
+            :length 0.5
+            :time 36.8}
+           {:pitch 40
             :length 0.25
             :time 37.4}
-           {:pitch 43
-            :length 0.25
+           {:pitch 40
+            :length 0.5
             :time 37.6}
-           {:pitch 42
-            :length 0.25
-            :time 37.8}
-           {:pitch 40
-            :length 0.5
-            :time 38}
-           {:pitch 40
-            :length 0.25
-            :time 38.6}
-           {:pitch 40
-            :length 0.5
-            :time 38.8}
            {:pitch 38
+            :length 0.5
+            :time 38.4}
+           {:pitch 38
+            :length 0.25
+            :time 39}
+           {:pitch 38
+            :length 0.5
+            :time 39.2}
+           {:pitch 35
             :length 0.5
             :time 39.6}
-           {:pitch 38
-            :length 0.25
-            :time 40.2}
-           {:pitch 38
+           {:pitch 36
             :length 0.5
-            :time 40.4}
-           {:pitch 35
+            :time 40}
+           {:pitch 36
+            :length 0.25
+            :time 40.6}
+           {:pitch 36
             :length 0.5
             :time 40.8}
-           {:pitch 36
-            :length 0.5
-            :time 41.2}
-           {:pitch 36
-            :length 0.25
-            :time 41.8}
-           {:pitch 36
-            :length 0.5
-            :time 42}
            {:pitch 43
             :length 0.5
-            :time 42.8}
+            :time 41.6}
            {:pitch 43
             :length 0.25
-            :time 43.4}
+            :time 42.2}
            {:pitch 43
             :length 0.5
-            :time 43.6}
+            :time 42.4}
            {:pitch 40
             :length 0.5
-            :time 44.4}
+            :time 43.2}
            {:pitch 40
             :length 0.25
-            :time 45}
+            :time 43.8}
            {:pitch 40
             :length 0.5
-            :time 45.2}
+            :time 44}
            {:pitch 38
+            :length 0.5
+            :time 44.8}
+           {:pitch 38
+            :length 0.25
+            :time 45.4}
+           {:pitch 38
+            :length 0.5
+            :time 45.6}
+           {:pitch 35
             :length 0.5
             :time 46}
-           {:pitch 38
-            :length 0.25
-            :time 46.6}
-           {:pitch 38
+           {:pitch 36
             :length 0.5
-            :time 46.8}
-           {:pitch 35
+            :time 46.4}
+           {:pitch 36
+            :length 0.25
+            :time 47}
+           {:pitch 36
             :length 0.5
             :time 47.2}
-           {:pitch 36
-            :length 0.5
-            :time 47.6}
-           {:pitch 36
-            :length 0.25
-            :time 48.2}
-           {:pitch 36
-            :length 0.5
-            :time 48.4}
            {:pitch 43
             :length 0.5
-            :time 49.2}
+            :time 48}
            {:pitch 43
             :length 0.25
-            :time 49.8}
+            :time 48.6}
            {:pitch 43
             :length 0.5
-            :time 50}
+            :time 48.8}
            {:pitch 41
             :length 0.5
-            :time 50.8}
+            :time 49.6}
            {:pitch 40
             :length 0.5
-            :time 54}
+            :time 52.8}
            {:pitch 38
             :length 0.5
-            :time 57.2}
+            :time 56}
            {:pitch 36
             :length 0.5
-            :time 57.6}
+            :time 56.4}
            {:pitch 35
             :length 0.5
-            :time 58}
+            :time 56.8}
            {:pitch 33
             :length 0.5
+            :time 57.2}
+           {:pitch 45
+            :length 0.5
+            :time 57.6}
+           {:pitch 40
+            :length 0.25
+            :time 58.2}
+           {:pitch 45
+            :length 0.25
             :time 58.4}
-           {:pitch 45
-            :length 0.5
-            :time 58.8}
-           {:pitch 40
-            :length 0.25
-            :time 59.4}
-           {:pitch 45
-            :length 0.25
-            :time 59.6}
            {:pitch 40
             :length 0.5
+            :time 58.6}
+           {:pitch 40
+            :length 0.25
+            :time 59}
+           {:pitch 43
+            :length 0.5
+            :time 59.2}
+           {:pitch 43
+            :length 0.25
             :time 59.8}
+           {:pitch 43
+            :length 0.5
+            :time 60}
+           {:pitch 42
+            :length 0.5
+            :time 60.8}
+           {:pitch 38
+            :length 0.25
+            :time 61.4}
+           {:pitch 42
+            :length 0.25
+            :time 61.6}
+           {:pitch 38
+            :length 0.5
+            :time 61.8}
+           {:pitch 38
+            :length 0.25
+            :time 62.2}
+           {:pitch 40
+            :length 0.5
+            :time 62.4}
            {:pitch 40
             :length 0.25
-            :time 60.2}
-           {:pitch 43
-            :length 0.5
-            :time 60.4}
-           {:pitch 43
-            :length 0.25
-            :time 61}
-           {:pitch 43
-            :length 0.5
-            :time 61.2}
-           {:pitch 42
-            :length 0.5
-            :time 62}
-           {:pitch 38
-            :length 0.25
-            :time 62.6}
-           {:pitch 42
-            :length 0.25
-            :time 62.8}
-           {:pitch 38
-            :length 0.5
             :time 63}
-           {:pitch 38
-            :length 0.25
-            :time 63.4}
            {:pitch 40
             :length 0.5
-            :time 63.6}
-           {:pitch 40
-            :length 0.25
-            :time 64.2}
-           {:pitch 40
-            :length 0.5
-            :time 64.4}
+            :time 63.2}
            {:pitch 45
             :length 0.5
-            :time 65.2}
+            :time 64}
            {:pitch 40
             :length 0.25
-            :time 65.8}
+            :time 64.6}
            {:pitch 45
             :length 0.25
-            :time 66}
+            :time 64.8}
            {:pitch 40
             :length 0.5
+            :time 65}
+           {:pitch 40
+            :length 0.25
+            :time 65.4}
+           {:pitch 43
+            :length 0.5
+            :time 65.6}
+           {:pitch 43
+            :length 0.25
             :time 66.2}
+           {:pitch 43
+            :length 0.5
+            :time 66.4}
+           {:pitch 42
+            :length 0.5
+            :time 67.2}
+           {:pitch 38
+            :length 0.25
+            :time 67.8}
+           {:pitch 42
+            :length 0.25
+            :time 68}
+           {:pitch 38
+            :length 0.5
+            :time 68.2}
+           {:pitch 38
+            :length 0.25
+            :time 68.6}
+           {:pitch 40
+            :length 0.5
+            :time 68.8}
            {:pitch 40
             :length 0.25
-            :time 66.6}
-           {:pitch 43
-            :length 0.5
-            :time 66.8}
-           {:pitch 43
-            :length 0.25
-            :time 67.4}
-           {:pitch 43
-            :length 0.5
-            :time 67.6}
-           {:pitch 42
-            :length 0.5
-            :time 68.4}
-           {:pitch 38
-            :length 0.25
-            :time 69}
-           {:pitch 42
-            :length 0.25
-            :time 69.2}
-           {:pitch 38
-            :length 0.5
             :time 69.4}
-           {:pitch 38
-            :length 0.25
-            :time 69.8}
            {:pitch 40
             :length 0.5
-            :time 70}
-           {:pitch 40
-            :length 0.25
-            :time 70.6}
-           {:pitch 40
+            :time 69.6}
+           {:pitch 41
             :length 0.5
+            :time 70.4}
+           {:pitch 36
+            :length 0.25
             :time 70.8}
-           {:pitch 41
-            :length 0.5
-            :time 71.6}
-           {:pitch 36
-            :length 0.25
-            :time 72}
            {:pitch 38
             :length 0.25
-            :time 72.2}
+            :time 71}
            {:pitch 41
             :length 0.25
-            :time 72.4}
+            :time 71.2}
            {:pitch 36
+            :length 0.25
+            :time 71.4}
+           {:pitch 41
+            :length 0.25
+            :time 71.6}
+           {:pitch 41
+            :length 0.25
+            :time 71.8}
+           {:pitch 40
+            :length 0.5
+            :time 72}
+           {:pitch 40
             :length 0.25
             :time 72.6}
-           {:pitch 41
-            :length 0.25
+           {:pitch 40
+            :length 0.5
             :time 72.8}
            {:pitch 41
-            :length 0.25
-            :time 73}
-           {:pitch 40
             :length 0.5
-            :time 73.2}
-           {:pitch 40
-            :length 0.25
-            :time 73.8}
-           {:pitch 40
-            :length 0.5
-            :time 74}
-           {:pitch 41
-            :length 0.5
-            :time 74.8}
+            :time 73.6}
            {:pitch 36
             :length 0.25
+            :time 74}
+           {:pitch 38
+            :length 0.25
+            :time 74.2}
+           {:pitch 41
+            :length 0.25
+            :time 74.4}
+           {:pitch 36
+            :length 0.25
+            :time 74.6}
+           {:pitch 41
+            :length 0.25
+            :time 74.8}
+           {:pitch 40
+            :length 0.25
+            :time 75}
+           {:pitch 38
+            :length 0.5
             :time 75.2}
            {:pitch 38
             :length 0.25
-            :time 75.4}
-           {:pitch 41
-            :length 0.25
-            :time 75.6}
-           {:pitch 36
-            :length 0.25
             :time 75.8}
-           {:pitch 41
-            :length 0.25
+           {:pitch 38
+            :length 0.5
             :time 76}
-           {:pitch 40
-            :length 0.25
-            :time 76.2}
            {:pitch 38
             :length 0.5
-            :time 76.4}
+            :time 76.8}
            {:pitch 38
             :length 0.25
-            :time 77}
+            :time 77.4}
            {:pitch 38
             :length 0.5
-            :time 77.2}
-           {:pitch 38
-            :length 0.5
-            :time 78}
-           {:pitch 38
-            :length 0.25
-            :time 78.6}
-           {:pitch 38
-            :length 0.5
-            :time 78.8}
+            :time 77.6}
            {:pitch 45
             :length 0.5
+            :time 78.4}
+           {:pitch 45
+            :length 0.25
+            :time 79}
+           {:pitch 45
+            :length 0.5
+            :time 79.2}
+           {:pitch 47
+            :length 0.25
             :time 79.6}
-           {:pitch 45
+           {:pitch 43
             :length 0.25
-            :time 80.2}
-           {:pitch 45
+            :time 79.8}
+           {:pitch 43
             :length 0.5
-            :time 80.4}
-           {:pitch 47
+            :time 80}
+           {:pitch 43
             :length 0.25
+            :time 80.6}
+           {:pitch 43
+            :length 0.5
             :time 80.8}
-           {:pitch 43
-            :length 0.25
-            :time 81}
-           {:pitch 43
-            :length 0.5
-            :time 81.2}
-           {:pitch 43
-            :length 0.25
-            :time 81.8}
-           {:pitch 43
-            :length 0.5
-            :time 82}
            {:pitch 38
             :length 0.5
-            :time 82.8}
+            :time 81.6}
            {:pitch 38
             :length 0.25
-            :time 83.4}
+            :time 82.2}
            {:pitch 38
             :length 0.5
-            :time 83.6}
+            :time 82.4}
            {:pitch 38
             :length 0.5
-            :time 84.4}
+            :time 83.2}
            {:pitch 38
             :length 0.25
-            :time 85}
+            :time 83.8}
            {:pitch 38
             :length 0.5
-            :time 85.2}
+            :time 84}
            {:pitch 45
             :length 0.5
-            :time 86}
+            :time 84.8}
            {:pitch 45
             :length 0.25
-            :time 86.6}
+            :time 85.4}
            {:pitch 45
             :length 0.5
-            :time 86.8}
+            :time 85.6}
            {:pitch 47
             :length 0.25
+            :time 86}
+           {:pitch 43
+            :length 0.25
+            :time 86.2}
+           {:pitch 43
+            :length 0.5
+            :time 86.4}
+           {:pitch 43
+            :length 0.25
+            :time 87}
+           {:pitch 43
+            :length 0.5
             :time 87.2}
-           {:pitch 43
-            :length 0.25
-            :time 87.4}
-           {:pitch 43
-            :length 0.5
-            :time 87.6}
-           {:pitch 43
-            :length 0.25
-            :time 88.2}
-           {:pitch 43
-            :length 0.5
-            :time 88.4}
            {:pitch 38
             :length 0.5
-            :time 89.2}
+            :time 88}
            {:pitch 38
             :length 0.25
-            :time 89.8}
+            :time 88.6}
            {:pitch 38
             :length 0.5
-            :time 90}
+            :time 88.8}
            {:pitch 38
             :length 0.5
-            :time 90.8}
+            :time 89.6}
            {:pitch 38
             :length 0.25
-            :time 91.4}
+            :time 90.2}
            {:pitch 38
             :length 0.5
-            :time 91.6}
+            :time 90.4}
            {:pitch 45
             :length 0.5
-            :time 92.4}
+            :time 91.2}
            {:pitch 40
             :length 0.25
-            :time 93}
+            :time 91.8}
            {:pitch 38
             :length 0.25
-            :time 93.2}
+            :time 92}
            {:pitch 36
             :length 0.5
-            :time 93.4}
+            :time 92.2}
            {:pitch 33
             :length 0.5
-            :time 93.8}
+            :time 92.6}
            {:pitch 40
             :length 0.25
-            :time 94.6}
+            :time 93.4}
            {:pitch 38
             :length 0.5
-            :time 94.8}
+            :time 93.6}
            {:pitch 36
             :length 0.5
-            :time 95.2}
+            :time 94}
            {:pitch 43
             :length 0.5
-            :time 95.6}
+            :time 94.4}
            {:pitch 38
             :length 0.25
-            :time 96.2}
+            :time 95}
            {:pitch 36
             :length 0.25
-            :time 96.4}
+            :time 95.2}
            {:pitch 35
             :length 0.5
-            :time 96.6}
+            :time 95.4}
            {:pitch 31
             :length 0.5
-            :time 97}
+            :time 95.8}
            {:pitch 38
             :length 0.25
-            :time 97.8}
+            :time 96.6}
            {:pitch 36
             :length 0.5
-            :time 98}
+            :time 96.8}
            {:pitch 35
             :length 0.5
-            :time 98.4}
+            :time 97.2}
            {:pitch 38
             :length 0.5
-            :time 98.8}
+            :time 97.6}
            {:pitch 38
             :length 0.25
+            :time 98.2}
+           {:pitch 38
+            :length 0.5
+            :time 98.6}
+           {:pitch 40
+            :length 0.25
+            :time 98.8}
+           {:pitch 41
+            :length 0.5
+            :time 99}
+           {:pitch 40
+            :length 0.25
             :time 99.4}
+           {:pitch 38
+            :length 0.25
+            :time 99.6}
            {:pitch 38
             :length 0.5
             :time 99.8}
            {:pitch 40
-            :length 0.25
-            :time 100}
-           {:pitch 41
             :length 0.5
             :time 100.2}
-           {:pitch 40
-            :length 0.25
-            :time 100.6}
-           {:pitch 38
-            :length 0.25
-            :time 100.8}
-           {:pitch 38
-            :length 0.5
-            :time 101}
-           {:pitch 40
-            :length 0.5
-            :time 101.4}
            {:pitch 41
             :length 0.5
-            :time 101.6}
+            :time 100.4}
            {:pitch 43
             :length 0.5
-            :time 102}
+            :time 100.8}
            {:pitch 43
             :length 0.25
-            :time 102.6}
+            :time 101.4}
            {:pitch 43
+            :length 0.5
+            :time 101.6}
+           {:pitch 38
             :length 0.5
             :time 102.8}
+           {:pitch 43
+            :length 0.5
+            :time 103}
            {:pitch 38
+            :length 0.25
+            :time 103.6}
+           {:pitch 40
             :length 0.5
             :time 104}
-           {:pitch 43
-            :length 0.5
-            :time 104.2}
-           {:pitch 38
-            :length 0.25
-            :time 104.8}
            {:pitch 40
+            :length 0.25
+            :time 104.6}
+           {:pitch 40
+            :length 0.5
+            :time 104.8}
+           {:pitch 43
             :length 0.5
             :time 105.2}
-           {:pitch 40
-            :length 0.25
-            :time 105.8}
-           {:pitch 40
+           {:pitch 38
             :length 0.5
-            :time 106}
-           {:pitch 43
+            :time 105.6}
+           {:pitch 38
+            :length 0.25
+            :time 106.2}
+           {:pitch 38
             :length 0.5
             :time 106.4}
            {:pitch 38
             :length 0.5
-            :time 106.8}
+            :time 107.2}
            {:pitch 38
             :length 0.25
-            :time 107.4}
+            :time 107.8}
            {:pitch 38
             :length 0.5
-            :time 107.6}
-           {:pitch 38
+            :time 108}
+           {:pitch 35
             :length 0.5
             :time 108.4}
-           {:pitch 38
-            :length 0.25
-            :time 109}
-           {:pitch 38
+           {:pitch 36
             :length 0.5
-            :time 109.2}
-           {:pitch 35
+            :time 108.8}
+           {:pitch 36
+            :length 0.25
+            :time 109.4}
+           {:pitch 36
             :length 0.5
             :time 109.6}
            {:pitch 36
             :length 0.5
-            :time 110}
+            :time 110.4}
            {:pitch 36
             :length 0.25
-            :time 110.6}
+            :time 111}
            {:pitch 36
             :length 0.5
-            :time 110.8}
-           {:pitch 36
-            :length 0.5
-            :time 111.6}
-           {:pitch 36
-            :length 0.25
-            :time 112.2}
-           {:pitch 36
-            :length 0.5
-            :time 112.4}
+            :time 111.2}
            {:pitch 35
             :length 0.5
-            :time 113.2}
+            :time 112}
            {:pitch 35
             :length 0.25
-            :time 113.8}
+            :time 112.6}
            {:pitch 35
             :length 0.5
-            :time 114}
+            :time 112.8}
            {:pitch 35
             :length 0.5
-            :time 114.8}
+            :time 113.6}
            {:pitch 47
             :length 0.5
-            :time 115.4}
+            :time 114.2}
            {:pitch 45
+            :length 0.25
+            :time 114.6}
+           {:pitch 43
+            :length 0.25
+            :time 114.8}
+           {:pitch 42
+            :length 0.25
+            :time 115}
+           {:pitch 40
+            :length 0.5
+            :time 115.2}
+           {:pitch 40
             :length 0.25
             :time 115.8}
-           {:pitch 43
-            :length 0.25
+           {:pitch 40
+            :length 0.5
             :time 116}
-           {:pitch 42
-            :length 0.25
-            :time 116.2}
-           {:pitch 40
-            :length 0.5
-            :time 116.4}
-           {:pitch 40
-            :length 0.25
-            :time 117}
-           {:pitch 40
-            :length 0.5
-            :time 117.2}
            {:pitch 38
+            :length 0.5
+            :time 116.8}
+           {:pitch 38
+            :length 0.25
+            :time 117.4}
+           {:pitch 38
+            :length 0.5
+            :time 117.6}
+           {:pitch 35
             :length 0.5
             :time 118}
-           {:pitch 38
-            :length 0.25
-            :time 118.6}
-           {:pitch 38
+           {:pitch 36
             :length 0.5
-            :time 118.8}
-           {:pitch 35
+            :time 118.4}
+           {:pitch 36
+            :length 0.25
+            :time 119}
+           {:pitch 36
             :length 0.5
             :time 119.2}
-           {:pitch 36
-            :length 0.5
-            :time 119.6}
-           {:pitch 36
-            :length 0.25
-            :time 120.2}
-           {:pitch 36
-            :length 0.5
-            :time 120.4}
            {:pitch 43
             :length 0.5
-            :time 121.2}
+            :time 120}
            {:pitch 43
             :length 0.25
-            :time 121.8}
+            :time 120.6}
            {:pitch 43
             :length 0.5
-            :time 122}
+            :time 120.8}
            {:pitch 40
             :length 0.5
-            :time 122.8}
+            :time 121.6}
            {:pitch 40
             :length 0.25
-            :time 123.4}
+            :time 122.2}
            {:pitch 40
             :length 0.5
-            :time 123.6}
+            :time 122.4}
            {:pitch 38
+            :length 0.5
+            :time 123.2}
+           {:pitch 38
+            :length 0.25
+            :time 123.8}
+           {:pitch 38
+            :length 0.5
+            :time 124}
+           {:pitch 35
             :length 0.5
             :time 124.4}
-           {:pitch 38
-            :length 0.25
-            :time 125}
-           {:pitch 38
+           {:pitch 36
             :length 0.5
-            :time 125.2}
-           {:pitch 35
+            :time 124.8}
+           {:pitch 36
+            :length 0.25
+            :time 125.4}
+           {:pitch 36
             :length 0.5
             :time 125.6}
-           {:pitch 36
-            :length 0.5
-            :time 126}
-           {:pitch 36
-            :length 0.25
-            :time 126.6}
-           {:pitch 36
-            :length 0.5
-            :time 126.8}
            {:pitch 43
             :length 0.5
-            :time 127.6}
+            :time 126.4}
            {:pitch 43
             :length 0.25
-            :time 128.2}
+            :time 127}
            {:pitch 43
             :length 0.5
-            :time 128.4}
+            :time 127.2}
            {:pitch 41
             :length 0.5
-            :time 129.2}
+            :time 128}
            {:pitch 40
             :length 0.5
-            :time 132.4}
+            :time 131.2}
            {:pitch 38
             :length 0.5
-            :time 135.6}
+            :time 134.4}
            {:pitch 36
             :length 0.5
-            :time 136}
+            :time 134.8}
            {:pitch 35
             :length 0.5
-            :time 136.4}
+            :time 135.2}
            {:pitch 33
             :length 0.5
+            :time 135.6}
+           {:pitch 45
+            :length 0.5
+            :time 136}
+           {:pitch 40
+            :length 0.25
+            :time 136.6}
+           {:pitch 45
+            :length 0.25
             :time 136.8}
-           {:pitch 45
-            :length 0.5
-            :time 137.2}
-           {:pitch 40
-            :length 0.25
-            :time 137.8}
-           {:pitch 45
-            :length 0.25
-            :time 138}
            {:pitch 40
             :length 0.5
+            :time 137}
+           {:pitch 40
+            :length 0.25
+            :time 137.4}
+           {:pitch 43
+            :length 0.5
+            :time 137.6}
+           {:pitch 43
+            :length 0.25
             :time 138.2}
+           {:pitch 43
+            :length 0.5
+            :time 138.4}
+           {:pitch 42
+            :length 0.5
+            :time 139.2}
+           {:pitch 38
+            :length 0.25
+            :time 139.8}
+           {:pitch 42
+            :length 0.25
+            :time 140}
+           {:pitch 38
+            :length 0.5
+            :time 140.2}
+           {:pitch 38
+            :length 0.25
+            :time 140.6}
+           {:pitch 40
+            :length 0.5
+            :time 140.8}
            {:pitch 40
             :length 0.25
-            :time 138.6}
-           {:pitch 43
-            :length 0.5
-            :time 138.8}
-           {:pitch 43
-            :length 0.25
-            :time 139.4}
-           {:pitch 43
-            :length 0.5
-            :time 139.6}
-           {:pitch 42
-            :length 0.5
-            :time 140.4}
-           {:pitch 38
-            :length 0.25
-            :time 141}
-           {:pitch 42
-            :length 0.25
-            :time 141.2}
-           {:pitch 38
-            :length 0.5
             :time 141.4}
-           {:pitch 38
-            :length 0.25
-            :time 141.8}
            {:pitch 40
             :length 0.5
-            :time 142}
-           {:pitch 40
-            :length 0.25
-            :time 142.6}
-           {:pitch 40
-            :length 0.5
-            :time 142.8}
+            :time 141.6}
            {:pitch 45
             :length 0.5
-            :time 143.6}
+            :time 142.4}
            {:pitch 40
             :length 0.25
-            :time 144.2}
+            :time 143}
            {:pitch 45
             :length 0.25
-            :time 144.4}
+            :time 143.2}
            {:pitch 40
             :length 0.5
+            :time 143.4}
+           {:pitch 40
+            :length 0.25
+            :time 143.8}
+           {:pitch 43
+            :length 0.5
+            :time 144}
+           {:pitch 43
+            :length 0.25
             :time 144.6}
+           {:pitch 43
+            :length 0.5
+            :time 144.8}
+           {:pitch 42
+            :length 0.5
+            :time 145.6}
+           {:pitch 38
+            :length 0.25
+            :time 146.2}
+           {:pitch 42
+            :length 0.25
+            :time 146.4}
+           {:pitch 38
+            :length 0.5
+            :time 146.6}
+           {:pitch 38
+            :length 0.25
+            :time 147}
+           {:pitch 40
+            :length 0.5
+            :time 147.2}
            {:pitch 40
             :length 0.25
-            :time 145}
-           {:pitch 43
-            :length 0.5
-            :time 145.2}
-           {:pitch 43
-            :length 0.25
-            :time 145.8}
-           {:pitch 43
-            :length 0.5
-            :time 146}
-           {:pitch 42
-            :length 0.5
-            :time 146.8}
-           {:pitch 38
-            :length 0.25
-            :time 147.4}
-           {:pitch 42
-            :length 0.25
-            :time 147.6}
-           {:pitch 38
-            :length 0.5
             :time 147.8}
-           {:pitch 38
-            :length 0.25
-            :time 148.2}
            {:pitch 40
             :length 0.5
-            :time 148.4}
-           {:pitch 40
-            :length 0.25
-            :time 149}
-           {:pitch 40
+            :time 148}
+           {:pitch 41
             :length 0.5
+            :time 148.8}
+           {:pitch 36
+            :length 0.25
             :time 149.2}
-           {:pitch 41
-            :length 0.5
-            :time 150}
-           {:pitch 36
-            :length 0.25
-            :time 150.4}
            {:pitch 38
             :length 0.25
-            :time 150.6}
+            :time 149.4}
            {:pitch 41
             :length 0.25
-            :time 150.8}
+            :time 149.6}
            {:pitch 36
+            :length 0.25
+            :time 149.8}
+           {:pitch 41
+            :length 0.25
+            :time 150}
+           {:pitch 41
+            :length 0.25
+            :time 150.2}
+           {:pitch 40
+            :length 0.5
+            :time 150.4}
+           {:pitch 40
             :length 0.25
             :time 151}
-           {:pitch 41
-            :length 0.25
+           {:pitch 40
+            :length 0.5
             :time 151.2}
            {:pitch 41
-            :length 0.25
-            :time 151.4}
-           {:pitch 40
             :length 0.5
-            :time 151.6}
-           {:pitch 40
-            :length 0.25
-            :time 152.2}
-           {:pitch 40
-            :length 0.5
-            :time 152.4}
-           {:pitch 41
-            :length 0.5
-            :time 153.2}
+            :time 152}
            {:pitch 36
             :length 0.25
+            :time 152.4}
+           {:pitch 38
+            :length 0.25
+            :time 152.6}
+           {:pitch 41
+            :length 0.25
+            :time 152.8}
+           {:pitch 36
+            :length 0.25
+            :time 153}
+           {:pitch 41
+            :length 0.25
+            :time 153.2}
+           {:pitch 40
+            :length 0.25
+            :time 153.4}
+           {:pitch 38
+            :length 0.5
             :time 153.6}
            {:pitch 38
             :length 0.25
-            :time 153.8}
-           {:pitch 41
-            :length 0.25
-            :time 154}
-           {:pitch 36
-            :length 0.25
             :time 154.2}
-           {:pitch 41
-            :length 0.25
+           {:pitch 38
+            :length 0.5
             :time 154.4}
-           {:pitch 40
-            :length 0.25
-            :time 154.6}
            {:pitch 38
             :length 0.5
-            :time 154.8}
+            :time 155.2}
            {:pitch 38
             :length 0.25
-            :time 155.4}
+            :time 155.8}
            {:pitch 38
             :length 0.5
-            :time 155.6}
-           {:pitch 38
-            :length 0.5
-            :time 156.4}
-           {:pitch 38
-            :length 0.25
-            :time 157}
-           {:pitch 38
-            :length 0.5
-            :time 157.2}
+            :time 156}
            {:pitch 45
             :length 0.5
+            :time 156.8}
+           {:pitch 45
+            :length 0.25
+            :time 157.4}
+           {:pitch 45
+            :length 0.5
+            :time 157.6}
+           {:pitch 47
+            :length 0.25
             :time 158}
-           {:pitch 45
+           {:pitch 43
             :length 0.25
-            :time 158.6}
-           {:pitch 45
+            :time 158.2}
+           {:pitch 43
             :length 0.5
-            :time 158.8}
-           {:pitch 47
+            :time 158.4}
+           {:pitch 43
             :length 0.25
+            :time 159}
+           {:pitch 43
+            :length 0.5
             :time 159.2}
-           {:pitch 43
-            :length 0.25
-            :time 159.4}
-           {:pitch 43
-            :length 0.5
-            :time 159.6}
-           {:pitch 43
-            :length 0.25
-            :time 160.2}
-           {:pitch 43
-            :length 0.5
-            :time 160.4}
            {:pitch 38
             :length 0.5
-            :time 161.2}
+            :time 160}
            {:pitch 38
             :length 0.25
-            :time 161.8}
+            :time 160.6}
            {:pitch 38
             :length 0.5
-            :time 162}
+            :time 160.8}
            {:pitch 38
             :length 0.5
-            :time 162.8}
+            :time 161.6}
            {:pitch 38
             :length 0.25
-            :time 163.4}
+            :time 162.2}
            {:pitch 38
             :length 0.5
-            :time 163.6}
+            :time 162.4}
            {:pitch 45
             :length 0.5
+            :time 163.2}
+           {:pitch 45
+            :length 0.25
+            :time 163.8}
+           {:pitch 45
+            :length 0.5
+            :time 164}
+           {:pitch 47
+            :length 0.25
             :time 164.4}
-           {:pitch 45
+           {:pitch 43
             :length 0.25
-            :time 165}
-           {:pitch 45
+            :time 164.6}
+           {:pitch 43
             :length 0.5
-            :time 165.2}
-           {:pitch 47
+            :time 164.8}
+           {:pitch 43
             :length 0.25
+            :time 165.4}
+           {:pitch 43
+            :length 0.5
             :time 165.6}
-           {:pitch 43
-            :length 0.25
-            :time 165.8}
-           {:pitch 43
-            :length 0.5
-            :time 166}
-           {:pitch 43
-            :length 0.25
-            :time 166.6}
-           {:pitch 43
-            :length 0.5
-            :time 166.8}
            {:pitch 38
             :length 0.5
-            :time 167.6}
+            :time 166.4}
            {:pitch 38
             :length 0.25
-            :time 168.2}
+            :time 167}
            {:pitch 38
             :length 0.5
-            :time 168.4}
+            :time 167.2}
            {:pitch 38
             :length 0.5
-            :time 169.2}
+            :time 168}
            {:pitch 38
             :length 0.25
-            :time 169.8}
+            :time 168.6}
            {:pitch 38
             :length 0.5
-            :time 170}
+            :time 168.8}
            {:pitch 45
             :length 0.5
+            :time 169.6}
+           {:pitch 45
+            :length 0.25
+            :time 170.2}
+           {:pitch 45
+            :length 0.5
+            :time 170.4}
+           {:pitch 47
+            :length 0.25
             :time 170.8}
-           {:pitch 45
+           {:pitch 43
             :length 0.25
-            :time 171.4}
-           {:pitch 45
+            :time 171}
+           {:pitch 43
             :length 0.5
-            :time 171.6}
-           {:pitch 47
+            :time 171.2}
+           {:pitch 43
             :length 0.25
+            :time 171.8}
+           {:pitch 43
+            :length 0.5
             :time 172}
-           {:pitch 43
-            :length 0.25
-            :time 172.2}
-           {:pitch 43
-            :length 0.5
-            :time 172.4}
-           {:pitch 43
-            :length 0.25
-            :time 173}
-           {:pitch 43
-            :length 0.5
-            :time 173.2}
            {:pitch 38
             :length 0.5
-            :time 174}
+            :time 172.8}
            {:pitch 38
             :length 0.25
-            :time 174.6}
+            :time 173.4}
            {:pitch 38
             :length 0.5
-            :time 174.8}
+            :time 173.6}
            {:pitch 38
             :length 0.5
-            :time 175.6}
+            :time 174.4}
            {:pitch 38
             :length 0.25
-            :time 176.2}
+            :time 175}
            {:pitch 38
             :length 0.5
-            :time 176.4}
+            :time 175.2}
            {:pitch 45
             :length 0.5
+            :time 176}
+           {:pitch 45
+            :length 0.25
+            :time 176.6}
+           {:pitch 45
+            :length 0.5
+            :time 176.8}
+           {:pitch 47
+            :length 0.25
             :time 177.2}
-           {:pitch 45
+           {:pitch 43
             :length 0.25
-            :time 177.8}
-           {:pitch 45
+            :time 177.4}
+           {:pitch 43
             :length 0.5
-            :time 178}
-           {:pitch 47
+            :time 177.6}
+           {:pitch 43
             :length 0.25
+            :time 178.2}
+           {:pitch 43
+            :length 0.5
             :time 178.4}
-           {:pitch 43
-            :length 0.25
-            :time 178.6}
-           {:pitch 43
-            :length 0.5
-            :time 178.8}
-           {:pitch 43
-            :length 0.25
-            :time 179.4}
-           {:pitch 43
-            :length 0.5
-            :time 179.6}
            {:pitch 38
             :length 0.5
-            :time 180.4}
+            :time 179.2}
            {:pitch 38
             :length 0.25
-            :time 181}
+            :time 179.8}
            {:pitch 38
             :length 0.5
-            :time 181.2}
+            :time 180}
            {:pitch 38
             :length 0.5
-            :time 182}
+            :time 180.8}
            {:pitch 38
             :length 0.25
-            :time 182.6}
+            :time 181.4}
            {:pitch 38
             :length 0.5
-            :time 182.8}
+            :time 181.6}
            {:pitch 45
             :length 0.5
+            :time 182.4}
+           {:pitch 45
+            :length 0.25
+            :time 183}
+           {:pitch 45
+            :length 0.5
+            :time 183.2}
+           {:pitch 47
+            :length 0.25
             :time 183.6}
-           {:pitch 45
+           {:pitch 43
             :length 0.25
-            :time 184.2}
-           {:pitch 45
+            :time 183.8}
+           {:pitch 43
             :length 0.5
-            :time 184.4}
-           {:pitch 47
+            :time 184}
+           {:pitch 43
             :length 0.25
+            :time 184.6}
+           {:pitch 43
+            :length 0.5
             :time 184.8}
-           {:pitch 43
-            :length 0.25
-            :time 185}
-           {:pitch 43
-            :length 0.5
-            :time 185.2}
-           {:pitch 43
-            :length 0.25
-            :time 185.8}
-           {:pitch 43
-            :length 0.5
-            :time 186}
            {:pitch 38
             :length 0.5
-            :time 186.8}
+            :time 185.6}
            {:pitch 38
             :length 0.25
-            :time 187.4}
+            :time 186.2}
            {:pitch 38
             :length 0.5
-            :time 187.6}
+            :time 186.4}
            {:pitch 38
             :length 0.5
-            :time 188.4}
+            :time 187.2}
            {:pitch 38
             :length 0.25
-            :time 189}
+            :time 187.8}
            {:pitch 38
             :length 0.5
-            :time 189.2}
+            :time 188}
            {:pitch 45
             :length 0.5
+            :time 188.8}
+           {:pitch 45
+            :length 0.25
+            :time 189.4}
+           {:pitch 45
+            :length 0.5
+            :time 189.6}
+           {:pitch 47
+            :length 0.25
             :time 190}
-           {:pitch 45
+           {:pitch 43
             :length 0.25
-            :time 190.6}
-           {:pitch 45
+            :time 190.2}
+           {:pitch 43
             :length 0.5
-            :time 190.8}
-           {:pitch 47
+            :time 190.4}
+           {:pitch 43
             :length 0.25
+            :time 191}
+           {:pitch 43
+            :length 0.5
             :time 191.2}
-           {:pitch 43
-            :length 0.25
-            :time 191.4}
-           {:pitch 43
-            :length 0.5
-            :time 191.6}
-           {:pitch 43
-            :length 0.25
-            :time 192.2}
-           {:pitch 43
-            :length 0.5
-            :time 192.4}
            {:pitch 38
             :length 0.5
-            :time 193.2}
+            :time 192}
            {:pitch 38
             :length 0.25
-            :time 193.8}
+            :time 192.6}
            {:pitch 38
             :length 0.5
-            :time 194}
+            :time 192.8}
            {:pitch 38
             :length 0.5
-            :time 194.8}
+            :time 193.6}
            {:pitch 38
             :length 0.25
-            :time 195.4}
+            :time 194.2}
            {:pitch 38
             :length 0.5
-            :time 195.6}
+            :time 194.4}
            {:pitch 45
             :length 0.5
+            :time 195.2}
+           {:pitch 45
+            :length 0.25
+            :time 195.8}
+           {:pitch 45
+            :length 0.5
+            :time 196}
+           {:pitch 47
+            :length 0.25
             :time 196.4}
-           {:pitch 45
+           {:pitch 43
             :length 0.25
-            :time 197}
-           {:pitch 45
+            :time 196.6}
+           {:pitch 43
             :length 0.5
-            :time 197.2}
-           {:pitch 47
+            :time 196.8}
+           {:pitch 43
             :length 0.25
+            :time 197.4}
+           {:pitch 43
+            :length 0.5
             :time 197.6}
-           {:pitch 43
-            :length 0.25
-            :time 197.8}
-           {:pitch 43
-            :length 0.5
-            :time 198}
-           {:pitch 43
-            :length 0.25
-            :time 198.6}
-           {:pitch 43
-            :length 0.5
-            :time 198.8}
            {:pitch 38
             :length 0.5
-            :time 199.6}
+            :time 198.4}
            {:pitch 38
             :length 0.25
-            :time 200.2}
+            :time 199}
            {:pitch 38
             :length 0.5
-            :time 200.4}
+            :time 199.2}
            {:pitch 38
             :length 0.5
-            :time 201.2}
+            :time 200}
            {:pitch 38
             :length 0.25
-            :time 201.8}
+            :time 200.6}
            {:pitch 38
             :length 0.5
-            :time 202}
+            :time 200.8}
            {:pitch 45
             :length 0.5
+            :time 201.6}
+           {:pitch 45
+            :length 0.25
+            :time 202.2}
+           {:pitch 45
+            :length 0.5
+            :time 202.4}
+           {:pitch 47
+            :length 0.25
             :time 202.8}
-           {:pitch 45
+           {:pitch 43
             :length 0.25
-            :time 203.4}
-           {:pitch 45
+            :time 203}
+           {:pitch 43
             :length 0.5
-            :time 203.6}
-           {:pitch 47
+            :time 203.2}
+           {:pitch 43
             :length 0.25
+            :time 203.8}
+           {:pitch 43
+            :length 0.5
             :time 204}
-           {:pitch 43
-            :length 0.25
-            :time 204.2}
-           {:pitch 43
-            :length 0.5
-            :time 204.4}
-           {:pitch 43
-            :length 0.25
-            :time 205}
-           {:pitch 43
-            :length 0.5
-            :time 205.2}
            {:pitch 38
             :length 0.5
-            :time 206}
+            :time 204.8}
            {:pitch 38
             :length 0.25
-            :time 206.6}
+            :time 205.4}
            {:pitch 38
             :length 0.5
-            :time 206.8}
+            :time 205.6}
            {:pitch 38
             :length 0.5
-            :time 207.6}
+            :time 206.4}
            {:pitch 38
             :length 0.25
-            :time 208.2}
+            :time 207}
            {:pitch 38
             :length 0.5
-            :time 208.4}
+            :time 207.2}
            {:pitch 45
             :length 0.5
-            :time 209.2}
+            :time 208}
            {:pitch 45
             :length 0.25
-            :time 209.8}
+            :time 208.6}
            {:pitch 45
             :length 0.5
-            :time 210}
+            :time 208.8}
            {:pitch 47
             :length 0.25
+            :time 209.2}
+           {:pitch 43
+            :length 0.25
+            :time 209.4}
+           {:pitch 43
+            :length 0.5
+            :time 209.6}
+           {:pitch 43
+            :length 0.25
+            :time 210.2}
+           {:pitch 43
+            :length 0.5
             :time 210.4}
-           {:pitch 43
-            :length 0.25
-            :time 210.6}
-           {:pitch 43
-            :length 0.5
-            :time 210.8}
-           {:pitch 43
-            :length 0.25
-            :time 211.4}
-           {:pitch 43
-            :length 0.5
-            :time 211.6}
            {:pitch 38
             :length 0.5
-            :time 212.4}
+            :time 211.2}
            {:pitch 38
             :length 0.25
-            :time 213}
+            :time 211.8}
            {:pitch 38
             :length 0.5
-            :time 213.2}
+            :time 212}
            {:pitch 38
             :length 0.5
-            :time 214}
+            :time 212.8}
            {:pitch 38
             :length 0.25
-            :time 214.6}
+            :time 213.4}
            {:pitch 38
             :length 0.5
-            :time 214.8}])
+            :time 213.6}])
 
 (defn drums1 [time]
   (map (fn [m] (update m :time #(+ % time)))
@@ -1638,1621 +1638,1621 @@
 #_(def drums (concat (drums-pat-1 0) (drums-pat-2 0) (drums-pat-1 196) (drums-pat-2 196) (drums-pat-2 260) (drums-pat-2 324) (drums2 520) (drums2 528)))
 
 (def drums [{:length 0.07
+             :time 0}
+            {:length 0.07
+             :time 0.4}
+            {:length 0.07
+             :time 0.8}
+            {:length 0.5
              :time 1.2}
             {:length 0.07
              :time 1.6}
             {:length 0.07
              :time 2}
-            {:length 0.5
-             :time 2.4}
             {:length 0.07
+             :time 2.4}
+            {:length 0.5
              :time 2.8}
             {:length 0.07
              :time 3.2}
             {:length 0.07
              :time 3.6}
-            {:length 0.5
-             :time 4}
             {:length 0.07
+             :time 4}
+            {:length 0.5
              :time 4.4}
             {:length 0.07
              :time 4.8}
             {:length 0.07
              :time 5.2}
-            {:length 0.5
-             :time 5.6}
             {:length 0.07
+             :time 5.6}
+            {:length 0.5
              :time 6}
             {:length 0.07
              :time 6.4}
             {:length 0.07
              :time 6.8}
-            {:length 0.5
-             :time 7.2}
             {:length 0.07
+             :time 7.2}
+            {:length 0.5
              :time 7.6}
             {:length 0.07
              :time 8}
             {:length 0.07
              :time 8.4}
-            {:length 0.5
-             :time 8.8}
             {:length 0.07
+             :time 8.8}
+            {:length 0.5
              :time 9.2}
             {:length 0.07
              :time 9.6}
             {:length 0.07
              :time 10}
-            {:length 0.5
-             :time 10.4}
             {:length 0.07
+             :time 10.4}
+            {:length 0.5
              :time 10.8}
             {:length 0.07
              :time 11.2}
             {:length 0.07
              :time 11.6}
-            {:length 0.5
-             :time 12}
             {:length 0.07
+             :time 12}
+            {:length 0.5
              :time 12.4}
             {:length 0.07
              :time 12.8}
             {:length 0.07
              :time 13.2}
-            {:length 0.5
-             :time 13.6}
             {:length 0.07
+             :time 13.6}
+            {:length 0.5
              :time 14}
             {:length 0.07
              :time 14.4}
             {:length 0.07
              :time 14.8}
-            {:length 0.5
-             :time 15.2}
             {:length 0.07
+             :time 15.2}
+            {:length 0.5
              :time 15.6}
             {:length 0.07
              :time 16}
             {:length 0.07
              :time 16.4}
-            {:length 0.5
-             :time 16.8}
             {:length 0.07
+             :time 16.8}
+            {:length 0.5
              :time 17.2}
             {:length 0.07
              :time 17.6}
             {:length 0.07
              :time 18}
-            {:length 0.5
-             :time 18.4}
             {:length 0.07
+             :time 18.4}
+            {:length 0.5
              :time 18.8}
             {:length 0.07
              :time 19.2}
             {:length 0.07
              :time 19.6}
-            {:length 0.5
-             :time 20}
             {:length 0.07
+             :time 20}
+            {:length 0.5
              :time 20.4}
             {:length 0.07
              :time 20.8}
             {:length 0.07
              :time 21.2}
-            {:length 0.5
-             :time 21.6}
             {:length 0.07
+             :time 21.6}
+            {:length 0.5
              :time 22}
             {:length 0.07
              :time 22.4}
             {:length 0.07
              :time 22.8}
-            {:length 0.5
-             :time 23.2}
             {:length 0.07
+             :time 23.2}
+            {:length 0.5
              :time 23.6}
             {:length 0.07
              :time 24}
             {:length 0.07
              :time 24.4}
-            {:length 0.5
-             :time 24.8}
             {:length 0.07
+             :time 24.8}
+            {:length 0.5
              :time 25.2}
             {:length 0.07
              :time 25.6}
             {:length 0.07
              :time 26}
-            {:length 0.5
-             :time 26.4}
             {:length 0.07
+             :time 26.4}
+            {:length 0.5
              :time 26.8}
             {:length 0.07
              :time 27.2}
             {:length 0.07
              :time 27.6}
-            {:length 0.5
-             :time 28}
             {:length 0.07
+             :time 28}
+            {:length 0.5
              :time 28.4}
             {:length 0.07
              :time 28.8}
             {:length 0.07
              :time 29.2}
-            {:length 0.5
-             :time 29.6}
             {:length 0.07
+             :time 29.6}
+            {:length 0.5
              :time 30}
             {:length 0.07
              :time 30.4}
             {:length 0.07
              :time 30.8}
-            {:length 0.5
-             :time 31.2}
             {:length 0.07
+             :time 31.2}
+            {:length 0.5
              :time 31.6}
             {:length 0.07
              :time 32}
             {:length 0.07
              :time 32.4}
-            {:length 0.5
-             :time 32.8}
             {:length 0.07
+             :time 32.8}
+            {:length 0.5
              :time 33.2}
             {:length 0.07
              :time 33.6}
             {:length 0.07
              :time 34}
-            {:length 0.5
-             :time 34.4}
             {:length 0.07
+             :time 34.4}
+            {:length 0.5
              :time 34.8}
             {:length 0.07
              :time 35.2}
             {:length 0.07
              :time 35.6}
-            {:length 0.5
-             :time 36}
             {:length 0.07
+             :time 36}
+            {:length 0.5
              :time 36.4}
             {:length 0.07
              :time 36.8}
             {:length 0.07
              :time 37.2}
-            {:length 0.5
-             :time 37.6}
             {:length 0.07
+             :time 37.6}
+            {:length 0.5
              :time 38}
             {:length 0.07
              :time 38.4}
             {:length 0.07
              :time 38.8}
-            {:length 0.5
-             :time 39.2}
             {:length 0.07
+             :time 39.2}
+            {:length 0.5
              :time 39.6}
             {:length 0.07
              :time 40}
             {:length 0.07
              :time 40.4}
-            {:length 0.5
-             :time 40.8}
             {:length 0.07
+             :time 40.8}
+            {:length 0.5
              :time 41.2}
             {:length 0.07
              :time 41.6}
             {:length 0.07
              :time 42}
-            {:length 0.5
-             :time 42.4}
             {:length 0.07
+             :time 42.4}
+            {:length 0.5
              :time 42.8}
             {:length 0.07
              :time 43.2}
             {:length 0.07
              :time 43.6}
-            {:length 0.5
-             :time 44}
             {:length 0.07
+             :time 44}
+            {:length 0.5
              :time 44.4}
             {:length 0.07
              :time 44.8}
             {:length 0.07
              :time 45.2}
-            {:length 0.5
-             :time 45.6}
             {:length 0.07
+             :time 45.6}
+            {:length 0.5
              :time 46}
             {:length 0.07
              :time 46.4}
             {:length 0.07
              :time 46.8}
-            {:length 0.5
-             :time 47.2}
             {:length 0.07
+             :time 47.2}
+            {:length 0.5
              :time 47.6}
             {:length 0.07
              :time 48}
             {:length 0.07
              :time 48.4}
-            {:length 0.5
-             :time 48.8}
             {:length 0.07
+             :time 48.8}
+            {:length 0.5
              :time 49.2}
             {:length 0.07
              :time 49.6}
             {:length 0.07
              :time 50}
-            {:length 0.5
-             :time 50.4}
             {:length 0.07
+             :time 50.4}
+            {:length 0.5
              :time 50.8}
             {:length 0.07
              :time 51.2}
             {:length 0.07
              :time 51.6}
-            {:length 0.5
-             :time 52}
             {:length 0.07
+             :time 52}
+            {:length 0.5
              :time 52.4}
             {:length 0.07
              :time 52.8}
             {:length 0.07
-             :time 53.2}
+             :time 53}
             {:length 0.5
+             :time 53.2}
+            {:length 0.07
+             :time 53.4}
+            {:length 0.07
              :time 53.6}
             {:length 0.07
+             :time 53.8}
+            {:length 0.5
              :time 54}
             {:length 0.07
              :time 54.2}
-            {:length 0.5
+            {:length 0.07
              :time 54.4}
             {:length 0.07
              :time 54.6}
-            {:length 0.07
+            {:length 0.5
              :time 54.8}
             {:length 0.07
              :time 55}
-            {:length 0.5
+            {:length 0.07
              :time 55.2}
             {:length 0.07
              :time 55.4}
-            {:length 0.07
+            {:length 0.5
              :time 55.6}
             {:length 0.07
              :time 55.8}
-            {:length 0.5
+            {:length 0.07
              :time 56}
             {:length 0.07
              :time 56.2}
-            {:length 0.07
+            {:length 0.5
              :time 56.4}
             {:length 0.07
              :time 56.6}
-            {:length 0.5
+            {:length 0.07
              :time 56.8}
             {:length 0.07
              :time 57}
-            {:length 0.07
+            {:length 0.5
              :time 57.2}
             {:length 0.07
              :time 57.4}
-            {:length 0.5
+            {:length 0.07
              :time 57.6}
             {:length 0.07
              :time 57.8}
-            {:length 0.07
+            {:length 0.5
              :time 58}
             {:length 0.07
              :time 58.2}
-            {:length 0.5
+            {:length 0.07
              :time 58.4}
             {:length 0.07
              :time 58.6}
-            {:length 0.07
+            {:length 0.5
              :time 58.8}
             {:length 0.07
              :time 59}
-            {:length 0.5
+            {:length 0.07
              :time 59.2}
             {:length 0.07
              :time 59.4}
-            {:length 0.07
+            {:length 0.5
              :time 59.6}
             {:length 0.07
              :time 59.8}
-            {:length 0.5
+            {:length 0.07
              :time 60}
             {:length 0.07
              :time 60.2}
-            {:length 0.07
+            {:length 0.5
              :time 60.4}
             {:length 0.07
              :time 60.6}
-            {:length 0.5
+            {:length 0.07
              :time 60.8}
             {:length 0.07
              :time 61}
-            {:length 0.07
+            {:length 0.5
              :time 61.2}
             {:length 0.07
              :time 61.4}
-            {:length 0.5
+            {:length 0.07
              :time 61.6}
             {:length 0.07
              :time 61.8}
-            {:length 0.07
+            {:length 0.5
              :time 62}
             {:length 0.07
              :time 62.2}
-            {:length 0.5
+            {:length 0.07
              :time 62.4}
             {:length 0.07
              :time 62.6}
-            {:length 0.07
+            {:length 0.5
              :time 62.8}
             {:length 0.07
              :time 63}
-            {:length 0.5
+            {:length 0.07
              :time 63.2}
             {:length 0.07
              :time 63.4}
-            {:length 0.07
+            {:length 0.5
              :time 63.6}
             {:length 0.07
              :time 63.8}
-            {:length 0.5
+            {:length 0.07
              :time 64}
             {:length 0.07
              :time 64.2}
-            {:length 0.07
+            {:length 0.5
              :time 64.4}
             {:length 0.07
              :time 64.6}
-            {:length 0.5
+            {:length 0.07
              :time 64.8}
             {:length 0.07
              :time 65}
-            {:length 0.07
+            {:length 0.5
              :time 65.2}
             {:length 0.07
              :time 65.4}
-            {:length 0.5
+            {:length 0.07
              :time 65.6}
             {:length 0.07
              :time 65.8}
-            {:length 0.07
+            {:length 0.5
              :time 66}
             {:length 0.07
              :time 66.2}
-            {:length 0.5
+            {:length 0.07
              :time 66.4}
             {:length 0.07
              :time 66.6}
-            {:length 0.07
+            {:length 0.5
              :time 66.8}
             {:length 0.07
              :time 67}
-            {:length 0.5
+            {:length 0.07
              :time 67.2}
             {:length 0.07
              :time 67.4}
-            {:length 0.07
+            {:length 0.5
              :time 67.6}
             {:length 0.07
              :time 67.8}
-            {:length 0.5
+            {:length 0.07
              :time 68}
             {:length 0.07
              :time 68.2}
-            {:length 0.07
+            {:length 0.5
              :time 68.4}
             {:length 0.07
              :time 68.6}
-            {:length 0.5
+            {:length 0.07
              :time 68.8}
             {:length 0.07
              :time 69}
-            {:length 0.07
+            {:length 0.5
              :time 69.2}
             {:length 0.07
              :time 69.4}
-            {:length 0.5
+            {:length 0.07
              :time 69.6}
             {:length 0.07
              :time 69.8}
-            {:length 0.07
+            {:length 0.5
              :time 70}
             {:length 0.07
              :time 70.2}
-            {:length 0.5
+            {:length 0.07
              :time 70.4}
             {:length 0.07
              :time 70.6}
-            {:length 0.07
+            {:length 0.5
              :time 70.8}
             {:length 0.07
              :time 71}
-            {:length 0.5
+            {:length 0.07
              :time 71.2}
             {:length 0.07
              :time 71.4}
-            {:length 0.07
+            {:length 0.5
              :time 71.6}
             {:length 0.07
              :time 71.8}
-            {:length 0.5
+            {:length 0.07
              :time 72}
             {:length 0.07
              :time 72.2}
-            {:length 0.07
+            {:length 0.5
              :time 72.4}
             {:length 0.07
              :time 72.6}
-            {:length 0.5
+            {:length 0.07
              :time 72.8}
             {:length 0.07
              :time 73}
-            {:length 0.07
+            {:length 0.5
              :time 73.2}
             {:length 0.07
              :time 73.4}
-            {:length 0.5
+            {:length 0.07
              :time 73.6}
             {:length 0.07
              :time 73.8}
-            {:length 0.07
+            {:length 0.5
              :time 74}
             {:length 0.07
              :time 74.2}
-            {:length 0.5
+            {:length 0.07
              :time 74.4}
             {:length 0.07
              :time 74.6}
-            {:length 0.07
+            {:length 0.5
              :time 74.8}
             {:length 0.07
              :time 75}
-            {:length 0.5
+            {:length 0.07
              :time 75.2}
             {:length 0.07
              :time 75.4}
-            {:length 0.07
+            {:length 0.5
              :time 75.6}
             {:length 0.07
              :time 75.8}
-            {:length 0.5
+            {:length 0.07
              :time 76}
             {:length 0.07
              :time 76.2}
-            {:length 0.07
+            {:length 0.5
              :time 76.4}
             {:length 0.07
              :time 76.6}
-            {:length 0.5
+            {:length 0.07
              :time 76.8}
             {:length 0.07
              :time 77}
-            {:length 0.07
+            {:length 0.5
              :time 77.2}
             {:length 0.07
              :time 77.4}
-            {:length 0.5
+            {:length 0.07
              :time 77.6}
             {:length 0.07
              :time 77.8}
-            {:length 0.07
+            {:length 0.5
              :time 78}
             {:length 0.07
              :time 78.2}
-            {:length 0.5
-             :time 78.4}
             {:length 0.07
-             :time 78.6}
+             :time 78.4}
             {:length 0.07
              :time 78.8}
             {:length 0.07
-             :time 79}
-            {:length 0.5
              :time 79.2}
-            {:length 0.07
-             :time 79.4}
-            {:length 0.07
+            {:length 0.5
              :time 79.6}
             {:length 0.07
              :time 80}
             {:length 0.07
              :time 80.4}
-            {:length 0.5
-             :time 80.8}
             {:length 0.07
+             :time 80.8}
+            {:length 0.5
              :time 81.2}
             {:length 0.07
              :time 81.6}
             {:length 0.07
              :time 82}
-            {:length 0.5
-             :time 82.4}
             {:length 0.07
+             :time 82.4}
+            {:length 0.5
              :time 82.8}
             {:length 0.07
              :time 83.2}
             {:length 0.07
              :time 83.6}
-            {:length 0.5
-             :time 84}
             {:length 0.07
+             :time 84}
+            {:length 0.5
              :time 84.4}
             {:length 0.07
              :time 84.8}
             {:length 0.07
              :time 85.2}
-            {:length 0.5
-             :time 85.6}
             {:length 0.07
+             :time 85.6}
+            {:length 0.5
              :time 86}
             {:length 0.07
              :time 86.4}
             {:length 0.07
              :time 86.8}
-            {:length 0.5
-             :time 87.2}
             {:length 0.07
+             :time 87.2}
+            {:length 0.5
              :time 87.6}
             {:length 0.07
              :time 88}
             {:length 0.07
              :time 88.4}
-            {:length 0.5
-             :time 88.8}
             {:length 0.07
+             :time 88.8}
+            {:length 0.5
              :time 89.2}
             {:length 0.07
              :time 89.6}
             {:length 0.07
              :time 90}
-            {:length 0.5
-             :time 90.4}
             {:length 0.07
+             :time 90.4}
+            {:length 0.5
              :time 90.8}
             {:length 0.07
              :time 91.2}
             {:length 0.07
              :time 91.6}
-            {:length 0.5
-             :time 92}
             {:length 0.07
+             :time 92}
+            {:length 0.5
              :time 92.4}
             {:length 0.07
              :time 92.8}
             {:length 0.07
              :time 93.2}
-            {:length 0.5
-             :time 93.6}
             {:length 0.07
+             :time 93.6}
+            {:length 0.5
              :time 94}
             {:length 0.07
              :time 94.4}
             {:length 0.07
              :time 94.8}
-            {:length 0.5
-             :time 95.2}
             {:length 0.07
+             :time 95.2}
+            {:length 0.5
              :time 95.6}
             {:length 0.07
              :time 96}
             {:length 0.07
              :time 96.4}
-            {:length 0.5
-             :time 96.8}
             {:length 0.07
+             :time 96.8}
+            {:length 0.5
              :time 97.2}
             {:length 0.07
              :time 97.6}
             {:length 0.07
              :time 98}
-            {:length 0.5
-             :time 98.4}
             {:length 0.07
+             :time 98.4}
+            {:length 0.5
              :time 98.8}
             {:length 0.07
              :time 99.2}
             {:length 0.07
              :time 99.6}
-            {:length 0.5
-             :time 100}
             {:length 0.07
+             :time 100}
+            {:length 0.5
              :time 100.4}
             {:length 0.07
              :time 100.8}
             {:length 0.07
              :time 101.2}
-            {:length 0.5
-             :time 101.6}
             {:length 0.07
+             :time 101.6}
+            {:length 0.5
              :time 102}
             {:length 0.07
              :time 102.4}
             {:length 0.07
              :time 102.8}
-            {:length 0.5
-             :time 103.2}
             {:length 0.07
+             :time 103.2}
+            {:length 0.5
              :time 103.6}
             {:length 0.07
              :time 104}
             {:length 0.07
              :time 104.4}
-            {:length 0.5
-             :time 104.8}
             {:length 0.07
+             :time 104.8}
+            {:length 0.5
              :time 105.2}
             {:length 0.07
              :time 105.6}
             {:length 0.07
              :time 106}
-            {:length 0.5
-             :time 106.4}
             {:length 0.07
+             :time 106.4}
+            {:length 0.5
              :time 106.8}
             {:length 0.07
              :time 107.2}
             {:length 0.07
              :time 107.6}
-            {:length 0.5
-             :time 108}
             {:length 0.07
+             :time 108}
+            {:length 0.5
              :time 108.4}
             {:length 0.07
              :time 108.8}
             {:length 0.07
              :time 109.2}
-            {:length 0.5
-             :time 109.6}
             {:length 0.07
+             :time 109.6}
+            {:length 0.5
              :time 110}
             {:length 0.07
              :time 110.4}
             {:length 0.07
              :time 110.8}
-            {:length 0.5
-             :time 111.2}
             {:length 0.07
+             :time 111.2}
+            {:length 0.5
              :time 111.6}
             {:length 0.07
              :time 112}
             {:length 0.07
              :time 112.4}
-            {:length 0.5
-             :time 112.8}
             {:length 0.07
+             :time 112.8}
+            {:length 0.5
              :time 113.2}
             {:length 0.07
              :time 113.6}
             {:length 0.07
              :time 114}
-            {:length 0.5
-             :time 114.4}
             {:length 0.07
+             :time 114.4}
+            {:length 0.5
              :time 114.8}
             {:length 0.07
              :time 115.2}
             {:length 0.07
              :time 115.6}
-            {:length 0.5
-             :time 116}
             {:length 0.07
+             :time 116}
+            {:length 0.5
              :time 116.4}
             {:length 0.07
              :time 116.8}
             {:length 0.07
              :time 117.2}
-            {:length 0.5
-             :time 117.6}
             {:length 0.07
+             :time 117.6}
+            {:length 0.5
              :time 118}
             {:length 0.07
              :time 118.4}
             {:length 0.07
              :time 118.8}
-            {:length 0.5
-             :time 119.2}
             {:length 0.07
+             :time 119.2}
+            {:length 0.5
              :time 119.6}
             {:length 0.07
              :time 120}
             {:length 0.07
              :time 120.4}
-            {:length 0.5
-             :time 120.8}
             {:length 0.07
+             :time 120.8}
+            {:length 0.5
              :time 121.2}
             {:length 0.07
              :time 121.6}
             {:length 0.07
              :time 122}
-            {:length 0.5
-             :time 122.4}
             {:length 0.07
+             :time 122.4}
+            {:length 0.5
              :time 122.8}
             {:length 0.07
              :time 123.2}
             {:length 0.07
              :time 123.6}
-            {:length 0.5
-             :time 124}
             {:length 0.07
+             :time 124}
+            {:length 0.5
              :time 124.4}
             {:length 0.07
              :time 124.8}
             {:length 0.07
              :time 125.2}
-            {:length 0.5
-             :time 125.6}
             {:length 0.07
+             :time 125.6}
+            {:length 0.5
              :time 126}
             {:length 0.07
              :time 126.4}
             {:length 0.07
              :time 126.8}
-            {:length 0.5
-             :time 127.2}
             {:length 0.07
+             :time 127.2}
+            {:length 0.5
              :time 127.6}
             {:length 0.07
              :time 128}
             {:length 0.07
              :time 128.4}
-            {:length 0.5
-             :time 128.8}
             {:length 0.07
+             :time 128.8}
+            {:length 0.5
              :time 129.2}
             {:length 0.07
              :time 129.6}
             {:length 0.07
              :time 130}
-            {:length 0.5
-             :time 130.4}
             {:length 0.07
+             :time 130.4}
+            {:length 0.5
              :time 130.8}
             {:length 0.07
              :time 131.2}
             {:length 0.07
-             :time 131.6}
+             :time 131.4}
             {:length 0.5
+             :time 131.6}
+            {:length 0.07
+             :time 131.8}
+            {:length 0.07
              :time 132}
             {:length 0.07
+             :time 132.2}
+            {:length 0.5
              :time 132.4}
             {:length 0.07
              :time 132.6}
-            {:length 0.5
+            {:length 0.07
              :time 132.8}
             {:length 0.07
              :time 133}
-            {:length 0.07
+            {:length 0.5
              :time 133.2}
             {:length 0.07
              :time 133.4}
-            {:length 0.5
+            {:length 0.07
              :time 133.6}
             {:length 0.07
              :time 133.8}
-            {:length 0.07
+            {:length 0.5
              :time 134}
             {:length 0.07
              :time 134.2}
-            {:length 0.5
+            {:length 0.07
              :time 134.4}
             {:length 0.07
              :time 134.6}
-            {:length 0.07
+            {:length 0.5
              :time 134.8}
             {:length 0.07
              :time 135}
-            {:length 0.5
+            {:length 0.07
              :time 135.2}
             {:length 0.07
              :time 135.4}
-            {:length 0.07
+            {:length 0.5
              :time 135.6}
             {:length 0.07
              :time 135.8}
-            {:length 0.5
+            {:length 0.07
              :time 136}
             {:length 0.07
              :time 136.2}
-            {:length 0.07
+            {:length 0.5
              :time 136.4}
             {:length 0.07
              :time 136.6}
-            {:length 0.5
+            {:length 0.07
              :time 136.8}
             {:length 0.07
              :time 137}
-            {:length 0.07
+            {:length 0.5
              :time 137.2}
             {:length 0.07
              :time 137.4}
-            {:length 0.5
+            {:length 0.07
              :time 137.6}
             {:length 0.07
              :time 137.8}
-            {:length 0.07
+            {:length 0.5
              :time 138}
             {:length 0.07
              :time 138.2}
-            {:length 0.5
+            {:length 0.07
              :time 138.4}
             {:length 0.07
              :time 138.6}
-            {:length 0.07
+            {:length 0.5
              :time 138.8}
             {:length 0.07
              :time 139}
-            {:length 0.5
+            {:length 0.07
              :time 139.2}
             {:length 0.07
              :time 139.4}
-            {:length 0.07
+            {:length 0.5
              :time 139.6}
             {:length 0.07
              :time 139.8}
-            {:length 0.5
+            {:length 0.07
              :time 140}
             {:length 0.07
              :time 140.2}
-            {:length 0.07
+            {:length 0.5
              :time 140.4}
             {:length 0.07
              :time 140.6}
-            {:length 0.5
+            {:length 0.07
              :time 140.8}
             {:length 0.07
              :time 141}
-            {:length 0.07
+            {:length 0.5
              :time 141.2}
             {:length 0.07
              :time 141.4}
-            {:length 0.5
+            {:length 0.07
              :time 141.6}
             {:length 0.07
              :time 141.8}
-            {:length 0.07
+            {:length 0.5
              :time 142}
             {:length 0.07
              :time 142.2}
-            {:length 0.5
+            {:length 0.07
              :time 142.4}
             {:length 0.07
              :time 142.6}
-            {:length 0.07
+            {:length 0.5
              :time 142.8}
             {:length 0.07
              :time 143}
-            {:length 0.5
+            {:length 0.07
              :time 143.2}
             {:length 0.07
              :time 143.4}
-            {:length 0.07
+            {:length 0.5
              :time 143.6}
             {:length 0.07
              :time 143.8}
-            {:length 0.5
+            {:length 0.07
              :time 144}
             {:length 0.07
              :time 144.2}
-            {:length 0.07
+            {:length 0.5
              :time 144.4}
             {:length 0.07
              :time 144.6}
-            {:length 0.5
+            {:length 0.07
              :time 144.8}
             {:length 0.07
              :time 145}
-            {:length 0.07
+            {:length 0.5
              :time 145.2}
             {:length 0.07
              :time 145.4}
-            {:length 0.5
+            {:length 0.07
              :time 145.6}
             {:length 0.07
              :time 145.8}
-            {:length 0.07
+            {:length 0.5
              :time 146}
             {:length 0.07
              :time 146.2}
-            {:length 0.5
+            {:length 0.07
              :time 146.4}
             {:length 0.07
              :time 146.6}
-            {:length 0.07
+            {:length 0.5
              :time 146.8}
             {:length 0.07
              :time 147}
-            {:length 0.5
+            {:length 0.07
              :time 147.2}
             {:length 0.07
              :time 147.4}
-            {:length 0.07
+            {:length 0.5
              :time 147.6}
             {:length 0.07
              :time 147.8}
-            {:length 0.5
+            {:length 0.07
              :time 148}
             {:length 0.07
              :time 148.2}
-            {:length 0.07
+            {:length 0.5
              :time 148.4}
             {:length 0.07
              :time 148.6}
-            {:length 0.5
+            {:length 0.07
              :time 148.8}
             {:length 0.07
              :time 149}
-            {:length 0.07
+            {:length 0.5
              :time 149.2}
             {:length 0.07
              :time 149.4}
-            {:length 0.5
+            {:length 0.07
              :time 149.6}
             {:length 0.07
              :time 149.8}
-            {:length 0.07
+            {:length 0.5
              :time 150}
             {:length 0.07
              :time 150.2}
-            {:length 0.5
+            {:length 0.07
              :time 150.4}
             {:length 0.07
              :time 150.6}
-            {:length 0.07
+            {:length 0.5
              :time 150.8}
             {:length 0.07
              :time 151}
-            {:length 0.5
+            {:length 0.07
              :time 151.2}
             {:length 0.07
              :time 151.4}
-            {:length 0.07
+            {:length 0.5
              :time 151.6}
             {:length 0.07
              :time 151.8}
-            {:length 0.5
+            {:length 0.07
              :time 152}
             {:length 0.07
              :time 152.2}
-            {:length 0.07
+            {:length 0.5
              :time 152.4}
             {:length 0.07
              :time 152.6}
-            {:length 0.5
+            {:length 0.07
              :time 152.8}
             {:length 0.07
              :time 153}
-            {:length 0.07
+            {:length 0.5
              :time 153.2}
             {:length 0.07
              :time 153.4}
-            {:length 0.5
+            {:length 0.07
              :time 153.6}
             {:length 0.07
              :time 153.8}
-            {:length 0.07
+            {:length 0.5
              :time 154}
             {:length 0.07
              :time 154.2}
-            {:length 0.5
+            {:length 0.07
              :time 154.4}
             {:length 0.07
              :time 154.6}
-            {:length 0.07
+            {:length 0.5
              :time 154.8}
             {:length 0.07
              :time 155}
-            {:length 0.5
+            {:length 0.07
              :time 155.2}
             {:length 0.07
              :time 155.4}
-            {:length 0.07
+            {:length 0.5
              :time 155.6}
             {:length 0.07
              :time 155.8}
-            {:length 0.5
+            {:length 0.07
              :time 156}
             {:length 0.07
              :time 156.2}
-            {:length 0.07
+            {:length 0.5
              :time 156.4}
             {:length 0.07
              :time 156.6}
-            {:length 0.5
+            {:length 0.07
              :time 156.8}
             {:length 0.07
              :time 157}
-            {:length 0.07
+            {:length 0.5
              :time 157.2}
             {:length 0.07
              :time 157.4}
-            {:length 0.5
+            {:length 0.07
              :time 157.6}
             {:length 0.07
              :time 157.8}
-            {:length 0.07
+            {:length 0.5
              :time 158}
             {:length 0.07
              :time 158.2}
-            {:length 0.5
+            {:length 0.07
              :time 158.4}
             {:length 0.07
              :time 158.6}
-            {:length 0.07
+            {:length 0.5
              :time 158.8}
             {:length 0.07
              :time 159}
-            {:length 0.5
+            {:length 0.07
              :time 159.2}
             {:length 0.07
              :time 159.4}
-            {:length 0.07
+            {:length 0.5
              :time 159.6}
             {:length 0.07
              :time 159.8}
-            {:length 0.5
+            {:length 0.07
              :time 160}
             {:length 0.07
              :time 160.2}
-            {:length 0.07
+            {:length 0.5
              :time 160.4}
             {:length 0.07
              :time 160.6}
-            {:length 0.5
+            {:length 0.07
              :time 160.8}
             {:length 0.07
              :time 161}
-            {:length 0.07
+            {:length 0.5
              :time 161.2}
             {:length 0.07
              :time 161.4}
-            {:length 0.5
+            {:length 0.07
              :time 161.6}
             {:length 0.07
              :time 161.8}
-            {:length 0.07
+            {:length 0.5
              :time 162}
             {:length 0.07
              :time 162.2}
-            {:length 0.5
+            {:length 0.07
              :time 162.4}
             {:length 0.07
              :time 162.6}
-            {:length 0.07
+            {:length 0.5
              :time 162.8}
             {:length 0.07
              :time 163}
-            {:length 0.5
+            {:length 0.07
              :time 163.2}
             {:length 0.07
              :time 163.4}
-            {:length 0.07
+            {:length 0.5
              :time 163.6}
             {:length 0.07
              :time 163.8}
-            {:length 0.5
+            {:length 0.07
              :time 164}
             {:length 0.07
              :time 164.2}
-            {:length 0.07
+            {:length 0.5
              :time 164.4}
             {:length 0.07
              :time 164.6}
-            {:length 0.5
+            {:length 0.07
              :time 164.8}
             {:length 0.07
              :time 165}
-            {:length 0.07
+            {:length 0.5
              :time 165.2}
             {:length 0.07
              :time 165.4}
-            {:length 0.5
+            {:length 0.07
              :time 165.6}
             {:length 0.07
              :time 165.8}
-            {:length 0.07
+            {:length 0.5
              :time 166}
             {:length 0.07
              :time 166.2}
-            {:length 0.5
+            {:length 0.07
              :time 166.4}
             {:length 0.07
              :time 166.6}
-            {:length 0.07
+            {:length 0.5
              :time 166.8}
             {:length 0.07
              :time 167}
-            {:length 0.5
+            {:length 0.07
              :time 167.2}
             {:length 0.07
              :time 167.4}
-            {:length 0.07
+            {:length 0.5
              :time 167.6}
             {:length 0.07
              :time 167.8}
-            {:length 0.5
+            {:length 0.07
              :time 168}
             {:length 0.07
              :time 168.2}
-            {:length 0.07
+            {:length 0.5
              :time 168.4}
             {:length 0.07
              :time 168.6}
-            {:length 0.5
+            {:length 0.07
              :time 168.8}
             {:length 0.07
              :time 169}
-            {:length 0.07
+            {:length 0.5
              :time 169.2}
             {:length 0.07
              :time 169.4}
-            {:length 0.5
+            {:length 0.07
              :time 169.6}
             {:length 0.07
              :time 169.8}
-            {:length 0.07
+            {:length 0.5
              :time 170}
             {:length 0.07
              :time 170.2}
-            {:length 0.5
+            {:length 0.07
              :time 170.4}
             {:length 0.07
              :time 170.6}
-            {:length 0.07
+            {:length 0.5
              :time 170.8}
             {:length 0.07
              :time 171}
-            {:length 0.5
+            {:length 0.07
              :time 171.2}
             {:length 0.07
              :time 171.4}
-            {:length 0.07
+            {:length 0.5
              :time 171.6}
             {:length 0.07
              :time 171.8}
-            {:length 0.5
+            {:length 0.07
              :time 172}
             {:length 0.07
              :time 172.2}
-            {:length 0.07
+            {:length 0.5
              :time 172.4}
             {:length 0.07
              :time 172.6}
-            {:length 0.5
+            {:length 0.07
              :time 172.8}
             {:length 0.07
              :time 173}
-            {:length 0.07
+            {:length 0.5
              :time 173.2}
             {:length 0.07
              :time 173.4}
-            {:length 0.5
+            {:length 0.07
              :time 173.6}
             {:length 0.07
              :time 173.8}
-            {:length 0.07
+            {:length 0.5
              :time 174}
             {:length 0.07
              :time 174.2}
-            {:length 0.5
+            {:length 0.07
              :time 174.4}
             {:length 0.07
              :time 174.6}
-            {:length 0.07
+            {:length 0.5
              :time 174.8}
             {:length 0.07
              :time 175}
-            {:length 0.5
+            {:length 0.07
              :time 175.2}
             {:length 0.07
              :time 175.4}
-            {:length 0.07
+            {:length 0.5
              :time 175.6}
             {:length 0.07
              :time 175.8}
-            {:length 0.5
+            {:length 0.07
              :time 176}
             {:length 0.07
              :time 176.2}
-            {:length 0.07
+            {:length 0.5
              :time 176.4}
             {:length 0.07
              :time 176.6}
-            {:length 0.5
+            {:length 0.07
              :time 176.8}
             {:length 0.07
              :time 177}
-            {:length 0.07
+            {:length 0.5
              :time 177.2}
             {:length 0.07
              :time 177.4}
-            {:length 0.5
+            {:length 0.07
              :time 177.6}
             {:length 0.07
              :time 177.8}
-            {:length 0.07
+            {:length 0.5
              :time 178}
             {:length 0.07
              :time 178.2}
-            {:length 0.5
+            {:length 0.07
              :time 178.4}
             {:length 0.07
              :time 178.6}
-            {:length 0.07
+            {:length 0.5
              :time 178.8}
             {:length 0.07
              :time 179}
-            {:length 0.5
+            {:length 0.07
              :time 179.2}
             {:length 0.07
              :time 179.4}
-            {:length 0.07
+            {:length 0.5
              :time 179.6}
             {:length 0.07
              :time 179.8}
-            {:length 0.5
+            {:length 0.07
              :time 180}
             {:length 0.07
              :time 180.2}
-            {:length 0.07
+            {:length 0.5
              :time 180.4}
             {:length 0.07
              :time 180.6}
-            {:length 0.5
+            {:length 0.07
              :time 180.8}
             {:length 0.07
              :time 181}
-            {:length 0.07
+            {:length 0.5
              :time 181.2}
             {:length 0.07
              :time 181.4}
-            {:length 0.5
+            {:length 0.07
              :time 181.6}
             {:length 0.07
              :time 181.8}
-            {:length 0.07
+            {:length 0.5
              :time 182}
             {:length 0.07
              :time 182.2}
-            {:length 0.5
+            {:length 0.07
              :time 182.4}
             {:length 0.07
              :time 182.6}
-            {:length 0.07
+            {:length 0.5
              :time 182.8}
             {:length 0.07
              :time 183}
-            {:length 0.5
+            {:length 0.07
              :time 183.2}
             {:length 0.07
              :time 183.4}
-            {:length 0.07
+            {:length 0.5
              :time 183.6}
             {:length 0.07
              :time 183.8}
-            {:length 0.5
+            {:length 0.07
              :time 184}
             {:length 0.07
              :time 184.2}
-            {:length 0.07
+            {:length 0.5
              :time 184.4}
             {:length 0.07
              :time 184.6}
-            {:length 0.5
+            {:length 0.07
              :time 184.8}
             {:length 0.07
              :time 185}
-            {:length 0.07
+            {:length 0.5
              :time 185.2}
             {:length 0.07
              :time 185.4}
-            {:length 0.5
+            {:length 0.07
              :time 185.6}
             {:length 0.07
              :time 185.8}
-            {:length 0.07
+            {:length 0.5
              :time 186}
             {:length 0.07
              :time 186.2}
-            {:length 0.5
+            {:length 0.07
              :time 186.4}
             {:length 0.07
              :time 186.6}
-            {:length 0.07
+            {:length 0.5
              :time 186.8}
             {:length 0.07
              :time 187}
-            {:length 0.5
+            {:length 0.07
              :time 187.2}
             {:length 0.07
              :time 187.4}
-            {:length 0.07
+            {:length 0.5
              :time 187.6}
             {:length 0.07
              :time 187.8}
-            {:length 0.5
+            {:length 0.07
              :time 188}
             {:length 0.07
              :time 188.2}
-            {:length 0.07
+            {:length 0.5
              :time 188.4}
             {:length 0.07
              :time 188.6}
-            {:length 0.5
+            {:length 0.07
              :time 188.8}
             {:length 0.07
              :time 189}
-            {:length 0.07
+            {:length 0.5
              :time 189.2}
             {:length 0.07
              :time 189.4}
-            {:length 0.5
+            {:length 0.07
              :time 189.6}
             {:length 0.07
              :time 189.8}
-            {:length 0.07
+            {:length 0.5
              :time 190}
             {:length 0.07
              :time 190.2}
-            {:length 0.5
+            {:length 0.07
              :time 190.4}
             {:length 0.07
              :time 190.6}
-            {:length 0.07
+            {:length 0.5
              :time 190.8}
             {:length 0.07
              :time 191}
-            {:length 0.5
+            {:length 0.07
              :time 191.2}
             {:length 0.07
              :time 191.4}
-            {:length 0.07
+            {:length 0.5
              :time 191.6}
             {:length 0.07
              :time 191.8}
-            {:length 0.5
+            {:length 0.07
              :time 192}
             {:length 0.07
              :time 192.2}
-            {:length 0.07
+            {:length 0.5
              :time 192.4}
             {:length 0.07
              :time 192.6}
-            {:length 0.5
+            {:length 0.07
              :time 192.8}
             {:length 0.07
              :time 193}
-            {:length 0.07
+            {:length 0.5
              :time 193.2}
             {:length 0.07
              :time 193.4}
-            {:length 0.5
+            {:length 0.07
              :time 193.6}
             {:length 0.07
              :time 193.8}
-            {:length 0.07
+            {:length 0.5
              :time 194}
             {:length 0.07
              :time 194.2}
-            {:length 0.5
+            {:length 0.07
              :time 194.4}
             {:length 0.07
              :time 194.6}
-            {:length 0.07
+            {:length 0.5
              :time 194.8}
             {:length 0.07
              :time 195}
-            {:length 0.5
+            {:length 0.07
              :time 195.2}
             {:length 0.07
              :time 195.4}
-            {:length 0.07
+            {:length 0.5
              :time 195.6}
             {:length 0.07
              :time 195.8}
-            {:length 0.5
+            {:length 0.07
              :time 196}
             {:length 0.07
              :time 196.2}
-            {:length 0.07
+            {:length 0.5
              :time 196.4}
             {:length 0.07
              :time 196.6}
-            {:length 0.5
+            {:length 0.07
              :time 196.8}
             {:length 0.07
              :time 197}
-            {:length 0.07
+            {:length 0.5
              :time 197.2}
             {:length 0.07
              :time 197.4}
-            {:length 0.5
+            {:length 0.07
              :time 197.6}
             {:length 0.07
              :time 197.8}
-            {:length 0.07
+            {:length 0.5
              :time 198}
             {:length 0.07
              :time 198.2}
-            {:length 0.5
+            {:length 0.07
              :time 198.4}
             {:length 0.07
              :time 198.6}
-            {:length 0.07
+            {:length 0.5
              :time 198.8}
             {:length 0.07
              :time 199}
-            {:length 0.5
+            {:length 0.07
              :time 199.2}
             {:length 0.07
              :time 199.4}
-            {:length 0.07
+            {:length 0.5
              :time 199.6}
             {:length 0.07
              :time 199.8}
-            {:length 0.5
+            {:length 0.07
              :time 200}
             {:length 0.07
              :time 200.2}
-            {:length 0.07
+            {:length 0.5
              :time 200.4}
             {:length 0.07
              :time 200.6}
-            {:length 0.5
+            {:length 0.07
              :time 200.8}
             {:length 0.07
              :time 201}
-            {:length 0.07
+            {:length 0.5
              :time 201.2}
             {:length 0.07
              :time 201.4}
-            {:length 0.5
+            {:length 0.07
              :time 201.6}
             {:length 0.07
              :time 201.8}
-            {:length 0.07
+            {:length 0.5
              :time 202}
             {:length 0.07
              :time 202.2}
-            {:length 0.5
+            {:length 0.07
              :time 202.4}
             {:length 0.07
              :time 202.6}
-            {:length 0.07
+            {:length 0.5
              :time 202.8}
             {:length 0.07
              :time 203}
-            {:length 0.5
+            {:length 0.07
              :time 203.2}
             {:length 0.07
              :time 203.4}
-            {:length 0.07
+            {:length 0.5
              :time 203.6}
             {:length 0.07
              :time 203.8}
-            {:length 0.5
+            {:length 0.07
              :time 204}
             {:length 0.07
              :time 204.2}
-            {:length 0.07
+            {:length 0.5
              :time 204.4}
             {:length 0.07
              :time 204.6}
-            {:length 0.5
+            {:length 0.07
              :time 204.8}
             {:length 0.07
              :time 205}
-            {:length 0.07
+            {:length 0.5
              :time 205.2}
             {:length 0.07
              :time 205.4}
-            {:length 0.5
+            {:length 0.07
              :time 205.6}
             {:length 0.07
              :time 205.8}
-            {:length 0.07
+            {:length 0.5
              :time 206}
             {:length 0.07
              :time 206.2}
-            {:length 0.5
+            {:length 0.07
              :time 206.4}
             {:length 0.07
              :time 206.6}
-            {:length 0.07
+            {:length 0.5
              :time 206.8}
             {:length 0.07
              :time 207}
-            {:length 0.5
+            {:length 0.07
              :time 207.2}
             {:length 0.07
              :time 207.4}
-            {:length 0.07
+            {:length 0.5
              :time 207.6}
             {:length 0.07
              :time 207.8}
-            {:length 0.5
+            {:length 0.07
              :time 208}
             {:length 0.07
              :time 208.2}
-            {:length 0.07
+            {:length 0.5
              :time 208.4}
             {:length 0.07
              :time 208.6}
-            {:length 0.5
+            {:length 0.07
              :time 208.8}
             {:length 0.07
              :time 209}
-            {:length 0.07
+            {:length 0.5
              :time 209.2}
             {:length 0.07
              :time 209.4}
-            {:length 0.5
+            {:length 0.07
              :time 209.6}
             {:length 0.07
              :time 209.8}
-            {:length 0.07
+            {:length 0.5
              :time 210}
             {:length 0.07
              :time 210.2}
-            {:length 0.5
+            {:length 0.07
              :time 210.4}
             {:length 0.07
              :time 210.6}
-            {:length 0.07
+            {:length 0.5
              :time 210.8}
             {:length 0.07
              :time 211}
-            {:length 0.5
+            {:length 0.07
              :time 211.2}
             {:length 0.07
              :time 211.4}
-            {:length 0.07
+            {:length 0.5
              :time 211.6}
             {:length 0.07
              :time 211.8}
-            {:length 0.5
+            {:length 0.07
              :time 212}
             {:length 0.07
              :time 212.2}
-            {:length 0.07
+            {:length 0.5
              :time 212.4}
             {:length 0.07
              :time 212.6}
-            {:length 0.5
+            {:length 0.07
              :time 212.8}
             {:length 0.07
              :time 213}
-            {:length 0.07
+            {:length 0.5
              :time 213.2}
             {:length 0.07
              :time 213.4}
-            {:length 0.5
+            {:length 0.07
              :time 213.6}
             {:length 0.07
              :time 213.8}
-            {:length 0.07
+            {:length 0.5
              :time 214}
             {:length 0.07
-             :time 214.2}
-            {:length 0.5
-             :time 214.4}
-            {:length 0.07
-             :time 214.6}
-            {:length 0.07
-             :time 214.8}
-            {:length 0.07
-             :time 215}
-            {:length 0.5
-             :time 215.2}
-            {:length 0.07
-             :time 215.4}])
+             :time 214.2}])
 
 (def lead1 [{:time 1.5, :length 0.3, :pitch 69}
             {:time 2, :length 0.3, :pitch 71}
@@ -3869,94 +3869,136 @@
 (def pulse-0
   [{:pitch 67
     :length 0.3
-    :time 1.8}
+    :time 0.6}
    {:pitch 69
+    :length 0.3
+    :time 0.8}
+   {:pitch 72
+    :length 0.3
+    :time 1}
+   {:pitch 74
+    :length 0.3
+    :time 1.2}
+   {:pitch 76
+    :length 0.6
+    :time 1.4}
+   {:pitch 74
     :length 0.3
     :time 2}
    {:pitch 72
     :length 0.3
-    :time 2.2}
-   {:pitch 74
-    :length 0.3
     :time 2.4}
-   {:pitch 76
-    :length 0.6
+   {:pitch 74
+    :length 0.2
     :time 2.6}
-   {:pitch 74
-    :length 0.3
-    :time 3.2}
-   {:pitch 72
-    :length 0.3
-    :time 3.6}
-   {:pitch 74
-    :length 0.2
-    :time 3.8}
    {:pitch 72
     :length 0.2
-    :time 4.2}
+    :time 3}
    {:pitch 74
     :length 0.3
-    :time 4.3}
+    :time 3.1}
    {:pitch 72
     :length 0.6
-    :time 4.4}
+    :time 3.2}
    {:pitch 69
     :length 0.3
-    :time 5}
+    :time 3.8}
    {:pitch 69
     :length 0.1
-    :time 5.2}
+    :time 4}
    {:pitch 68
     :length 0.1
-    :time 5.24}
+    :time 4.04}
    {:pitch 67
     :length 0.1
-    :time 5.279999999999999}
+    :time 4.08}
    {:pitch 66
     :length 0.1
-    :time 5.32}
+    :time 4.12}
    {:pitch 65
     :length 0.1
-    :time 5.36}
+    :time 4.16}
    {:pitch 64
     :length 0.1
-    :time 5.4}
+    :time 4.2}
    {:pitch 63
     :length 0.1
-    :time 5.4399999999999995}
+    :time 4.24}
    {:pitch 62
     :length 0.1
-    :time 5.4799999999999995}
+    :time 4.279999999999999}
    {:pitch 61
     :length 0.1
-    :time 5.5200000000000005}
+    :time 4.32}
    {:pitch 60
     :length 0.1
-    :time 5.5600000000000005}
+    :time 4.36}
    {:pitch 59
     :length 0.1
-    :time 5.6}
+    :time 4.4}
    {:pitch 58
     :length 0.1
-    :time 5.64}
+    :time 4.4399999999999995}
    {:pitch 58
     :length 0.1
-    :time 5.68}
+    :time 4.4799999999999995}
    {:pitch 58
     :length 0.1
-    :time 5.72}
+    :time 4.52}
    {:pitch 72
     :length 0.3
-    :time 6}
+    :time 4.8}
    {:pitch 72
     :length 0.3
-    :time 6.2}
+    :time 5}
    {:pitch 72
     :length 0.3
-    :time 6.6}
+    :time 5.4}
    {:pitch 69
     :length 0.3
+    :time 5.8}
+   {:pitch 67
+    :length 0.3
+    :time 6.2}
+   {:pitch 69
+    :length 0.3
+    :time 6.4}
+   {:pitch 69
+    :length 0.1
+    :time 6.4}
+   {:pitch 68
+    :length 0.1
+    :time 6.44}
+   {:pitch 67
+    :length 0.1
+    :time 6.4799999999999995}
+   {:pitch 66
+    :length 0.1
+    :time 6.5200000000000005}
+   {:pitch 65
+    :length 0.1
+    :time 6.56}
+   {:pitch 64
+    :length 0.1
+    :time 6.6}
+   {:pitch 63
+    :length 0.1
+    :time 6.640000000000001}
+   {:pitch 62
+    :length 0.1
+    :time 6.68}
+   {:pitch 62
+    :length 0.1
+    :time 6.720000000000001}
+   {:pitch 62
+    :length 0.1
+    :time 6.76}
+   {:pitch 62
+    :length 0.3
     :time 7}
+   {:pitch 64
+    :length 0.3
+    :time 7.2}
    {:pitch 67
     :length 0.3
     :time 7.4}
@@ -3964,1262 +4006,1250 @@
     :length 0.3
     :time 7.6}
    {:pitch 69
-    :length 0.1
-    :time 7.6}
-   {:pitch 68
-    :length 0.1
-    :time 7.640000000000001}
-   {:pitch 67
-    :length 0.1
-    :time 7.68}
-   {:pitch 66
-    :length 0.1
-    :time 7.720000000000001}
-   {:pitch 65
-    :length 0.1
-    :time 7.76}
-   {:pitch 64
-    :length 0.1
-    :time 7.8}
-   {:pitch 63
-    :length 0.1
-    :time 7.840000000000001}
-   {:pitch 62
-    :length 0.1
-    :time 7.88}
-   {:pitch 62
-    :length 0.1
-    :time 7.92}
-   {:pitch 62
-    :length 0.1
-    :time 7.959999999999999}
-   {:pitch 62
+    :length 0.3
+    :time 8}
+   {:pitch 71
     :length 0.3
     :time 8.2}
-   {:pitch 64
-    :length 0.3
-    :time 8.4}
    {:pitch 67
-    :length 0.3
+    :length 0.6
     :time 8.6}
-   {:pitch 69
+   {:pitch 64
     :length 0.3
-    :time 8.8}
-   {:pitch 69
+    :time 9.6}
+   {:pitch 62
     :length 0.3
-    :time 9.2}
-   {:pitch 71
-    :length 0.3
-    :time 9.4}
-   {:pitch 67
-    :length 0.6
     :time 9.8}
-   {:pitch 64
-    :length 0.3
-    :time 10.8}
-   {:pitch 62
-    :length 0.3
-    :time 11}
    {:pitch 62
     :length 0.6
-    :time 11.4}
+    :time 10.2}
    {:pitch 64
     :length 0.5
-    :time 14}
+    :time 12.8}
    {:pitch 69
     :length 1
-    :time 14.6}
+    :time 13.4}
    {:pitch 69
     :length 0.5
-    :time 16.8}
+    :time 15.6}
    {:pitch 69
     :length 0.3
-    :time 17.2}
+    :time 16}
    {:pitch 67
     :length 0.5
-    :time 17.4}
+    :time 16.2}
    {:pitch 62
     :length 1
-    :time 17.8}
+    :time 16.6}
    {:pitch 64
     :length 0.5
-    :time 20}
+    :time 18.8}
    {:pitch 65
     :length 0.2
-    :time 20.4}
+    :time 19.2}
    {:pitch 62
     :length 0.2
-    :time 20.6}
+    :time 19.4}
    {:pitch 57
     :length 0.2
-    :time 20.8}
+    :time 19.6}
    {:pitch 62
     :length 1
-    :time 21}
+    :time 19.8}
    {:pitch 59
     :length 0.2
-    :time 22.4}
+    :time 21.2}
    {:pitch 59
     :length 0.2
-    :time 22.6}
+    :time 21.4}
    {:pitch 60
     :length 0.5
-    :time 23}
+    :time 21.8}
    {:pitch 64
     :length 0.5
-    :time 23.6}
+    :time 22.4}
    {:pitch 62
     :length 1
-    :time 24.2}
+    :time 23}
    {:pitch 71
     :length 0.2
-    :time 27.2}
+    :time 26}
    {:pitch 71
     :length 0.5
-    :time 27.4}
+    :time 26.2}
    {:pitch 71
     :length 0.3
-    :time 28}
+    :time 26.8}
    {:pitch 71
     :length 0.3
-    :time 28.4}
+    :time 27.2}
    {:pitch 72
     :length 0.2
-    :time 28.8}
+    :time 27.6}
    {:pitch 69
     :length 1
-    :time 29}
+    :time 27.8}
    {:pitch 69
+    :length 0.2
+    :time 29.4}
+   {:pitch 69
+    :length 0.5
+    :time 29.6}
+   {:pitch 69
+    :length 0.5
+    :time 30}
+   {:pitch 69
+    :length 0.2
+    :time 30.4}
+   {:pitch 71
     :length 0.2
     :time 30.6}
    {:pitch 69
-    :length 0.5
+    :length 0.2
     :time 30.8}
-   {:pitch 69
-    :length 0.5
-    :time 31.2}
-   {:pitch 69
-    :length 0.2
-    :time 31.6}
-   {:pitch 71
-    :length 0.2
-    :time 31.8}
-   {:pitch 69
-    :length 0.2
-    :time 32}
    {:pitch 67
     :length 1
-    :time 32.2}
+    :time 31}
    {:pitch 67
     :length 0.15
-    :time 33.6}
+    :time 32.4}
    {:pitch 67
     :length 0.3
-    :time 33.8}
+    :time 32.6}
    {:pitch 66
     :length 0.3
-    :time 34.2}
+    :time 33}
    {:pitch 64
     :length 0.2
-    :time 34.6}
+    :time 33.4}
    {:pitch 66
     :length 0.5
-    :time 34.8}
+    :time 33.6}
    {:pitch 64
     :length 0.6
-    :time 35.4}
+    :time 34.2}
    {:pitch 63
     :length 0.2
-    :time 36.4}
+    :time 35.2}
    {:pitch 64
     :length 0.5
-    :time 36.6}
+    :time 35.4}
    {:pitch 66
     :length 0.5
-    :time 37}
+    :time 35.8}
    {:pitch 67
     :length 1
-    :time 37.8}
+    :time 36.6}
    {:pitch 62
     :length 0.2
-    :time 38.6}
+    :time 37.4}
    {:pitch 64
     :length 0.2
+    :time 37.6}
+   {:pitch 67
+    :length 0.2
+    :time 37.8}
+   {:pitch 69
+    :length 0.2
+    :time 38}
+   {:pitch 71
+    :length 1
+    :time 38.2}
+   {:pitch 69
+    :length 0.3
     :time 38.8}
    {:pitch 67
     :length 0.2
-    :time 39}
-   {:pitch 69
-    :length 0.2
     :time 39.2}
-   {:pitch 71
-    :length 1
-    :time 39.4}
-   {:pitch 69
-    :length 0.3
-    :time 40}
-   {:pitch 67
-    :length 0.2
-    :time 40.4}
    {:pitch 69
     :length 0.4
+    :time 39.4}
+   {:pitch 67
+    :length 0.1
+    :time 39.8}
+   {:pitch 69
+    :length 0.2
+    :time 39.9}
+   {:pitch 67
+    :length 0.5
+    :time 40}
+   {:pitch 64
+    :length 1
     :time 40.6}
    {:pitch 67
     :length 0.1
-    :time 41}
-   {:pitch 69
-    :length 0.2
-    :time 41.1}
-   {:pitch 67
-    :length 0.5
-    :time 41.2}
-   {:pitch 64
-    :length 1
-    :time 41.8}
-   {:pitch 67
-    :length 0.1
-    :time 43.4}
+    :time 42.2}
    {:pitch 55
     :length 0.1
-    :time 43.4}
+    :time 42.2}
    {:pitch 67
     :length 0.17
-    :time 43.6}
+    :time 42.4}
    {:pitch 55
     :length 0.17
-    :time 43.6}
+    :time 42.4}
    {:pitch 67
     :length 0.17
-    :time 43.8}
+    :time 42.6}
    {:pitch 55
     :length 0.17
-    :time 43.8}
+    :time 42.6}
    {:pitch 66
     :length 0.17
-    :time 44}
+    :time 42.8}
    {:pitch 54
     :length 0.17
-    :time 44}
+    :time 42.8}
    {:pitch 66
     :length 0.17
-    :time 44.2}
+    :time 43}
    {:pitch 54
     :length 0.17
-    :time 44.2}
+    :time 43}
    {:pitch 64
     :length 1
-    :time 44.4}
+    :time 43.2}
    {:pitch 52
     :length 1
-    :time 44.4}
+    :time 43.2}
    {:pitch 76
     :length 0.2
-    :time 45.2}
+    :time 44}
    {:pitch 74
     :length 0.2
-    :time 45.4}
+    :time 44.2}
    {:pitch 71
     :length 0.2
-    :time 45.6}
+    :time 44.4}
+   {:pitch 69
+    :length 0.2
+    :time 44.6}
+   {:pitch 71
+    :length 1
+    :time 44.8}
    {:pitch 69
     :length 0.2
     :time 45.8}
    {:pitch 71
-    :length 1
+    :length 0.2
     :time 46}
    {:pitch 69
     :length 0.2
-    :time 47}
-   {:pitch 71
-    :length 0.2
-    :time 47.2}
+    :time 46.2}
    {:pitch 69
     :length 0.2
-    :time 47.4}
-   {:pitch 69
-    :length 0.2
-    :time 47.6}
+    :time 46.4}
    {:pitch 67
     :length 0.5
-    :time 47.8}
+    :time 46.6}
    {:pitch 67
     :length 0.2
-    :time 48.2}
+    :time 47}
    {:pitch 60
     :length 0.5
-    :time 48.4}
+    :time 47.2}
    {:pitch 72
     :length 0.5
-    :time 48.8}
+    :time 47.6}
    {:pitch 71
     :length 1
-    :time 49.2}
+    :time 48}
    {:pitch 72
     :length 0.5
-    :time 71.6}
+    :time 70.4}
    {:pitch 72
     :length 0.5
-    :time 72}
+    :time 70.8}
    {:pitch 72
     :length 1
-    :time 72.4}
+    :time 71.2}
    {:pitch 72
     :length 0.5
-    :time 73}
+    :time 71.8}
    {:pitch 71
     :length 1
-    :time 73.4}
+    :time 72.2}
    {:pitch 72
     :length 0.5
-    :time 74.8}
+    :time 73.6}
    {:pitch 72
+    :length 0.5
+    :time 74}
+   {:pitch 72
+    :length 1
+    :time 74.4}
+   {:pitch 74
     :length 0.5
     :time 75.2}
-   {:pitch 72
-    :length 1
-    :time 75.6}
-   {:pitch 74
-    :length 0.5
-    :time 76.4}
    {:pitch 76
     :length 0.2
-    :time 76.8}
+    :time 75.6}
    {:pitch 74
     :length 1
-    :time 77}
+    :time 75.8}
    {:pitch 74
     :length 0.2
-    :time 78.6}
+    :time 77.4}
    {:pitch 74
     :length 0.2
-    :time 78.8}
+    :time 77.6}
    {:pitch 72
     :length 0.2
-    :time 79}
+    :time 77.8}
    {:pitch 71
     :length 0.2
-    :time 79.2}
+    :time 78}
    {:pitch 69
     :length 1
-    :time 79.4}
+    :time 78.2}
    {:pitch 67
     :length 0.2
-    :time 80.2}
+    :time 79}
    {:pitch 69
+    :length 0.2
+    :time 79.2}
+   {:pitch 72
+    :length 0.2
+    :time 79.4}
+   {:pitch 74
+    :length 0.2
+    :time 79.6}
+   {:pitch 76
+    :length 1
+    :time 79.8}
+   {:pitch 74
     :length 0.2
     :time 80.4}
    {:pitch 72
     :length 0.2
-    :time 80.6}
-   {:pitch 74
-    :length 0.2
     :time 80.8}
-   {:pitch 76
-    :length 1
-    :time 81}
-   {:pitch 74
-    :length 0.2
-    :time 81.6}
-   {:pitch 72
-    :length 0.2
-    :time 82}
    {:pitch 74
     :length 0.4
-    :time 82.2}
+    :time 81}
    {:pitch 72
     :length 0.1
-    :time 82.6}
+    :time 81.4}
    {:pitch 74
     :length 0.1
-    :time 82.7}
+    :time 81.5}
    {:pitch 72
     :length 0.8
-    :time 82.8}
+    :time 81.6}
    {:pitch 69
     :length 0.2
-    :time 83.4}
+    :time 82.2}
    {:pitch 68
     :length 0.1
-    :time 83.64}
+    :time 82.44}
    {:pitch 67
     :length 0.1
-    :time 83.67999999999999}
+    :time 82.47999999999999}
    {:pitch 66
     :length 0.1
-    :time 83.72}
+    :time 82.52000000000001}
    {:pitch 65
     :length 0.1
-    :time 83.76}
+    :time 82.56}
    {:pitch 64
     :length 0.1
-    :time 83.8}
+    :time 82.6}
    {:pitch 63
     :length 0.1
-    :time 83.84}
+    :time 82.64}
    {:pitch 62
     :length 0.1
-    :time 83.88}
+    :time 82.67999999999999}
    {:pitch 61
     :length 0.1
-    :time 83.92}
+    :time 82.72}
    {:pitch 60
     :length 0.1
-    :time 83.96000000000001}
+    :time 82.76}
    {:pitch 59
     :length 0.1
-    :time 84}
+    :time 82.8}
    {:pitch 58
     :length 0.1
-    :time 84.03999999999999}
+    :time 82.84}
    {:pitch 58
     :length 0.1
-    :time 84.08}
+    :time 82.88}
    {:pitch 58
     :length 0.2
-    :time 84.12}
+    :time 82.92}
    {:pitch 72
     :length 0.2
-    :time 84.4}
+    :time 83.2}
    {:pitch 72
     :length 0.2
-    :time 84.6}
+    :time 83.4}
    {:pitch 72
     :length 0.2
-    :time 85}
+    :time 83.8}
    {:pitch 69
     :length 0.2
+    :time 84.2}
+   {:pitch 67
+    :length 0.2
+    :time 84.6}
+   {:pitch 69
+    :length 0.1
+    :time 84.8}
+   {:pitch 68
+    :length 0.1
+    :time 84.84}
+   {:pitch 67
+    :length 0.1
+    :time 84.88}
+   {:pitch 66
+    :length 0.1
+    :time 84.92}
+   {:pitch 65
+    :length 0.1
+    :time 84.96000000000001}
+   {:pitch 64
+    :length 0.1
+    :time 85}
+   {:pitch 63
+    :length 0.1
+    :time 85.03999999999999}
+   {:pitch 62
+    :length 0.1
+    :time 85.08}
+   {:pitch 62
+    :length 0.1
+    :time 85.12}
+   {:pitch 62
+    :length 0.1
+    :time 85.16}
+   {:pitch 62
+    :length 0.2
     :time 85.4}
+   {:pitch 64
+    :length 0.2
+    :time 85.6}
    {:pitch 67
     :length 0.2
     :time 85.8}
    {:pitch 69
-    :length 0.1
-    :time 86}
-   {:pitch 68
-    :length 0.1
-    :time 86.03999999999999}
-   {:pitch 67
-    :length 0.1
-    :time 86.08}
-   {:pitch 66
-    :length 0.1
-    :time 86.12}
-   {:pitch 65
-    :length 0.1
-    :time 86.16}
-   {:pitch 64
-    :length 0.1
-    :time 86.2}
-   {:pitch 63
-    :length 0.1
-    :time 86.24}
-   {:pitch 62
-    :length 0.1
-    :time 86.28}
-   {:pitch 62
-    :length 0.1
-    :time 86.32000000000001}
-   {:pitch 62
-    :length 0.1
-    :time 86.36}
-   {:pitch 62
-    :length 0.2
-    :time 86.6}
-   {:pitch 64
-    :length 0.2
-    :time 86.8}
-   {:pitch 67
-    :length 0.2
-    :time 87}
-   {:pitch 69
     :length 0.5
-    :time 87.2}
+    :time 86}
    {:pitch 69
     :length 0.2
-    :time 87.6}
+    :time 86.4}
    {:pitch 71
     :length 0.5
-    :time 87.8}
+    :time 86.6}
    {:pitch 67
     :length 1
-    :time 88.2}
+    :time 87}
    {:pitch 64
     :length 0.2
-    :time 89.2}
+    :time 88}
    {:pitch 62
     :length 0.5
-    :time 89.4}
+    :time 88.2}
    {:pitch 62
     :length 1
-    :time 89.8}
+    :time 88.6}
    {:pitch 64
     :length 0.6
-    :time 92.4}
+    :time 91.2}
    {:pitch 69
     :length 1
-    :time 93}
+    :time 91.8}
    {:pitch 69
     :length 0.4
-    :time 95.2}
+    :time 94}
    {:pitch 69
     :length 0.2
-    :time 95.6}
+    :time 94.4}
    {:pitch 67
     :length 0.6
-    :time 95.8}
+    :time 94.6}
    {:pitch 62
     :length 1
-    :time 96.2}
+    :time 95}
    {:pitch 64
     :length 0.3
-    :time 98.4}
+    :time 97.2}
    {:pitch 65
     :length 0.2
-    :time 98.8}
+    :time 97.6}
    {:pitch 62
     :length 0.2
-    :time 99}
+    :time 97.8}
    {:pitch 57
     :length 0.2
-    :time 99.2}
+    :time 98}
    {:pitch 62
     :length 1
-    :time 99.4}
+    :time 98.2}
    {:pitch 59
     :length 0.2
-    :time 100.8}
+    :time 99.6}
    {:pitch 59
     :length 0.5
-    :time 101}
+    :time 99.8}
    {:pitch 60
     :length 0.5
-    :time 101.4}
+    :time 100.2}
    {:pitch 64
     :length 0.5
-    :time 102}
+    :time 100.8}
    {:pitch 62
     :length 1
-    :time 102.6}
+    :time 101.4}
    {:pitch 71
     :length 0.2
+    :time 104.4}
+   {:pitch 71
+    :length 0.5
+    :time 104.6}
+   {:pitch 71
+    :length 0.5
+    :time 105.2}
+   {:pitch 71
+    :length 0.5
     :time 105.6}
-   {:pitch 71
-    :length 0.5
-    :time 105.8}
-   {:pitch 71
-    :length 0.5
-    :time 106.4}
-   {:pitch 71
-    :length 0.5
-    :time 106.8}
    {:pitch 72
     :length 0.2
-    :time 107.2}
+    :time 106}
    {:pitch 69
     :length 1
-    :time 107.4}
+    :time 106.2}
    {:pitch 69
     :length 0.1
-    :time 109}
+    :time 107.8}
    {:pitch 69
     :length 0.5
-    :time 109.2}
+    :time 108}
    {:pitch 69
     :length 0.5
-    :time 109.6}
+    :time 108.4}
    {:pitch 69
     :length 0.2
-    :time 110}
+    :time 108.8}
    {:pitch 71
     :length 0.2
-    :time 110.2}
+    :time 109}
    {:pitch 69
     :length 0.2
-    :time 110.4}
+    :time 109.2}
    {:pitch 67
     :length 1
-    :time 110.6}
+    :time 109.4}
    {:pitch 67
     :length 0.1
-    :time 112}
+    :time 110.8}
    {:pitch 67
     :length 0.4
-    :time 112.2}
+    :time 111}
    {:pitch 66
     :length 0.3
-    :time 112.6}
+    :time 111.4}
    {:pitch 64
     :length 0.2
-    :time 113}
+    :time 111.8}
    {:pitch 66
     :length 0.5
-    :time 113.2}
+    :time 112}
    {:pitch 64
     :length 1
-    :time 113.8}
+    :time 112.6}
    {:pitch 63
     :length 0.2
-    :time 114.8}
+    :time 113.6}
    {:pitch 64
     :length 0.5
-    :time 115}
+    :time 113.8}
    {:pitch 66
     :length 1
-    :time 115.4}
+    :time 114.2}
    {:pitch 67
     :length 1
-    :time 116.2}
+    :time 115}
    {:pitch 62
     :length 0.2
-    :time 117}
+    :time 115.8}
    {:pitch 64
     :length 0.2
+    :time 116}
+   {:pitch 67
+    :length 0.2
+    :time 116.2}
+   {:pitch 69
+    :length 0.2
+    :time 116.4}
+   {:pitch 71
+    :length 1
+    :time 116.6}
+   {:pitch 69
+    :length 0.3
     :time 117.2}
    {:pitch 67
     :length 0.2
-    :time 117.4}
-   {:pitch 69
-    :length 0.2
     :time 117.6}
-   {:pitch 71
-    :length 1
-    :time 117.8}
-   {:pitch 69
-    :length 0.3
-    :time 118.4}
-   {:pitch 67
-    :length 0.2
-    :time 118.8}
    {:pitch 69
     :length 0.4
+    :time 117.8}
+   {:pitch 67
+    :length 0.1
+    :time 118.2}
+   {:pitch 69
+    :length 0.1
+    :time 118.3}
+   {:pitch 67
+    :length 0.5
+    :time 118.4}
+   {:pitch 64
+    :length 1
     :time 119}
    {:pitch 67
-    :length 0.1
-    :time 119.4}
-   {:pitch 69
-    :length 0.1
-    :time 119.5}
-   {:pitch 67
-    :length 0.5
-    :time 119.6}
-   {:pitch 64
-    :length 1
-    :time 120.2}
-   {:pitch 67
     :length 0.17
-    :time 121.8}
+    :time 120.6}
    {:pitch 55
     :length 0.17
-    :time 121.8}
+    :time 120.6}
    {:pitch 67
     :length 0.17
-    :time 122}
+    :time 120.8}
    {:pitch 55
     :length 0.17
-    :time 122}
+    :time 120.8}
    {:pitch 67
     :length 0.17
-    :time 122.2}
+    :time 121}
    {:pitch 55
     :length 0.17
-    :time 122.2}
+    :time 121}
    {:pitch 66
     :length 0.17
-    :time 122.4}
+    :time 121.2}
    {:pitch 54
     :length 0.17
-    :time 122.4}
+    :time 121.2}
    {:pitch 66
     :length 0.17
-    :time 122.6}
+    :time 121.4}
    {:pitch 54
     :length 0.17
-    :time 122.6}
+    :time 121.4}
    {:pitch 64
     :length 0.5
-    :time 122.8}
+    :time 121.6}
    {:pitch 52
     :length 0.5
-    :time 122.8}
+    :time 121.6}
    {:pitch 76
     :length 0.2
-    :time 123.6}
+    :time 122.4}
    {:pitch 74
     :length 0.2
-    :time 123.8}
+    :time 122.6}
    {:pitch 71
     :length 0.2
-    :time 124}
+    :time 122.8}
    {:pitch 69
     :length 0.4
-    :time 124.2}
+    :time 123}
    {:pitch 71
     :length 0.5
+    :time 123.2}
+   {:pitch 69
+    :length 0.2
+    :time 124.2}
+   {:pitch 71
+    :length 0.2
     :time 124.4}
    {:pitch 69
     :length 0.2
-    :time 125.4}
-   {:pitch 71
-    :length 0.2
-    :time 125.6}
+    :time 124.6}
    {:pitch 69
     :length 0.2
-    :time 125.8}
-   {:pitch 69
-    :length 0.2
-    :time 126}
+    :time 124.8}
    {:pitch 67
     :length 0.4
-    :time 126.2}
+    :time 125}
    {:pitch 67
     :length 0.1
-    :time 126.6}
+    :time 125.4}
    {:pitch 64
     :length 0.4
-    :time 126.8}
+    :time 125.6}
    {:pitch 72
     :length 0.5
-    :time 127.2}
+    :time 126}
    {:pitch 71
     :length 1
-    :time 127.6}
+    :time 126.4}
    {:pitch 72
     :length 0.5
-    :time 150}
+    :time 148.8}
    {:pitch 72
     :length 0.5
-    :time 150.4}
+    :time 149.2}
    {:pitch 72
     :length 1
-    :time 150.8}
+    :time 149.6}
    {:pitch 72
     :length 0.5
-    :time 151.4}
+    :time 150.2}
    {:pitch 71
     :length 1
-    :time 151.8}
+    :time 150.6}
    {:pitch 72
     :length 0.5
-    :time 153.2}
+    :time 152}
    {:pitch 72
     :length 0.5
-    :time 153.6}
+    :time 152.4}
    {:pitch 72
     :length 1
-    :time 154}
+    :time 152.8}
    {:pitch 74
     :length 0.4
-    :time 154.8}
+    :time 153.6}
    {:pitch 76
     :length 0.2
-    :time 155.2}
+    :time 154}
    {:pitch 74
     :length 1
-    :time 155.4}
+    :time 154.2}
    {:pitch 74
     :length 0.2
-    :time 157}
+    :time 155.8}
    {:pitch 74
     :length 0.2
-    :time 157.2}
+    :time 156}
    {:pitch 72
     :length 0.2
-    :time 157.4}
+    :time 156.2}
    {:pitch 71
     :length 0.2
-    :time 157.6}
+    :time 156.4}
    {:pitch 69
     :length 1
-    :time 157.8}
+    :time 156.6}
    {:pitch 67
     :length 0.2
-    :time 158.6}
+    :time 157.4}
    {:pitch 69
     :length 0.2
+    :time 157.6}
+   {:pitch 72
+    :length 0.2
+    :time 157.8}
+   {:pitch 74
+    :length 0.2
+    :time 158}
+   {:pitch 76
+    :length 1
+    :time 158.2}
+   {:pitch 74
+    :length 0.4
     :time 158.8}
    {:pitch 72
     :length 0.2
-    :time 159}
-   {:pitch 74
-    :length 0.2
     :time 159.2}
-   {:pitch 76
-    :length 1
-    :time 159.4}
    {:pitch 74
+    :length 0.4
+    :time 159.4}
+   {:pitch 72
+    :length 0.1
+    :time 159.8}
+   {:pitch 74
+    :length 0.1
+    :time 159.9}
+   {:pitch 72
     :length 0.4
     :time 160}
-   {:pitch 72
-    :length 0.2
+   {:pitch 69
+    :length 0.5
     :time 160.4}
-   {:pitch 74
-    :length 0.4
-    :time 160.6}
-   {:pitch 72
+   {:pitch 68
+    :length 0.1
+    :time 160.84}
+   {:pitch 67
+    :length 0.1
+    :time 160.88}
+   {:pitch 66
+    :length 0.1
+    :time 160.92000000000002}
+   {:pitch 65
+    :length 0.1
+    :time 160.95999999999998}
+   {:pitch 64
     :length 0.1
     :time 161}
-   {:pitch 74
-    :length 0.1
-    :time 161.1}
-   {:pitch 72
-    :length 0.4
-    :time 161.2}
-   {:pitch 69
-    :length 0.5
-    :time 161.6}
-   {:pitch 68
-    :length 0.1
-    :time 162.04000000000002}
-   {:pitch 67
-    :length 0.1
-    :time 162.07999999999998}
-   {:pitch 66
-    :length 0.1
-    :time 162.12}
-   {:pitch 65
-    :length 0.1
-    :time 162.16}
-   {:pitch 64
-    :length 0.1
-    :time 162.2}
    {:pitch 63
     :length 0.1
-    :time 162.24}
+    :time 161.04000000000002}
    {:pitch 62
     :length 0.1
-    :time 162.28}
+    :time 161.07999999999998}
    {:pitch 61
     :length 0.1
-    :time 162.32}
+    :time 161.12}
    {:pitch 60
     :length 0.1
-    :time 162.35999999999999}
+    :time 161.16}
    {:pitch 59
     :length 0.1
-    :time 162.4}
+    :time 161.2}
    {:pitch 58
     :length 0.1
-    :time 162.44}
+    :time 161.24}
    {:pitch 58
     :length 0.1
-    :time 162.48}
+    :time 161.28}
    {:pitch 58
     :length 0.2
-    :time 162.52}
+    :time 161.32}
    {:pitch 72
     :length 0.2
-    :time 162.8}
+    :time 161.6}
    {:pitch 72
     :length 0.5
-    :time 163}
+    :time 161.8}
    {:pitch 72
     :length 0.2
-    :time 163.4}
+    :time 162.2}
    {:pitch 69
     :length 0.2
-    :time 163.8}
+    :time 162.6}
    {:pitch 67
     :length 0.4
-    :time 164.2}
+    :time 163}
    {:pitch 69
     :length 0.2
-    :time 164.4}
+    :time 163.2}
    {:pitch 68
     :length 0.1
-    :time 164.44}
+    :time 163.24}
    {:pitch 67
     :length 0.1
-    :time 164.48}
+    :time 163.28}
    {:pitch 66
     :length 0.1
-    :time 164.52}
+    :time 163.32}
    {:pitch 65
     :length 0.1
-    :time 164.56}
+    :time 163.35999999999999}
    {:pitch 64
     :length 0.1
-    :time 164.6}
+    :time 163.4}
    {:pitch 63
     :length 0.1
-    :time 164.64000000000001}
+    :time 163.44}
    {:pitch 62
     :length 0.1
-    :time 164.68}
+    :time 163.48}
    {:pitch 62
     :length 0.1
-    :time 164.72}
+    :time 163.52}
    {:pitch 62
     :length 0.1
-    :time 164.76}
+    :time 163.56}
    {:pitch 62
     :length 0.2
-    :time 165}
+    :time 163.8}
    {:pitch 64
     :length 0.2
-    :time 165.2}
+    :time 164}
    {:pitch 67
     :length 0.2
-    :time 165.4}
+    :time 164.2}
    {:pitch 69
     :length 0.4
-    :time 165.6}
+    :time 164.4}
    {:pitch 69
     :length 0.2
-    :time 166}
+    :time 164.8}
    {:pitch 71
     :length 0.4
-    :time 166.2}
+    :time 165}
    {:pitch 67
     :length 0.5
-    :time 166.6}
+    :time 165.4}
    {:pitch 64
     :length 0.2
-    :time 167.6}
+    :time 166.4}
    {:pitch 62
     :length 0.4
-    :time 167.8}
+    :time 166.6}
    {:pitch 62
     :length 1
-    :time 168.2}
+    :time 167}
    {:pitch 67
     :length 0.2
-    :time 171.4}
+    :time 170.2}
    {:pitch 69
     :length 0.2
+    :time 170.4}
+   {:pitch 72
+    :length 0.2
+    :time 170.6}
+   {:pitch 74
+    :length 0.2
+    :time 170.8}
+   {:pitch 76
+    :length 0.7
+    :time 171}
+   {:pitch 74
+    :length 0.3
     :time 171.6}
    {:pitch 72
     :length 0.2
-    :time 171.8}
-   {:pitch 74
-    :length 0.2
     :time 172}
-   {:pitch 76
-    :length 0.7
+   {:pitch 74
+    :length 0.4
     :time 172.2}
+   {:pitch 72
+    :length 0.1
+    :time 172.6}
    {:pitch 74
-    :length 0.3
+    :length 0.1
+    :time 172.7}
+   {:pitch 72
+    :length 0.4
     :time 172.8}
-   {:pitch 72
-    :length 0.2
-    :time 173.2}
-   {:pitch 74
-    :length 0.4
-    :time 173.4}
-   {:pitch 72
-    :length 0.1
-    :time 173.8}
-   {:pitch 74
-    :length 0.1
-    :time 173.9}
-   {:pitch 72
-    :length 0.4
-    :time 174}
    {:pitch 69
     :length 0.2
-    :time 174.6}
+    :time 173.4}
    {:pitch 68
     :length 0.1
-    :time 174.84}
+    :time 173.64000000000001}
    {:pitch 67
     :length 0.1
-    :time 174.88}
+    :time 173.68}
    {:pitch 66
     :length 0.1
-    :time 174.92000000000002}
+    :time 173.72}
    {:pitch 65
     :length 0.1
-    :time 174.95999999999998}
+    :time 173.76}
    {:pitch 64
     :length 0.1
-    :time 175}
+    :time 173.8}
    {:pitch 63
     :length 0.1
-    :time 175.04000000000002}
+    :time 173.84}
    {:pitch 62
     :length 0.1
-    :time 175.07999999999998}
+    :time 173.88}
    {:pitch 61
     :length 0.1
-    :time 175.12}
+    :time 173.92000000000002}
    {:pitch 60
     :length 0.1
-    :time 175.16}
+    :time 173.95999999999998}
    {:pitch 59
     :length 0.1
-    :time 175.2}
+    :time 174}
    {:pitch 58
     :length 0.1
-    :time 175.24}
+    :time 174.04000000000002}
    {:pitch 58
     :length 0.1
-    :time 175.28}
+    :time 174.07999999999998}
    {:pitch 58
     :length 0.2
-    :time 175.32}
+    :time 174.12}
    {:pitch 72
     :length 0.2
-    :time 175.6}
+    :time 174.4}
    {:pitch 72
     :length 0.2
-    :time 175.8}
+    :time 174.6}
    {:pitch 72
     :length 0.2
-    :time 176.2}
+    :time 175}
    {:pitch 69
     :length 0.4
+    :time 175.4}
+   {:pitch 67
+    :length 0.2
+    :time 175.8}
+   {:pitch 69
+    :length 0.2
+    :time 176}
+   {:pitch 68
+    :length 0.1
+    :time 176.04000000000002}
+   {:pitch 67
+    :length 0.1
+    :time 176.07999999999998}
+   {:pitch 66
+    :length 0.1
+    :time 176.12}
+   {:pitch 65
+    :length 0.1
+    :time 176.16}
+   {:pitch 64
+    :length 0.1
+    :time 176.2}
+   {:pitch 63
+    :length 0.1
+    :time 176.24}
+   {:pitch 62
+    :length 0.1
+    :time 176.28}
+   {:pitch 62
+    :length 0.1
+    :time 176.32}
+   {:pitch 62
+    :length 0.1
+    :time 176.35999999999999}
+   {:pitch 62
+    :length 0.2
     :time 176.6}
+   {:pitch 64
+    :length 0.2
+    :time 176.8}
    {:pitch 67
     :length 0.2
     :time 177}
    {:pitch 69
     :length 0.2
     :time 177.2}
-   {:pitch 68
-    :length 0.1
-    :time 177.24}
-   {:pitch 67
-    :length 0.1
-    :time 177.28}
-   {:pitch 66
-    :length 0.1
-    :time 177.32}
-   {:pitch 65
-    :length 0.1
-    :time 177.35999999999999}
-   {:pitch 64
-    :length 0.1
-    :time 177.4}
-   {:pitch 63
-    :length 0.1
-    :time 177.44}
-   {:pitch 62
-    :length 0.1
-    :time 177.48}
-   {:pitch 62
-    :length 0.1
-    :time 177.52}
-   {:pitch 62
-    :length 0.1
-    :time 177.56}
-   {:pitch 62
+   {:pitch 69
+    :length 0.2
+    :time 177.6}
+   {:pitch 71
     :length 0.2
     :time 177.8}
-   {:pitch 64
-    :length 0.2
-    :time 178}
    {:pitch 67
     :length 0.2
     :time 178.2}
-   {:pitch 69
+   {:pitch 67
     :length 0.2
-    :time 178.4}
-   {:pitch 69
-    :length 0.2
-    :time 178.8}
-   {:pitch 71
+    :time 178.6}
+   {:pitch 62
     :length 0.2
     :time 179}
-   {:pitch 67
+   {:pitch 62
+    :length 0.2
+    :time 179.2}
+   {:pitch 74
+    :length 0.2
+    :time 179.2}
+   {:pitch 62
     :length 0.2
     :time 179.4}
-   {:pitch 67
+   {:pitch 74
+    :length 0.2
+    :time 179.4}
+   {:pitch 62
+    :length 0.2
+    :time 179.6}
+   {:pitch 74
+    :length 0.2
+    :time 179.6}
+   {:pitch 57
     :length 0.2
     :time 179.8}
-   {:pitch 62
+   {:pitch 69
+    :length 0.2
+    :time 179.8}
+   {:pitch 57
+    :length 0.2
+    :time 180}
+   {:pitch 69
+    :length 0.2
+    :time 180}
+   {:pitch 57
     :length 0.2
     :time 180.2}
-   {:pitch 62
+   {:pitch 69
+    :length 0.2
+    :time 180.2}
+   {:pitch 57
     :length 0.2
     :time 180.4}
-   {:pitch 74
+   {:pitch 69
     :length 0.2
     :time 180.4}
-   {:pitch 62
+   {:pitch 52
     :length 0.2
     :time 180.6}
-   {:pitch 74
+   {:pitch 64
     :length 0.2
     :time 180.6}
-   {:pitch 62
+   {:pitch 52
     :length 0.2
     :time 180.8}
-   {:pitch 74
+   {:pitch 64
     :length 0.2
     :time 180.8}
-   {:pitch 57
+   {:pitch 52
     :length 0.2
     :time 181}
-   {:pitch 69
+   {:pitch 64
     :length 0.2
     :time 181}
-   {:pitch 57
+   {:pitch 52
     :length 0.2
     :time 181.2}
-   {:pitch 69
+   {:pitch 64
     :length 0.2
     :time 181.2}
-   {:pitch 57
-    :length 0.2
-    :time 181.4}
-   {:pitch 69
-    :length 0.2
-    :time 181.4}
-   {:pitch 57
-    :length 0.2
-    :time 181.6}
-   {:pitch 69
-    :length 0.2
-    :time 181.6}
-   {:pitch 52
-    :length 0.2
-    :time 181.8}
-   {:pitch 64
-    :length 0.2
-    :time 181.8}
-   {:pitch 52
-    :length 0.2
-    :time 182}
-   {:pitch 64
-    :length 0.2
-    :time 182}
-   {:pitch 52
-    :length 0.2
-    :time 182.2}
-   {:pitch 64
-    :length 0.2
-    :time 182.2}
-   {:pitch 52
-    :length 0.2
-    :time 182.4}
-   {:pitch 64
-    :length 0.2
-    :time 182.4}
    {:pitch 50
     :length 0.2
-    :time 182.6}
+    :time 181.4}
    {:pitch 62
     :length 0.2
-    :time 182.6}
+    :time 181.4}
    {:pitch 52
     :length 0.2
-    :time 182.8}
+    :time 181.6}
    {:pitch 64
     :length 0.2
-    :time 182.8}
+    :time 181.6}
    {:pitch 50
     :length 0.2
-    :time 183}
+    :time 181.8}
    {:pitch 62
     :length 0.2
-    :time 183}
+    :time 181.8}
    {:pitch 72
     :length 0.2
+    :time 183.2}
+   {:pitch 72
+    :length 0.2
+    :time 183.4}
+   {:pitch 72
+    :length 0.5
+    :time 183.8}
+   {:pitch 74
+    :length 0.5
     :time 184.4}
-   {:pitch 72
-    :length 0.2
-    :time 184.6}
-   {:pitch 72
-    :length 0.5
-    :time 185}
-   {:pitch 74
-    :length 0.5
-    :time 185.6}
    {:pitch 81
     :length 0.5
-    :time 186.8}
+    :time 185.6}
    {:pitch 78
     :length 0.5
-    :time 187.4}
+    :time 186.2}
    {:pitch 76
     :length 0.5
-    :time 188.4}
+    :time 187.2}
    {:pitch 78
     :length 0.5
-    :time 189}
+    :time 187.8}
    {:pitch 74
     :length 0.2
-    :time 190}
+    :time 188.8}
    {:pitch 72
     :length 0.2
-    :time 190.2}
+    :time 189}
    {:pitch 69
     :length 0.2
+    :time 189.4}
+   {:pitch 67
+    :length 0.2
+    :time 190.4}
+   {:pitch 69
+    :length 0.5
     :time 190.6}
    {:pitch 67
-    :length 0.2
-    :time 191.6}
-   {:pitch 69
     :length 0.5
-    :time 191.8}
-   {:pitch 67
-    :length 0.5
-    :time 192.2}
+    :time 191}
    {:pitch 64
     :length 0.5
-    :time 193.2}
+    :time 192}
    {:pitch 62
     :length 1
-    :time 193.8}
+    :time 192.6}
    {:pitch 71
     :length 0.2
-    :time 196.4}
+    :time 195.2}
    {:pitch 74
     :length 0.2
-    :time 196.4}
+    :time 195.2}
    {:pitch 71
+    :length 0.2
+    :time 195.6}
+   {:pitch 74
+    :length 0.2
+    :time 195.6}
+   {:pitch 71
+    :length 0.2
+    :time 196.2}
+   {:pitch 74
+    :length 0.2
+    :time 196.2}
+   {:pitch 71
+    :length 0.2
+    :time 196.6}
+   {:pitch 74
+    :length 0.2
+    :time 196.6}
+   {:pitch 69
     :length 0.2
     :time 196.8}
-   {:pitch 74
+   {:pitch 76
     :length 0.2
     :time 196.8}
-   {:pitch 71
+   {:pitch 69
     :length 0.2
-    :time 197.4}
-   {:pitch 74
+    :time 197.2}
+   {:pitch 76
     :length 0.2
-    :time 197.4}
-   {:pitch 71
+    :time 197.2}
+   {:pitch 69
     :length 0.2
     :time 197.8}
-   {:pitch 74
+   {:pitch 76
     :length 0.2
     :time 197.8}
    {:pitch 69
     :length 0.2
-    :time 198}
+    :time 198.2}
    {:pitch 76
     :length 0.2
-    :time 198}
+    :time 198.2}
    {:pitch 69
     :length 0.2
     :time 198.4}
-   {:pitch 76
+   {:pitch 74
     :length 0.2
     :time 198.4}
    {:pitch 69
     :length 0.2
-    :time 199}
-   {:pitch 76
+    :time 198.8}
+   {:pitch 74
     :length 0.2
-    :time 199}
+    :time 198.8}
    {:pitch 69
     :length 0.2
     :time 199.4}
-   {:pitch 76
+   {:pitch 74
     :length 0.2
     :time 199.4}
    {:pitch 69
     :length 0.2
-    :time 199.6}
+    :time 199.8}
    {:pitch 74
     :length 0.2
-    :time 199.6}
+    :time 199.8}
    {:pitch 69
     :length 0.2
     :time 200}
-   {:pitch 74
+   {:pitch 76
     :length 0.2
     :time 200}
+   {:pitch 69
+    :length 0.2
+    :time 200.2}
+   {:pitch 76
+    :length 0.2
+    :time 200.2}
+   {:pitch 69
+    :length 0.2
+    :time 200.4}
+   {:pitch 76
+    :length 0.2
+    :time 200.4}
    {:pitch 69
     :length 0.2
     :time 200.6}
@@ -5234,35 +5264,23 @@
     :time 201}
    {:pitch 69
     :length 0.2
-    :time 201.2}
-   {:pitch 76
-    :length 0.2
-    :time 201.2}
-   {:pitch 69
-    :length 0.2
     :time 201.4}
-   {:pitch 76
-    :length 0.2
-    :time 201.4}
-   {:pitch 69
-    :length 0.2
-    :time 201.6}
-   {:pitch 76
-    :length 0.2
-    :time 201.6}
-   {:pitch 69
-    :length 0.2
-    :time 201.8}
    {:pitch 74
     :length 0.2
-    :time 201.8}
-   {:pitch 69
+    :time 201.4}
+   {:pitch 71
     :length 0.2
-    :time 202.2}
+    :time 201.6}
    {:pitch 74
     :length 0.2
-    :time 202.2}
-   {:pitch 69
+    :time 201.6}
+   {:pitch 71
+    :length 0.2
+    :time 202}
+   {:pitch 74
+    :length 0.2
+    :time 202}
+   {:pitch 71
     :length 0.2
     :time 202.6}
    {:pitch 74
@@ -5270,64 +5288,76 @@
     :time 202.6}
    {:pitch 71
     :length 0.2
-    :time 202.8}
+    :time 203}
    {:pitch 74
     :length 0.2
-    :time 202.8}
-   {:pitch 71
+    :time 203}
+   {:pitch 69
     :length 0.2
     :time 203.2}
-   {:pitch 74
+   {:pitch 76
     :length 0.2
     :time 203.2}
-   {:pitch 71
+   {:pitch 69
     :length 0.2
-    :time 203.8}
-   {:pitch 74
+    :time 203.6}
+   {:pitch 76
     :length 0.2
-    :time 203.8}
-   {:pitch 71
+    :time 203.6}
+   {:pitch 69
     :length 0.2
     :time 204.2}
-   {:pitch 74
+   {:pitch 76
     :length 0.2
     :time 204.2}
    {:pitch 69
     :length 0.2
-    :time 204.4}
+    :time 204.6}
    {:pitch 76
     :length 0.2
-    :time 204.4}
+    :time 204.6}
    {:pitch 69
     :length 0.2
     :time 204.8}
-   {:pitch 76
+   {:pitch 74
     :length 0.2
     :time 204.8}
    {:pitch 69
     :length 0.2
-    :time 205.4}
-   {:pitch 76
+    :time 205.2}
+   {:pitch 74
     :length 0.2
-    :time 205.4}
+    :time 205.2}
    {:pitch 69
     :length 0.2
     :time 205.8}
-   {:pitch 76
+   {:pitch 74
     :length 0.2
     :time 205.8}
    {:pitch 69
     :length 0.2
-    :time 206}
+    :time 206.2}
    {:pitch 74
     :length 0.2
-    :time 206}
+    :time 206.2}
    {:pitch 69
     :length 0.2
     :time 206.4}
-   {:pitch 74
+   {:pitch 76
     :length 0.2
     :time 206.4}
+   {:pitch 69
+    :length 0.2
+    :time 206.6}
+   {:pitch 76
+    :length 0.2
+    :time 206.6}
+   {:pitch 69
+    :length 0.2
+    :time 206.8}
+   {:pitch 76
+    :length 0.2
+    :time 206.8}
    {:pitch 69
     :length 0.2
     :time 207}
@@ -5342,35 +5372,23 @@
     :time 207.4}
    {:pitch 69
     :length 0.2
-    :time 207.6}
-   {:pitch 76
-    :length 0.2
-    :time 207.6}
-   {:pitch 69
-    :length 0.2
     :time 207.8}
-   {:pitch 76
-    :length 0.2
-    :time 207.8}
-   {:pitch 69
-    :length 0.2
-    :time 208}
-   {:pitch 76
-    :length 0.2
-    :time 208}
-   {:pitch 69
-    :length 0.2
-    :time 208.2}
    {:pitch 74
     :length 0.2
-    :time 208.2}
-   {:pitch 69
+    :time 207.8}
+   {:pitch 71
     :length 0.2
-    :time 208.6}
+    :time 208}
    {:pitch 74
     :length 0.2
-    :time 208.6}
-   {:pitch 69
+    :time 208}
+   {:pitch 71
+    :length 0.2
+    :time 208.4}
+   {:pitch 74
+    :length 0.2
+    :time 208.4}
+   {:pitch 71
     :length 0.2
     :time 209}
    {:pitch 74
@@ -5378,64 +5396,76 @@
     :time 209}
    {:pitch 71
     :length 0.2
-    :time 209.2}
+    :time 209.4}
    {:pitch 74
     :length 0.2
-    :time 209.2}
-   {:pitch 71
+    :time 209.4}
+   {:pitch 69
     :length 0.2
     :time 209.6}
-   {:pitch 74
+   {:pitch 76
     :length 0.2
     :time 209.6}
-   {:pitch 71
+   {:pitch 69
     :length 0.2
-    :time 210.2}
-   {:pitch 74
+    :time 210}
+   {:pitch 76
     :length 0.2
-    :time 210.2}
-   {:pitch 71
+    :time 210}
+   {:pitch 69
     :length 0.2
     :time 210.6}
-   {:pitch 74
+   {:pitch 76
     :length 0.2
     :time 210.6}
    {:pitch 69
     :length 0.2
-    :time 210.8}
+    :time 211}
    {:pitch 76
     :length 0.2
-    :time 210.8}
+    :time 211}
    {:pitch 69
     :length 0.2
     :time 211.2}
-   {:pitch 76
+   {:pitch 74
     :length 0.2
     :time 211.2}
    {:pitch 69
     :length 0.2
-    :time 211.8}
-   {:pitch 76
+    :time 211.6}
+   {:pitch 74
     :length 0.2
-    :time 211.8}
+    :time 211.6}
    {:pitch 69
     :length 0.2
     :time 212.2}
-   {:pitch 76
+   {:pitch 74
     :length 0.2
     :time 212.2}
    {:pitch 69
     :length 0.2
-    :time 212.4}
+    :time 212.6}
    {:pitch 74
     :length 0.2
-    :time 212.4}
+    :time 212.6}
    {:pitch 69
     :length 0.2
     :time 212.8}
-   {:pitch 74
+   {:pitch 76
     :length 0.2
     :time 212.8}
+   {:pitch 69
+    :length 0.2
+    :time 213}
+   {:pitch 76
+    :length 0.2
+    :time 213}
+   {:pitch 69
+    :length 0.2
+    :time 213.2}
+   {:pitch 76
+    :length 0.2
+    :time 213.2}
    {:pitch 69
     :length 0.2
     :time 213.4}
@@ -5450,434 +5480,404 @@
     :time 213.8}
    {:pitch 69
     :length 0.2
-    :time 214}
-   {:pitch 76
-    :length 0.2
-    :time 214}
-   {:pitch 69
-    :length 0.2
     :time 214.2}
-   {:pitch 76
-    :length 0.2
-    :time 214.2}
-   {:pitch 69
-    :length 0.2
-    :time 214.4}
-   {:pitch 76
-    :length 0.2
-    :time 214.4}
-   {:pitch 69
-    :length 0.2
-    :time 214.6}
    {:pitch 74
     :length 0.2
-    :time 214.6}
-   {:pitch 69
-    :length 0.2
-    :time 215}
-   {:pitch 74
-    :length 0.2
-    :time 215}
-   {:pitch 69
-    :length 0.2
-    :time 215.4}
-   {:pitch 74
-    :length 0.2
-    :time 215.4}])
+    :time 214.2}])
 (def pulse-2
   [{:pitch 64
     :length 0.5
-    :time 42}
+    :time 40.8}
    {:pitch 72
     :length 0.5
-    :time 42.4}
+    :time 41.2}
    {:pitch 71
     :length 0.5
-    :time 42.8}
+    :time 41.6}
    {:pitch 64
     :length 0.5
-    :time 48.4}
+    :time 47.2}
    {:pitch 72
     :length 0.5
-    :time 48.8}
+    :time 47.6}
    {:pitch 71
     :length 0.5
-    :time 49.2}
+    :time 48}
    {:pitch 69
     :length 0.15
-    :time 51.4}
+    :time 50.2}
    {:pitch 72
     :length 0.5
-    :time 51.4}
+    :time 50.2}
    {:pitch 69
     :length 0.15
-    :time 51.6}
+    :time 50.4}
    {:pitch 72
     :length 0.5
-    :time 51.6}
+    :time 50.4}
    {:pitch 69
     :length 0.5
-    :time 51.8}
+    :time 50.6}
    {:pitch 72
     :length 0.5
-    :time 51.8}
+    :time 50.6}
    {:pitch 69
     :length 0.5
-    :time 52.4}
+    :time 51.2}
    {:pitch 72
     :length 0.5
-    :time 52.4}
+    :time 51.2}
    {:pitch 71
     :length 0.5
-    :time 52.6}
+    :time 51.4}
    {:pitch 74
     :length 0.5
-    :time 52.6}
+    :time 51.4}
    {:pitch 67
     :length 0.5
-    :time 53}
+    :time 51.8}
    {:pitch 71
     :length 0.5
-    :time 53}
+    :time 51.8}
    {:pitch 67
     :length 0.5
-    :time 54.6}
+    :time 53.4}
    {:pitch 71
     :length 0.5
-    :time 54.6}
+    :time 53.4}
    {:pitch 67
     :length 0.5
-    :time 54.8}
+    :time 53.6}
    {:pitch 71
     :length 0.5
-    :time 54.8}
+    :time 53.6}
    {:pitch 64
     :length 0.5
-    :time 55.2}
+    :time 54}
    {:pitch 67
     :length 0.5
-    :time 55.2}
+    :time 54}
    {:pitch 67
     :length 0.5
-    :time 55.6}
+    :time 54.4}
    {:pitch 71
     :length 0.5
-    :time 55.6}
+    :time 54.4}
    {:pitch 66
     :length 0.5
-    :time 56.2}
+    :time 55}
    {:pitch 69
     :length 0.5
-    :time 56.2}
+    :time 55}
    {:pitch 64
+    :length 0.3
+    :time 57.6}
+   {:pitch 60
+    :length 0.3
+    :time 57.8}
+   {:pitch 57
+    :length 0.3
+    :time 58}
+   {:pitch 64
+    :length 0.5
+    :time 58.2}
+   {:pitch 60
+    :length 0.3
+    :time 58.6}
+   {:pitch 57
     :length 0.3
     :time 58.8}
-   {:pitch 60
-    :length 0.3
+   {:pitch 62
+    :length 0.5
     :time 59}
-   {:pitch 57
-    :length 0.3
-    :time 59.2}
-   {:pitch 64
+   {:pitch 59
     :length 0.5
     :time 59.4}
-   {:pitch 60
+   {:pitch 57
     :length 0.3
     :time 59.8}
-   {:pitch 57
-    :length 0.3
+   {:pitch 55
+    :length 0.5
     :time 60}
+   {:pitch 66
+    :length 0.3
+    :time 60.8}
    {:pitch 62
-    :length 0.5
-    :time 60.2}
-   {:pitch 59
-    :length 0.5
-    :time 60.6}
-   {:pitch 57
     :length 0.3
     :time 61}
-   {:pitch 55
-    :length 0.5
+   {:pitch 59
+    :length 0.3
     :time 61.2}
    {:pitch 66
-    :length 0.3
-    :time 62}
-   {:pitch 62
-    :length 0.3
-    :time 62.2}
-   {:pitch 59
-    :length 0.3
-    :time 62.4}
-   {:pitch 66
     :length 0.5
-    :time 62.6}
+    :time 61.4}
    {:pitch 62
     :length 0.5
-    :time 63}
+    :time 61.8}
    {:pitch 64
     :length 0.5
-    :time 63.4}
+    :time 62.2}
    {:pitch 68
     :length 0.5
-    :time 64}
+    :time 62.8}
    {:pitch 69
     :length 0.5
-    :time 64.4}
+    :time 63.2}
    {:pitch 71
     :length 0.5
-    :time 64.8}
+    :time 63.6}
    {:pitch 64
+    :length 0.3
+    :time 64}
+   {:pitch 60
+    :length 0.3
+    :time 64.2}
+   {:pitch 57
+    :length 0.3
+    :time 64.4}
+   {:pitch 64
+    :length 0.5
+    :time 64.6}
+   {:pitch 60
+    :length 0.3
+    :time 65}
+   {:pitch 57
     :length 0.3
     :time 65.2}
-   {:pitch 60
-    :length 0.3
+   {:pitch 62
+    :length 0.5
     :time 65.4}
-   {:pitch 57
-    :length 0.3
-    :time 65.6}
-   {:pitch 64
+   {:pitch 59
     :length 0.5
     :time 65.8}
-   {:pitch 60
+   {:pitch 57
     :length 0.3
     :time 66.2}
-   {:pitch 57
-    :length 0.3
+   {:pitch 55
+    :length 0.5
     :time 66.4}
+   {:pitch 66
+    :length 0.3
+    :time 67.2}
    {:pitch 62
-    :length 0.5
-    :time 66.6}
-   {:pitch 59
-    :length 0.5
-    :time 67}
-   {:pitch 57
     :length 0.3
     :time 67.4}
-   {:pitch 55
-    :length 0.5
+   {:pitch 59
+    :length 0.3
     :time 67.6}
    {:pitch 66
-    :length 0.3
-    :time 68.4}
-   {:pitch 62
-    :length 0.3
-    :time 68.6}
-   {:pitch 59
-    :length 0.3
-    :time 68.8}
-   {:pitch 66
     :length 0.5
-    :time 69}
+    :time 67.8}
    {:pitch 62
     :length 0.5
-    :time 69.4}
+    :time 68.2}
    {:pitch 64
     :length 0.5
-    :time 69.8}
+    :time 68.6}
    {:pitch 68
     :length 0.5
-    :time 70.4}
+    :time 69.2}
    {:pitch 69
     :length 0.5
-    :time 70.8}
+    :time 69.6}
    {:pitch 71
     :length 0.5
-    :time 71.2}
+    :time 70}
    {:pitch 64
     :length 0.5
-    :time 120.4}
+    :time 119.2}
    {:pitch 72
     :length 0.5
-    :time 120.8}
+    :time 119.6}
    {:pitch 71
     :length 0.5
-    :time 121.2}
+    :time 120}
    {:pitch 64
     :length 0.5
-    :time 126.8}
+    :time 125.6}
    {:pitch 72
     :length 0.5
-    :time 127.2}
+    :time 126}
    {:pitch 71
     :length 0.5
-    :time 127.6}
+    :time 126.4}
    {:pitch 69
     :length 0.15
-    :time 129.8}
+    :time 128.6}
    {:pitch 72
     :length 0.5
-    :time 129.8}
+    :time 128.6}
    {:pitch 69
     :length 0.15
-    :time 130}
+    :time 128.8}
    {:pitch 72
     :length 0.5
-    :time 130}
+    :time 128.8}
    {:pitch 69
     :length 0.5
-    :time 130.2}
+    :time 129}
    {:pitch 72
     :length 0.5
-    :time 130.2}
+    :time 129}
    {:pitch 69
     :length 0.5
-    :time 130.8}
+    :time 129.6}
    {:pitch 72
     :length 0.5
-    :time 130.8}
+    :time 129.6}
    {:pitch 71
     :length 0.5
-    :time 131}
+    :time 129.8}
    {:pitch 74
     :length 0.5
-    :time 131}
+    :time 129.8}
    {:pitch 67
     :length 0.5
-    :time 131.4}
+    :time 130.2}
    {:pitch 71
     :length 0.5
-    :time 131.4}
+    :time 130.2}
    {:pitch 67
     :length 0.5
-    :time 133}
+    :time 131.8}
    {:pitch 71
     :length 0.5
-    :time 133}
+    :time 131.8}
    {:pitch 67
     :length 0.5
-    :time 133.2}
+    :time 132}
    {:pitch 71
     :length 0.5
-    :time 133.2}
+    :time 132}
    {:pitch 64
     :length 0.5
-    :time 133.6}
+    :time 132.4}
    {:pitch 67
     :length 0.5
-    :time 133.6}
+    :time 132.4}
    {:pitch 67
     :length 0.5
-    :time 134}
+    :time 132.8}
    {:pitch 71
     :length 0.5
-    :time 134}
+    :time 132.8}
    {:pitch 66
     :length 0.5
-    :time 134.6}
+    :time 133.4}
    {:pitch 69
     :length 0.5
-    :time 134.6}
+    :time 133.4}
    {:pitch 64
+    :length 0.3
+    :time 136}
+   {:pitch 60
+    :length 0.3
+    :time 136.2}
+   {:pitch 57
+    :length 0.3
+    :time 136.4}
+   {:pitch 64
+    :length 0.5
+    :time 136.6}
+   {:pitch 60
+    :length 0.3
+    :time 137}
+   {:pitch 57
     :length 0.3
     :time 137.2}
-   {:pitch 60
-    :length 0.3
+   {:pitch 62
+    :length 0.5
     :time 137.4}
-   {:pitch 57
-    :length 0.3
-    :time 137.6}
-   {:pitch 64
+   {:pitch 59
     :length 0.5
     :time 137.8}
-   {:pitch 60
+   {:pitch 57
     :length 0.3
     :time 138.2}
-   {:pitch 57
-    :length 0.3
+   {:pitch 55
+    :length 0.5
     :time 138.4}
+   {:pitch 66
+    :length 0.3
+    :time 139.2}
    {:pitch 62
-    :length 0.5
-    :time 138.6}
-   {:pitch 59
-    :length 0.5
-    :time 139}
-   {:pitch 57
     :length 0.3
     :time 139.4}
-   {:pitch 55
-    :length 0.5
+   {:pitch 59
+    :length 0.3
     :time 139.6}
    {:pitch 66
-    :length 0.3
-    :time 140.4}
-   {:pitch 62
-    :length 0.3
-    :time 140.6}
-   {:pitch 59
-    :length 0.3
-    :time 140.8}
-   {:pitch 66
     :length 0.5
-    :time 141}
+    :time 139.8}
    {:pitch 62
     :length 0.5
-    :time 141.4}
+    :time 140.2}
    {:pitch 64
     :length 0.5
-    :time 141.8}
+    :time 140.6}
    {:pitch 68
     :length 0.5
-    :time 142.4}
+    :time 141.2}
    {:pitch 69
     :length 0.5
-    :time 142.8}
+    :time 141.6}
    {:pitch 71
     :length 0.5
-    :time 143.2}
+    :time 142}
    {:pitch 64
+    :length 0.3
+    :time 142.4}
+   {:pitch 60
+    :length 0.3
+    :time 142.6}
+   {:pitch 57
+    :length 0.3
+    :time 142.8}
+   {:pitch 64
+    :length 0.5
+    :time 143}
+   {:pitch 60
+    :length 0.3
+    :time 143.4}
+   {:pitch 57
     :length 0.3
     :time 143.6}
-   {:pitch 60
-    :length 0.3
+   {:pitch 62
+    :length 0.5
     :time 143.8}
-   {:pitch 57
-    :length 0.3
-    :time 144}
-   {:pitch 64
+   {:pitch 59
     :length 0.5
     :time 144.2}
-   {:pitch 60
+   {:pitch 57
     :length 0.3
     :time 144.6}
-   {:pitch 57
-    :length 0.3
-    :time 144.8}
-   {:pitch 62
-    :length 0.5
-    :time 145}
-   {:pitch 59
-    :length 0.5
-    :time 145.4}
-   {:pitch 57
-    :length 0.3
-    :time 145.8}
    {:pitch 55
     :length 0.5
-    :time 146}
+    :time 144.8}
    {:pitch 66
     :length 0.3
-    :time 146.8}
+    :time 145.6}
    {:pitch 62
     :length 0.3
-    :time 147}
+    :time 145.8}
    {:pitch 59
     :length 0.3
-    :time 147.2}
+    :time 146}
    {:pitch 66
     :length 0.5
-    :time 147.4}
+    :time 146.2}
    {:pitch 62
     :length 0.5
-    :time 147.8}
+    :time 146.6}
    {:pitch 64
     :length 0.5
-    :time 148.2}
+    :time 147}
    {:pitch 68
     :length 0.5
-    :time 148.8}
+    :time 147.6}
    {:pitch 69
     :length 0.5
-    :time 149.2}
+    :time 148}
    {:pitch 71
     :length 0.5
-    :time 149.6}])
+    :time 148.4}])

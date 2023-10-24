@@ -11,7 +11,11 @@ let editorState = EditorState.create({
   (pulse0-seq pulse-0)
   (pulse2-seq pulse-2)])
 
-(spit-wav "confuzion.wav" (mix buffers))`,
+(spit-wav "confuzion.wav" (mix buffers))
+
+(spit-wav "drums1.wav" (drum-seq (drums1 0)))
+
+(drum-seq [{:time 0 :length 1}])`,
   extensions: [basicSetup, clojure()]
 })
 
