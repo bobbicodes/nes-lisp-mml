@@ -5,7 +5,9 @@ import { clojure } from "./src/clojure"
 import confuzion from './confuzion.json'
 
 let editorState = EditorState.create({
-  doc: `(play (tri-seq bass))`,
+  doc: `(play (tri-seq bass))
+(play (drum-seq drums))
+(spit-wav "drums.wav" (drum-seq drums))`,
   extensions: [basicSetup, clojure()]
 })
 

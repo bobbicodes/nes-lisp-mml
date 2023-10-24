@@ -1191,6 +1191,29 @@ function tri_seq(notes) {
     return audioBuffer(buf)
 }
 
+function drum_seq(notes) {
+    const lastNote = notes.reduce(
+        (prev, current) => {
+          return prev.get("ʞtime") > current.get("ʞtime") ? prev : current
+        }
+      );
+    const bufferLength = Math.ceil(ctx.sampleRate * lastNote.get("ʞtime") + lastNote.get("ʞlength"))
+    // initialize buffer of proper length filled with zeros
+    let buf = Array(bufferLength).fill(0)
+    // loop through notes
+    for (let i = 0; i < notes.length; i++) {
+        // loop through the note's samples
+        const start = Math.floor(notes[i].get("ʞtime") * ctx.sampleRate)
+        const duration = Math.ceil(notes[i].get("ʞlength") * ctx.sampleRate)
+         for (let j = 0; j < duration; j++) {
+            x = feedback(x)
+            var multiplier = 1 - (j * (1 / duration))
+            buf[start+j] = multiplier * 0.4 * x / 32767 * 2 - 0.4
+        }
+    }
+    return audioBuffer(buf)
+}
+
 function _noise(note, dur) {
     var bufferSize = ctx.sampleRate * dur;
     var noise = []
@@ -1387,6 +1410,7 @@ export var ns = {
     'sq': sq,
     'tri': tri,
     'tri-seq': tri_seq,
+    'drum-seq': drum_seq,
     'sample-rate': ctx.sampleRate,
     'channel-data': channelData,
     'pitch->rate': pitchToRate,
