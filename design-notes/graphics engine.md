@@ -103,7 +103,7 @@
   (for [[color path] kitty]
     (append-path path color))
   ```
-- ![image.png](../assets/image_1696286088370_0.png)
+- ![image.png](./assets/image_1696286088370_0.png)
 - I seem to remember an article linked in one of Zach Oakes' game engines for implementing the isometric view. Let's see if I can find that
 - Found it! Wow, what a memory of mine http://clintbellanger.net/articles/isometric_math/
 - It was in the play.cljc dungeon-crawler example: https://github.com/oakes/play-cljc-examples/blob/7a2428e49ab394cb8df2f5aebb22c2adc4ee98a3/dungeon-crawler/src/dungeon_crawler/tiles.cljc#L20

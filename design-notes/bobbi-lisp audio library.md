@@ -395,15 +395,15 @@
 - Just using the triangle as-is produces its frequency at note 79, 784Hz. How does that make any sense?
 - If 1 second is 48000 samples, each sample is 2.0833333333333333E-5 seconds. So one 32 sample wave takes 6.666666666666666E-4 seconds. Dividing 1 by that gives a frequency of... `1500.0`. wow. So it is true. I'm having trouble accepting that though... Doesn't that mean that you'd have to skip samples?
 - I generated a 1500Hz triangle wave in Audacity:
-- ![image.png](../assets/image_1696023612437_0.png)
+- ![image.png](./assets/image_1696023612437_0.png)
 - So I guess it is true? Here is 2000Hz
-- ![image.png](../assets/image_1696023545141_0.png)
+- ![image.png](./assets/image_1696023545141_0.png)
 - I had no idea that you have to remove samples at high frequencies.
 - Indeed, at 3k, only half of the samples are present:
-- ![image.png](../assets/image_1696023820978_0.png)
+- ![image.png](./assets/image_1696023820978_0.png)
 - My intuition about calculating frequencies was way off. I had naively assumed that you could get any note simply by deciding how many times to repeat each value, but in fact only a limited set of tones naturally fall on even counts. For the rest, it needs to be interpolated or something.
 - So I think this is where we need a *function* that will calculate the amplitude for each sample.
-- ![image.png](../assets/image_1696025130932_0.png)
+- ![image.png](./assets/image_1696025130932_0.png)
 - I suppose the way to do it is simply adjust the playback rate then.
 - Really I should just make a buffer with a single cycle, and a note will repeat it at the proper rate for the proper time.
 - This will be a real test for the Web Audio API, which supposedly has the ability to schedule audio accurately at the sample level.
@@ -841,9 +841,9 @@
 - But what about the end of the note?
 - Actually we could handle it in a similar fashion.
 - Done! This is the waveform compared to no envelope:
-- ![image.png](../assets/image_1696479727353_0.png)
+- ![image.png](./assets/image_1696479727353_0.png)
 - It's interesting to see the original wave - it's completely seamless
-- ![image.png](../assets/image_1696490520375_0.png)
+- ![image.png](./assets/image_1696490520375_0.png)
 - Here's the function that I ended up with - I'm very happy with it, I think it has even more attitude than the NES:
 - ```js
   function tri(note, dur) {
@@ -935,7 +935,7 @@
 	- Castlevania
 - I should really just focus on Asterix because I've already selected it and analyzed it some. But I could benefit from some kind of emulator that will output which channels/notes are being activated if one exists. I kind of seem to remember one... unless I'm thinking of the SID player...
 - Wow! NSFPlay has exactly what I want! It has a *keyboard* dialog which displays all the track information:
-- ![image.png](../assets/image_1696544923527_0.png)
+- ![image.png](./assets/image_1696544923527_0.png)
 - Time expansion slows it way the fuck down without making it sound weird... it's even better than the chipplayerjs.
 - As good as it is, it's still not abundantly clear which noise pitches are being used for the drums, which is what I really want to know. But I still have to implement them anyway.
 - So how do I want to implement the noise pitches?
