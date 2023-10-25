@@ -1,6 +1,5 @@
 export const ctx = new AudioContext();
 
-
 export var x = 1
 export function feedback(x) {
     var f = (x & 1) ^ (x >> 1 & 1)
@@ -56,22 +55,6 @@ export function quantizeTri(sample) {
     }
 }
 
-export function tri(note, dur) {
-    const freq = midiToFreq(note)
-    let buf = []
-    for (let i = 0; i < ctx.sampleRate * dur; i++) {
-        var q = 0.8 * quantizeTri(triangleWave(1 / ctx.sampleRate * i, 1 / freq))
-        if (i < 150) {
-            buf.push(q / (500 / i))
-        } else if (i > (ctx.sampleRate * dur) - 200) {
-            buf.push(q / (500 / (ctx.sampleRate * dur - i)))
-        } else {
-            buf.push(q)
-        }
-    }
-    return audioBuffer(buf)
-}
-
 export function tri_seq(notes) {
     const lastNote = notes.reduce(
         (prev, current) => {
@@ -120,35 +103,6 @@ export function drum_seq(notes) {
             var multiplier = 1 - (j * (1 / duration))
             buf[start + j] = multiplier * (0.25 * x / 32767 * 2 - 0.25)
         }
-    }
-    return audioBuffer(buf)
-}
-
-export function _noise(note, dur) {
-    var bufferSize = ctx.sampleRate * dur;
-    var noise = []
-    for (let i = 0; i < bufferSize; i++) {
-        x = feedback(x)
-        noise.push(0.4 * x / 32767 * 2 - 1)
-    }
-    return audioBuffer(noise)
-}
-
-export function fade(buf) {
-    var data = buf.getChannelData(0)
-    for (let i = 0; i < data.length; i++) {
-        var multiplier = 1 - (i * (1 / data.length))
-        data[i] = data[i] * multiplier
-    }
-    return audioBuffer(data)
-}
-
-export function _pulse0(note, dur) {
-    const freq = midiToFreq(note)
-    var bufferSize = ctx.sampleRate * dur;
-    var buf = []
-    for (let i = 0; i < bufferSize; i++) {
-        buf.push(0.1 * pulse0[Math.floor(i / (1 / (freq / (ctx.sampleRate / 8)))) % 8])
     }
     return audioBuffer(buf)
 }

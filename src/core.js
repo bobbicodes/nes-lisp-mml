@@ -1071,11 +1071,8 @@ function clearSVG() {
 export var ns = {
     'env': printEnv,
     'map-tiles': mapTiles,
-    'fade': audio.fade,
-    'noise': audio._noise,
     'play': audio.playBuffer,
     'mix': audio.mix,
-    'tri': audio.tri,
     'tri-seq': audio.tri_seq,
     'drum-seq': audio.drum_seq,
     'pulse0-seq': audio.pulse0_seq,
