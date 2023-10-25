@@ -924,6 +924,10 @@ function _round(n) {
     return Math.round(n)
 }
 
+function _sin(n) {
+    return Math.sin(n)
+}
+
 function _sqrt(n) {
     return Math.sqrt(n)
 }
@@ -1135,6 +1139,7 @@ export var ns = {
     'Math/sqrt': _sqrt,
     'Math/pow': _pow,
     'Math/abs': _abs,
+    'sin': _sin,
     'abs': _abs,
     'Integer/toBinaryString': dec2bin,
     'str/trim': _trim,
