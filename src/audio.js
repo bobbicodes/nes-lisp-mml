@@ -153,7 +153,7 @@ export function _pulse0(note, dur) {
     return audioBuffer(buf)
 }
 
-export function pulse0_seq(notes) {
+function pulse(notes, wave) {
     const lastNote = notes.reduce(
         (prev, current) => {
             return prev.get("ʞtime") > current.get("ʞtime") ? prev : current
@@ -177,7 +177,7 @@ export function pulse0_seq(notes) {
                         / (ctx.sampleRate / 8)))) % 8
                 ]
             } else {
-                amplitude = 0.1 * pulse0[Math.floor(j / (1 / (freq / (ctx.sampleRate / 8)))) % 8]
+                amplitude = 0.1 * wave[Math.floor(j / (1 / (freq / (ctx.sampleRate / 8)))) % 8]
             }
             const duration = ctx.sampleRate * notes[i].get("ʞlength")
             if (j < 150) {
@@ -192,121 +192,20 @@ export function pulse0_seq(notes) {
     return audioBuffer(buf)
 }
 
-export function _pulse1(note, dur) {
-    const freq = midiToFreq(note)
-    var bufferSize = ctx.sampleRate * dur;
-    var buf = []
-    for (let i = 0; i < bufferSize; i++) {
-        buf.push(0.1 * pulse1[Math.floor(i / (1 / (freq / (ctx.sampleRate / 8)))) % 8])
-    }
-    return audioBuffer(buf)
+export function pulse0_seq(notes) {
+    return pulse(notes, pulse0)
 }
 
 export function pulse1_seq(notes) {
-    const lastNote = notes.reduce(
-        (prev, current) => {
-            return prev.get("ʞtime") > current.get("ʞtime") ? prev : current
-        }
-    );
-    const bufferLength = Math.ceil(ctx.sampleRate * lastNote.get("ʞtime") + lastNote.get("ʞlength"))
-    // initialize buffer of proper length filled with zeros
-    let buf = Array(bufferLength).fill(0)
-    // loop through notes
-    for (let i = 0; i < notes.length; i++) {
-        // loop through the note's samples
-        const start = Math.floor(notes[i].get("ʞtime") * ctx.sampleRate)
-        for (let j = 0; j < Math.ceil(notes[i].get("ʞlength") * ctx.sampleRate); j++) {
-            const freq = midiToFreq(notes[i].get("ʞpitch"))
-            const amplitude = 0.1 * pulse1[Math.floor(j / (1 / (freq / (ctx.sampleRate / 8)))) % 8]
-            const duration = ctx.sampleRate * notes[i].get("ʞlength")
-            if (j < 150) {
-                buf[start + j] = amplitude / (500 / j)
-            } else if (j > duration - 200) {
-                buf[start + j] = amplitude / (500 / (duration - j))
-            } else {
-                buf[start + j] = amplitude
-            }
-        }
-    }
-    return audioBuffer(buf)
-}
-
-export function _pulse2(note, dur) {
-    const freq = midiToFreq(note)
-    var bufferSize = ctx.sampleRate * dur;
-    var buf = []
-    for (let i = 0; i < bufferSize; i++) {
-        buf.push(0.1 * pulse2[Math.floor(i / (1 / (freq / (ctx.sampleRate / 8)))) % 8])
-    }
-    return audioBuffer(buf)
+    return pulse(notes, pulse1)
 }
 
 export function pulse2_seq(notes) {
-    const lastNote = notes.reduce(
-        (prev, current) => {
-            return prev.get("ʞtime") > current.get("ʞtime") ? prev : current
-        }
-    );
-    const bufferLength = Math.ceil(ctx.sampleRate * lastNote.get("ʞtime") + lastNote.get("ʞlength"))
-    // initialize buffer of proper length filled with zeros
-    let buf = Array(bufferLength).fill(0)
-    // loop through notes
-    for (let i = 0; i < notes.length; i++) {
-        // loop through the note's samples
-        const start = Math.floor(notes[i].get("ʞtime") * ctx.sampleRate)
-        for (let j = 0; j < Math.ceil(notes[i].get("ʞlength") * ctx.sampleRate); j++) {
-            const freq = midiToFreq(notes[i].get("ʞpitch"))
-            const amplitude = 0.1 * pulse2[Math.floor(j / (1 / (freq / (ctx.sampleRate / 8)))) % 8]
-            const duration = ctx.sampleRate * notes[i].get("ʞlength")
-            if (j < 150) {
-                buf[start + j] = amplitude / (500 / j)
-            } else if (j > duration - 200) {
-                buf[start + j] = amplitude / (500 / (duration - j))
-            } else {
-                buf[start + j] = amplitude
-            }
-        }
-    }
-    return audioBuffer(buf)
-}
-
-export function _pulse3(note, dur) {
-    const freq = midiToFreq(note)
-    var bufferSize = ctx.sampleRate * dur;
-    var buf = []
-    for (let i = 0; i < bufferSize; i++) {
-        buf.push(0.1 * pulse3[Math.floor(i / (1 / (freq / (ctx.sampleRate / 8)))) % 8])
-    }
-    return audioBuffer(buf)
+    return pulse(notes, pulse2)
 }
 
 export function pulse3_seq(notes) {
-    const lastNote = notes.reduce(
-        (prev, current) => {
-            return prev.get("ʞtime") > current.get("ʞtime") ? prev : current
-        }
-    );
-    const bufferLength = Math.ceil(ctx.sampleRate * lastNote.get("ʞtime") + lastNote.get("ʞlength"))
-    // initialize buffer of proper length filled with zeros
-    let buf = Array(bufferLength).fill(0)
-    // loop through notes
-    for (let i = 0; i < notes.length; i++) {
-        // loop through the note's samples
-        const start = Math.floor(notes[i].get("ʞtime") * ctx.sampleRate)
-        for (let j = 0; j < Math.ceil(notes[i].get("ʞlength") * ctx.sampleRate); j++) {
-            const freq = midiToFreq(notes[i].get("ʞpitch"))
-            const amplitude = 0.1 * pulse3[Math.floor(j / (1 / (freq / (ctx.sampleRate / 8)))) % 8]
-            const duration = ctx.sampleRate * notes[i].get("ʞlength")
-            if (j < 150) {
-                buf[start + j] = amplitude / (500 / j)
-            } else if (j > duration - 200) {
-                buf[start + j] = amplitude / (500 / (duration - j))
-            } else {
-                buf[start + j] = amplitude
-            }
-        }
-    }
-    return audioBuffer(buf)
+    return pulse(notes, pulse3)
 }
 
 function addSemitone(rate) {
