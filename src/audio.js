@@ -162,42 +162,8 @@ export function pulse3_seq(notes) {
     return pulse(notes, pulse3)
 }
 
-function addSemitone(rate) {
-    return rate * Math.pow(2, 1 / 12)
-}
-
-function subSemitone(rate) {
-    return rate * Math.pow(2, -1 / 12)
-}
-
-function incRate(semis) {
-    return Array(semis).fill(1).reduce(addSemitone)
-}
-
-function decRate(semis) {
-    return Array(semis).fill(1).reduce(subSemitone)
-}
-
-export function pitchToRate(midiNum) {
-    if (midiNum > 66) {
-        return incRate(midiNum - 66)
-    } else {
-        return decRate(68 - midiNum)
-    }
-}
-
 export function midiToFreq(n) {
     return 440 * Math.pow(2, (n - 69) / 12)
-}
-
-export function playBufferAt(buffer, pitch, time) {
-    ctx.resume()
-    const buf = new AudioBufferSourceNode(ctx, {
-        buffer: buffer,
-    });
-    buf.playbackRate.setValueAtTime(pitchToRate(pitch), ctx.currentTime)
-    buf.connect(ctx.destination);
-    buf.start(time);
 }
 
 export function make_download(name, abuffer) {

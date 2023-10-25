@@ -1081,7 +1081,6 @@ export var ns = {
     'pulse3-seq': audio.pulse3_seq,
     'sample-rate': audio.ctx.sampleRate,
     'channel-data': audio.channelData,
-    'pitch->rate': audio.pitchToRate,
     'midi->freq': audio.midiToFreq,
     'current-time': audio.ctx.currentTime,
     'ctx-state': audio.ctx.state,
