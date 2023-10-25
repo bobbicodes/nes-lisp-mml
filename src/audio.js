@@ -1,5 +1,7 @@
 export const ctx = new AudioContext();
 
+// Linear feedback shift register for noise channel
+// https://www.nesdev.org/wiki/APU_Noise
 export var x = 1
 export function feedback(x) {
     var f = (x & 1) ^ (x >> 1 & 1)
@@ -38,12 +40,15 @@ export function playBuffer(buffer, time) {
     noise.start(ctx.currentTime + time || 0);
 }
 
+// Normal triangle function
 export function triangleWave(time, period) {
     const f = Math.floor((time / period) + (1 / 2))
     const a = Math.abs(2 * (time / period - f))
     return (2 * a) - 1
 }
 
+// NES triangle is a 4-bit stairstep
+// https://www.nesdev.org/wiki/APU_Triangle
 export function quantizeTri(sample) {
     let vals = [0.75, 0.625, 0.5, 0.375, 0.25, 0.125, 0, -0.125, -0.25, -0.375, -0.5, -0.625, -0.75, -0.875, -1, 0.875, 1]
     while (vals.length != 0) {
