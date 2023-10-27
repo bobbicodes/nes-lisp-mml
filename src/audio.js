@@ -131,7 +131,7 @@ function pulse(notes, wave) {
             if (notes[i].has("ʞvibrato")) {
                 const speed = notes[i].get("ʞvibrato").get("ʞspeed")
                 const depth = notes[i].get("ʞvibrato").get("ʞdepth")
-                amplitude = 0.1 * pulse0[
+                amplitude = 0.15 * pulse0[
                     Math.floor(j / (1 / ((freq + (Math.sin(j * (0.0001 * speed)) / (10 / depth)))
                         / (ctx.sampleRate / 8)))) % 8
                 ]
