@@ -81,12 +81,12 @@
           (mmbass7 216)))
 
 (defn mmdrums [time]
-  [{:length 0.07 :time (* tempo (+ time 0))}
-   {:length 0.07 :time (* tempo (+ time 0.5))}
-   {:length 0.07 :time (* tempo (+ time 0.75))}
-   {:length 0.4 :time (* tempo (+ time 1))}
-   {:length 0.07 :time (* tempo (+ time 1.5))}
-   {:length 0.07 :time (* tempo (+ time 1.75))}])
+  [{:length 0.05 :time (* tempo (+ time 0))}
+   {:length 0.05 :time (* tempo (+ time 0.5))}
+   {:length 0.05 :time (* tempo (+ time 0.75))}
+   {:length 0.2 :time (* tempo (+ time 1))}
+   {:length 0.05 :time (* tempo (+ time 1.5))}
+   {:length 0.05 :time (* tempo (+ time 1.75))}])
 
 (defn mm-lead1 [time]
   (into []
@@ -102,7 +102,7 @@
                [23.5 0.5 61] [24.5 0.5 61] [25 0.5 68] [25.5 0.5 71] [26 1.5 70]
                [27.5 0.5 61] [28.5 0.5 61] [29 0.5 68] [29.5 0.5 71] [30 1.5 70]
                [31 0.5 75] [31.5 0.5 76]]]
-          {:time (* tempo (+ beat time)) :length (* tempo length) :pitch note})))
+          {:time (* tempo (+ beat time)) :length (* tempo (* 0.9 length)) :pitch note})))
 
 (defn mm-lead1a [time]
   (into []

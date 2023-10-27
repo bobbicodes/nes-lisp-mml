@@ -106,7 +106,7 @@ export function drum_seq(notes) {
         for (let j = 0; j < duration; j++) {
             x = feedback(x)
             var multiplier = 1 - (j * (1 / duration))
-            buf[start + j] = multiplier * (0.2 * x / 32767 * 2 - 0.25)
+            buf[start + j] = multiplier * (0.3 * x / 32767 * 2 - 0.25)
         }
     }
     return audioBuffer(buf)
