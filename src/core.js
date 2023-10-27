@@ -5,6 +5,7 @@ import { repl_env, evalString, PRINT, EVAL } from './interpreter.js';
 import zip from './clj/zip.clj?raw'
 import * as audio from './audio.js'
 import { mapTiles } from './tiles.js';
+import factory from '../tiles/factory.svg'
 
 export var out_buffer = ""
 

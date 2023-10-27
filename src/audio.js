@@ -75,7 +75,7 @@ export function tri_seq(notes) {
         const start = Math.floor(notes[i].get("ʞtime") * ctx.sampleRate)
         for (let j = 0; j < Math.ceil(notes[i].get("ʞlength") * ctx.sampleRate); j++) {
             const freq = midiToFreq(notes[i].get("ʞpitch"))
-            const amplitude = 0.6 * quantizeTri(triangleWave(1 / ctx.sampleRate * j, 1 / freq))
+            const amplitude = 0.5 * quantizeTri(triangleWave(1 / ctx.sampleRate * j, 1 / freq))
             const duration = ctx.sampleRate * notes[i].get("ʞlength")
             if (j < 150) {
                 buf[start + j] = amplitude / (500 / j)
@@ -106,7 +106,7 @@ export function drum_seq(notes) {
         for (let j = 0; j < duration; j++) {
             x = feedback(x)
             var multiplier = 1 - (j * (1 / duration))
-            buf[start + j] = multiplier * (0.25 * x / 32767 * 2 - 0.25)
+            buf[start + j] = multiplier * (0.2 * x / 32767 * 2 - 0.25)
         }
     }
     return audioBuffer(buf)
@@ -136,7 +136,7 @@ function pulse(notes, wave) {
                         / (ctx.sampleRate / 8)))) % 8
                 ]
             } else {
-                amplitude = 0.1 * wave[Math.floor(j / (1 / (freq / (ctx.sampleRate / 8)))) % 8]
+                amplitude = 0.15 * wave[Math.floor(j / (1 / (freq / (ctx.sampleRate / 8)))) % 8]
             }
             const duration = ctx.sampleRate * notes[i].get("ʞlength")
             if (j < 150) {
