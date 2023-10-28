@@ -75,7 +75,15 @@ export function tri_seq(notes) {
         const start = Math.floor(notes[i].get("ʞtime") * ctx.sampleRate)
         for (let j = 0; j < Math.ceil(notes[i].get("ʞlength") * ctx.sampleRate); j++) {
             const freq = midiToFreq(notes[i].get("ʞpitch"))
-            const amplitude = 0.5 * quantizeTri(triangleWave(1 / ctx.sampleRate * j, 1 / freq))
+            let amplitude
+            if (notes[i].has("ʞvibrato")) {
+                const speed = notes[i].get("ʞvibrato").get("ʞspeed")
+                const depth = notes[i].get("ʞvibrato").get("ʞdepth")
+                amplitude = 0.5 * quantizeTri(triangleWave(1 / ctx.sampleRate * j,
+                    1 / freq + (Math.sin(j * (0.0001 * speed)) / (1000000 / depth))))
+            } else {
+                amplitude = 0.5 * quantizeTri(triangleWave(1 / ctx.sampleRate * j, 1 / freq))
+            }
             const duration = ctx.sampleRate * notes[i].get("ʞlength")
             if (j < 150) {
                 buf[start + j] = amplitude / (500 / j)
