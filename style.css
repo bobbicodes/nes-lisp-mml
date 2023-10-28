@@ -38,3 +38,11 @@ textarea {
   background-color: #ff86eb;
   color: rgb(0, 0, 0);
 }
+
+.cm-tooltip-autocomplete.cm-tooltip.cm-tooltip-below {
+  background-color: rgb(138, 205, 250)
+}
+
+.cm-tooltip-autocomplete.cm-tooltip.cm-tooltip-above {
+  background-color: rgb(138, 205, 250)
+}
