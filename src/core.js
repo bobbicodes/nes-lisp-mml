@@ -1068,6 +1068,10 @@ function clearSVG() {
     svgGroup.innerHTML = ""
 }
 
+function hex2bin(hex){
+    return (parseInt(hex, 16).toString(2)).padStart(8, '0');
+}
+
 // types.ns is namespace of type functions
 export var ns = {
     'env': printEnv,
@@ -1077,6 +1081,8 @@ export var ns = {
     'tri-seq': audio.tri_seq,
     'drum-seq': audio.drum_seq,
     'pulse0-seq': audio.pulse0_seq,
+    'hex2bin': hex2bin,
+    'dec2bin': dec2bin,
     'pulse1-seq': audio.pulse1_seq,
     'pulse2-seq': audio.pulse2_seq,
     'pulse3-seq': audio.pulse3_seq,
