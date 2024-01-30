@@ -1068,8 +1068,74 @@ function clearSVG() {
     svgGroup.innerHTML = ""
 }
 
-function hex2bin(hex){
+function hex2bin(hex) {
     return (parseInt(hex, 16).toString(2)).padStart(8, '0');
+}
+
+// this will take a hex string, i.e. "FFFF0F00000000000000000000000000"
+// outputs a string of binary digits: "111111111111111111110000000000000000000 ..."
+
+export function hex2DPCM(hex) {
+    const bytes = hex.match(/../g);
+    const le = bytes.map(x => x.split("").reverse().join(""))
+    return le.map(x => hex2bin(x)).join("")
+}
+
+// takes a hex string, outputs a string of binary digits repeated n times
+
+function loopDPCM(s, n) {
+    return (hex2DPCM(s).repeat(n)).split('').map(x => parseInt(x, 10))
+}
+
+/* function dpcm2pcm(vals, rate) {
+   let samplesLeft = rate
+   let output = 32
+   let result = [32]
+   while (vals.length > 0) {
+    if (samplesLeft === 0) {
+        result.push(output)
+        samplesLeft = rate
+    } else {
+        let v = vals[0] == 0 ? output - 1 : output + 1
+        if (v > 1 && v < 63) {
+            output = v
+        }
+        result.push(output)
+        vals.shift()
+        samplesLeft -= 1
+    }
+   }
+   return scalePCM(result)
+} */
+
+function dpcm2pcm(vals, rate) {
+    let newFrames = []
+    for (let i = 0; i < vals.length; i++) {
+        newFrames.push(Math.floor(i * rate))
+    }
+    let output = 32
+    let result = [32]
+    for (let i = 0; i < (vals.length * rate); i++) {
+        if (i === newFrames[0]) {
+            vals.shift()
+            newFrames.shift()
+        }
+        let v = vals[0] == 0 ? output - 1 : output + 1
+        if (v > 1 && v < 63) {
+            output = v
+        }
+        result.push(output)
+    }
+    return scalePCM(result)
+}
+
+function scalePCM(vals) {
+    let scaled = []
+    for (let i = 0; i < vals.length; i++) {
+        scaled.push(((vals[i] / 64) * 2) - 1)
+        //console.log("scaling " + vals[i] + " to " + (((vals[i]/64) * 2) - 1))
+    }
+    return scaled
 }
 
 // types.ns is namespace of type functions
@@ -1083,6 +1149,9 @@ export var ns = {
     'pulse0-seq': audio.pulse0_seq,
     'hex2bin': hex2bin,
     'dec2bin': dec2bin,
+    'hex2dpcm': hex2DPCM,
+    'loop-dpcm': loopDPCM,
+    'dpcm2pcm': dpcm2pcm,
     'pulse1-seq': audio.pulse1_seq,
     'pulse2-seq': audio.pulse2_seq,
     'pulse3-seq': audio.pulse3_seq,
