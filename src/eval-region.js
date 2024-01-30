@@ -92,12 +92,14 @@ export function tryEval(s) {
     }
 }
 
-//const docBar = document.getElementById("results")
-//const docBar2 = document.getElementById("doc")
+const docBar = document.getElementById("results")
+const docBar2 = document.getElementById("doc")
 
-/* export function updateDocBar(view) {
+export function updateDocBar(view) {
+    //console.log("update docbar")
     var pos = view.state.selection.main.head
     var sym = cursorNodeString(view.state)
+    console.log(Object.hasOwn(repl_env.data, sym))
     if (syntaxTree(view.state).resolveInner(pos, -1).name === 'Symbol'
         && Object.hasOwn(repl_env.data, sym)
         && Object.hasOwn(repl_env.data[sym], '__meta__')
@@ -116,11 +118,11 @@ export function tryEval(s) {
         docBar.innerHTML = ''
         docBar2.innerHTML = ''
     }
-} */
+}
 
 export const clearEval = (view) => {
     var pos = view.state.selection.main.head
-    //updateDocBar(view)
+    updateDocBar(view)
     const parent = view.dom.parentElement.id
     if (parent === 'app' && lastEditorEvaluated === 'app') {
         var previousDoc = codeBeforeEval

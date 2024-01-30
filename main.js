@@ -2,7 +2,7 @@ import './style.css'
 import { EditorView, basicSetup } from 'codemirror'
 import { EditorState } from '@codemirror/state'
 import { clojure } from "./src/clojure"
-import confuzion from './confuzion.json'
+import { updateDocBar } from "./src/eval-region";
 
 let editorState = EditorState.create({
   doc: `(def saw "FFFF0F00000000000000000000000000")
@@ -15,3 +15,5 @@ let view = new EditorView({
   state: editorState,
   parent: document.querySelector('#app')
 })
+
+document.querySelector('#app').onclick = (e) => updateDocBar(view)
