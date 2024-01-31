@@ -7,7 +7,9 @@ import { updateDocBar } from "./src/eval-region";
 let editorState = EditorState.create({
   doc: `(def saw "FFFF0F00000000000000000000000000")
 
-(play (audio-buffer (dpcm2pcm (loop-dpcm saw 500) 2.5)))`,
+(play (audio-buffer (dpcm2pcm (loop-dpcm saw 500) 2.5)))
+
+(play (drum-seq [{:length 1 :time 0 :pitch 15}]))`,
   extensions: [basicSetup, clojure()]
 })
 

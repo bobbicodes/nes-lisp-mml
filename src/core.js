@@ -1087,27 +1087,6 @@ function loopDPCM(s, n) {
     return (hex2DPCM(s).repeat(n)).split('').map(x => parseInt(x, 10))
 }
 
-/* function dpcm2pcm(vals, rate) {
-   let samplesLeft = rate
-   let output = 32
-   let result = [32]
-   while (vals.length > 0) {
-    if (samplesLeft === 0) {
-        result.push(output)
-        samplesLeft = rate
-    } else {
-        let v = vals[0] == 0 ? output - 1 : output + 1
-        if (v > 1 && v < 63) {
-            output = v
-        }
-        result.push(output)
-        vals.shift()
-        samplesLeft -= 1
-    }
-   }
-   return scalePCM(result)
-} */
-
 function dpcm2pcm(vals, rate) {
     let newFrames = []
     for (let i = 0; i < vals.length; i++) {
