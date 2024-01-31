@@ -109,12 +109,25 @@ export function drum_seq(notes) {
     // loop through notes
     for (let i = 0; i < notes.length; i++) {
         // loop through the note's samples
+        const pitch = notes[i].get("ʞpitch")
         const start = Math.floor(notes[i].get("ʞtime") * ctx.sampleRate)
         const duration = Math.ceil(notes[i].get("ʞlength") * ctx.sampleRate)
+        let newFrames = []
+        for (let i = 0; i < duration; i++) {
+            newFrames.push(Math.floor(i * pitch))
+        }
         for (let j = 0; j < duration; j++) {
-            x = feedback(x)
-            var multiplier = 1 - (j * (1 / duration))
-            buf[start + j] = multiplier * (0.3 * x / 32767 * 2 - 0.25)
+            if (pitch < 1) {
+                let ticks = (1 - pitch) * 10
+                while (ticks > 0) {
+                    x = feedback(x)
+                    ticks--
+                }
+            } else if (j === newFrames[0]) {
+                x = feedback(x)
+                newFrames.shift()
+            }
+            buf[start + j] = 0.2 * x / 32767 * 2 - 0.25
         }
     }
     return audioBuffer(buf)

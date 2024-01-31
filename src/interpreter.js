@@ -330,7 +330,7 @@ function addDoc(sym, arglists, doc) {
     repl_env.data[sym].__meta__ = meta_map
 }
 
-/* addDoc('iterate', '[f x]', "Returns a lazy sequence of x, (f x), (f (f x)) etc. f must be free of side-effects")
+addDoc('iterate', '[f x]', "Returns a lazy sequence of x, (f x), (f (f x)) etc. f must be free of side-effects")
 addDoc('true?', '[x]', "Returns true if x is the value true, false otherwise.")
 addDoc('false?', '[x]', 'Returns true if x is the value false, false otherwise.')
 addDoc('ratio?', '[n]', 'Returns true if n is a Ratio')
@@ -436,4 +436,7 @@ addDoc('set/union', '([] [s1] [s1 s2] [s1 s2 & sets])', 'Return a set that is th
 addDoc('set/intersection', '([s1] [s1 s2] [s1 s2 & sets])', 'Return a set that is the intersection of the input sets')
 addDoc('set/difference', '([s1] [s1 s2] [s1 s2 & sets])', 'Return a set that is the first set without elements of the remaining sets')
 addDoc('set/symmetric-difference', '[s1 s2]', "Returns a set that is the symmetric difference of the input sets.")
- */
+addDoc('audio-buffer', '[values]', "Takes a sequence of numbers from -1 to 1, and outputs an AudioBuffer.")
+addDoc('play', '[buffer time]', "Takes an AudioBuffer and an optional start time in seconds (defaults to 0, or immediately), and plays it through the default audio out.")
+addDoc('dpcm2pcm', '[values rate]', "Takes a sequence of DPCM inputs consisting of zeros and ones, and a rate by which to detune the resulting sequence of PCM values. A rate of 1 outputs the sample unchanged, and a rate of 2 will play it at half speed.")
+addDoc('loop-dpcm', '[hex n]', "Takes a string of hex bytes representing little-endian binary values, and outputs a sequence of zeros and ones looped n times.")
