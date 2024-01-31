@@ -5,9 +5,10 @@ import { clojure } from "./src/clojure"
 import { updateDocBar } from "./src/eval-region";
 
 let editorState = EditorState.create({
-  doc: `(def saw "FFFF0F00000000000000000000000000")
-
-(play (audio-buffer (dpcm2pcm (loop-dpcm saw 500) 2.5)))
+  doc: `(play (audio-buffer (dpcm2pcm (loop-dpcm (dpcm-0) 1) 3)))
+(play (audio-buffer (dpcm2pcm (loop-dpcm (dpcm-1) 1) 3)))
+(play (audio-buffer (dpcm2pcm (loop-dpcm (dpcm-2) 1) 3)))
+(play (audio-buffer (dpcm2pcm (loop-dpcm (dpcm-3) 1) 3)))
 
 (play (drum-seq [{:length 1 :time 0 :pitch 15}]))`,
   extensions: [basicSetup, clojure()]

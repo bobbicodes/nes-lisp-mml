@@ -1117,12 +1117,88 @@ function scalePCM(vals) {
     return scaled
 }
 
+const sample0 = document.getElementById('dpcm0')
+const sample1 = document.getElementById('dpcm1')
+const sample2 = document.getElementById('dpcm2')
+const sample3 = document.getElementById('dpcm3')
+
+let dpcm_0
+let dpcm_1
+let dpcm_2
+let dpcm_3
+
+sample0.onchange = (e) => {
+    const file = sample0.files[0]
+    var reader = new FileReader
+    reader.readAsArrayBuffer(file)
+    reader.onload = (e) => {
+        var buf = new Uint8Array(e.target.result)
+        var hex = Array.from(buf).map((b) => b.toString(16).padStart(2, "0"))
+            .join("").toUpperCase()
+            dpcm_0 = hex
+    }
+}
+
+sample1.onchange = (e) => {
+    const file = sample1.files[0]
+    var reader = new FileReader
+    reader.readAsArrayBuffer(file)
+    reader.onload = (e) => {
+        var buf = new Uint8Array(e.target.result)
+        var hex = Array.from(buf).map((b) => b.toString(16).padStart(2, "0"))
+            .join("").toUpperCase()
+            dpcm_1 = hex
+    }
+}
+
+sample2.onchange = (e) => {
+    const file = sample2.files[0]
+    var reader = new FileReader
+    reader.readAsArrayBuffer(file)
+    reader.onload = (e) => {
+        var buf = new Uint8Array(e.target.result)
+        var hex = Array.from(buf).map((b) => b.toString(16).padStart(2, "0"))
+            .join("").toUpperCase()
+            dpcm_2 = hex
+    }
+}
+
+sample3.onchange = (e) => {
+    const file = sample3.files[0]
+    var reader = new FileReader
+    reader.readAsArrayBuffer(file)
+    reader.onload = (e) => {
+        var buf = new Uint8Array(e.target.result)
+        var hex = Array.from(buf).map((b) => b.toString(16).padStart(2, "0"))
+            .join("").toUpperCase()
+            dpcm_3 = hex
+    }
+}
+
+function dpcm0() {
+    return dpcm_0
+}
+
+function dpcm1() {
+    return dpcm_1
+}
+function dpcm2() {
+    return dpcm_2
+}
+function dpcm3() {
+    return dpcm_3
+}
+
 // types.ns is namespace of type functions
 export var ns = {
     'env': printEnv,
     'map-tiles': mapTiles,
     'play': audio.playBuffer,
     'mix': audio.mix,
+    'dpcm-0': dpcm0,
+    'dpcm-1': dpcm1,
+    'dpcm-2': dpcm2,
+    'dpcm-3': dpcm3,
     'tri-seq': audio.tri_seq,
     'drum-seq': audio.drum_seq,
     'pulse0-seq': audio.pulse0_seq,
