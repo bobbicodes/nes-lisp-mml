@@ -21,6 +21,19 @@ let editorState = EditorState.create({
 
 (def tempo 0.8)
 
+(defn bass-1
+  "Generates eighth-notes alternating between downbeat note d 
+   and upbeat note u starting at time t for n beats."
+  [t d u n]
+  (apply concat
+    (for [beat (range 0 n 0.5)]
+    [[(+ t beat) d] [(+ t beat 0.25) u]])))
+
+(defn bass-2 [t p]
+  [[(+ t 0) p] [(+ t 0.25) p] [(+ t 0.75) p] [(+ t 1.25) p] [(+ t 1.5) p]
+   [(+ t 2) p] [(+ t 2.25) p] [(+ t 2.75) p] [(+ t 3.25) p] [(+ t 3.5) p]])
+
+(do
 (for [[time note]
   [[0 0] [1 0] [1.75 0] [2.25 0] [3 0]
    [4 0] [5 0] [5.75 0] [6.25 0] [7 0]
@@ -30,9 +43,26 @@ let editorState = EditorState.create({
    [14 2] [14.25 3] [14.5 2] [14.75 3] [15 2] [15.25 3] [15.5 2] [15.75 3]
    [16 4] [16.25 5] [16.5 4] [16.75 5] [17 4] [17.25 5] [17.5 4] [17.75 5]
    [18 4] [18.25 5] [18.5 4] [18.75 5] [19 4] [19.25 5] [19.5 4] [19.75 5]]]
-(play (sunsoft-bass note) (* tempo time)))
+(play (sunsoft-bass note) (inc (* tempo time))))
 
-(play (drum-seq [{:length 1 :time 0 :pitch 15}]))`,
+(for [[time note]
+  [[0 5] [0.25 6] [0.5 7] [0.75 8]
+   [1 0] [1.25 0] [1.75 4] [2 0] [2.25 0] [2.75 4]
+   [3 0] [3.25 0] [3.75 4] [4 0] [4.25 5] [4.5 7] [4.75 0]
+   [5 2] [5.25 2] [5.75 4] [6 2] [6.25 2] [6.75 4] 
+   [7 8] [7.25 4] [7.75 4] [8 5] [8.25 4] [8.75 4]]]
+(play (sunsoft-bass note) (inc (* tempo (+ 24 time)))))
+
+(for [[time note]
+  (concat (bass-1 0 0 1 4)
+          (bass-1 4 4 5 8)
+          (bass-1 12 0 1 7.5) [[19.5 9] [19.75 10]]
+          (bass-1 20 0 1 1.5) [[21.5 4] [21.75 5]]
+          (bass-1 22 0 1 1.5) [[23.5 9] [23.75 10]] (bass-1 24 0 1 2)
+          (bass-2 26 0) (bass-2 30 11) (bass-2 34 0) (bass-2 38 11))]
+(play (sunsoft-bass note) (inc (* tempo (+ 33 time))))))
+
+(play (drum-seq [{:time 0 :length 0.1 :pitch 0.35}]))`,
   extensions: [basicSetup, clojure()]
 })
 

@@ -110,6 +110,7 @@ export function drum_seq(notes) {
     for (let i = 0; i < notes.length; i++) {
         // loop through the note's samples
         const pitch = notes[i].get("ʞpitch")
+        const volume = notes[i].get("ʞvolume")
         const start = Math.floor(notes[i].get("ʞtime") * ctx.sampleRate)
         const duration = Math.ceil(notes[i].get("ʞlength") * ctx.sampleRate)
         let newFrames = []
@@ -127,7 +128,7 @@ export function drum_seq(notes) {
                 x = feedback(x)
                 newFrames.shift()
             }
-            buf[start + j] = 0.2 * x / 32767 * 2 - 0.25
+            buf[start + j] = (volume || 1) * 0.2 * x / 32767 * 2 - 0.25
         }
     }
     return audioBuffer(buf)
