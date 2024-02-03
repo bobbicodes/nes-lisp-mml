@@ -271,16 +271,15 @@ export function dpcm_seq(notes) {
     let buf = Array(bufferLength).fill(0)
     // loop through notes
     for (let i = 0; i < notes.length; i++) {
-        console.log("looping through note " + i)
         const start = Math.floor(notes[i].get("ʞtime") * ctx.sampleRate)
-        console.log("start time: " + start)
-        const duration = notes[i].get("ʞbuffer").getChannelData(0).length
-        console.log("duration: " + duration)
+        // set duration to sample length by default
+        let duration = notes[i].get("ʞbuffer").getChannelData(0).length
+        // change duration if note length is given
+        if (notes[i].get("ʞlength")) {
+            duration = notes[i].get("ʞlength") * ctx.sampleRate
+        }
         // loop through the appropriate samples for that note
         for (let j = 0; j < duration; j++) {
-            if (j === 0) {
-                console.log("setting sample " + (start+j))
-            }
             buf[start+j] = notes[i].get("ʞbuffer").getChannelData(0)[j]
         }
     }
