@@ -5,7 +5,12 @@ import { clojure } from "./src/clojure"
 import { updateDocBar } from "./src/eval-region";
 
 let editorState = EditorState.create({
-  doc: `(def sunsoft-bass
+  doc: `(for [[time note]
+  [[0 0] [1 0] [1.75 0] [2.25 0] [3 0]]]
+  {:buffer (audio-buffer (dpcm2pcm (loop-dpcm (dpcm-0) 1) 2.85))
+   :time (* tempo time)})
+
+(def sunsoft-bass
   [(audio-buffer (dpcm2pcm (loop-dpcm (dpcm-0) 1) 2.85))
    (audio-buffer (dpcm2pcm (loop-dpcm (dpcm-0) 1) 1.45))
    (audio-buffer (dpcm2pcm (loop-dpcm (dpcm-1) 1) 2.9))
@@ -62,7 +67,46 @@ let editorState = EditorState.create({
           (bass-2 26 0) (bass-2 30 11) (bass-2 34 0) (bass-2 38 11))]
 (play (sunsoft-bass note) (inc (* tempo (+ 33 time))))))
 
-(play (drum-seq [{:time 0 :length 0.1 :pitch 0.35}]))`,
+(defn instrument 
+  "Takes a time and a sequence of pitch/volume pairs,
+   outputs data expected by the sequence functions."
+  [time seq]
+  (map-indexed (fn [beat [pitch volume]]
+       {:time (* tempo (+ 0.45 time (* 0.0125 beat))) 
+        :length 0.0125 :pitch pitch :volume volume})
+  seq))
+
+(defn kick [time]
+  (instrument time 
+    [[14 14] [12 15] [15 15] [15 15] [15 14]
+     [15 11] [15 8] [15 5] [15 1]]))
+
+(defn hat [time]
+  (instrument time [[12 13] [15 12] [15 9] [12 6] [12 3]]))
+
+(defn snare [time]
+  (instrument time
+    [[14 14] [6 15] [12 15] [12 15] [12 14] [12 13] [12 11] [12 10] 
+     [12 8] [12 6] [12 5] [12 3] [14 14] [14 9] [14 5] [14 4]]))
+
+(defn drum-1 [time]
+  (concat (kick time) (kick (+ time 0.25)) (snare (+ time 0.5))))
+
+(def drums (drum-seq (concat (mapcat hat [0 1 1.75 2.25 3 4 5 5.75 6.25 7])
+                        (drum-1 8) (drum-1 9) (drum-1 10) (drum-1 11) (drum-1 12) (drum-1 13) (drum-1 14)
+                        (kick 14.75) (snare 15) (kick 15.25) (snare 15.5) (kick 15.75))))
+
+(do
+(for [[time note]
+    (concat
+      [[0 0] [1 0] [1.75 0] [2.25 0] [3 0]
+       [4 0] [5 0] [5.75 0] [6.25 0] [7 0]]
+      (bass-1 8 0 1 4)
+      (bass-1 12 2 3 4))]
+(play (sunsoft-bass note) (inc (* tempo time))))
+(play drums))
+
+(play (drum-seq (concat (drum-1 0) (kick 0.75))))`,
   extensions: [basicSetup, clojure()]
 })
 

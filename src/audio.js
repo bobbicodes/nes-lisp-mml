@@ -97,6 +97,8 @@ export function tri_seq(notes) {
     return audioBuffer(buf)
 }
 
+const noisePitch = [105, 53, 26, 20, 13, 10, 6.5, 5.2, 4.13, 3.3, 2.478, 1.652, 1, 0.6, 0.4, 0.35]
+
 export function drum_seq(notes) {
     const lastNote = notes.reduce(
         (prev, current) => {
@@ -115,11 +117,11 @@ export function drum_seq(notes) {
         const duration = Math.ceil(notes[i].get("ʞlength") * ctx.sampleRate)
         let newFrames = []
         for (let i = 0; i < duration; i++) {
-            newFrames.push(Math.floor(i * pitch))
+            newFrames.push(Math.floor(i * noisePitch[pitch]))
         }
         for (let j = 0; j < duration; j++) {
-            if (pitch < 1) {
-                let ticks = (1 - pitch) * 10
+            if (pitch > 12) {
+                let ticks = (1 - noisePitch[pitch]) * 10
                 while (ticks > 0) {
                     x = feedback(x)
                     ticks--
@@ -128,7 +130,7 @@ export function drum_seq(notes) {
                 x = feedback(x)
                 newFrames.shift()
             }
-            buf[start + j] = (volume || 1) * 0.2 * x / 32767 * 2 - 0.25
+            buf[start + j] = (volume / 10 || 1) * 0.2 * x / 32767 * 2 - 0.25
         }
     }
     return audioBuffer(buf)
@@ -255,6 +257,34 @@ function bufferToWave(abuffer, len) {
         view.setUint32(pos, data, true);
         pos += 4;
     }
+}
+
+export function dpcm_seq(notes) {
+    const lastNote = notes.reduce(
+        (prev, current) => {
+            return prev.get("ʞtime") > current.get("ʞtime") ? prev : current
+        }
+    );
+    const lastNoteLength = lastNote.get("ʞbuffer").getChannelData(0).length
+    const bufferLength = Math.ceil(ctx.sampleRate * lastNote.get("ʞtime") + lastNoteLength)
+    // initialize buffer of proper length filled with zeros
+    let buf = Array(bufferLength).fill(0)
+    // loop through notes
+    for (let i = 0; i < notes.length; i++) {
+        console.log("looping through note " + i)
+        const start = Math.floor(notes[i].get("ʞtime") * ctx.sampleRate)
+        console.log("start time: " + start)
+        const duration = notes[i].get("ʞbuffer").getChannelData(0).length
+        console.log("duration: " + duration)
+        // loop through the appropriate samples for that note
+        for (let j = 0; j < duration; j++) {
+            if (j === 0) {
+                console.log("setting sample " + (start+j))
+            }
+            buf[start+j] = notes[i].get("ʞbuffer").getChannelData(0)[j]
+        }
+    }
+    return audioBuffer(buf)
 }
 
 export function mix(buffers) {

@@ -1199,6 +1199,7 @@ export var ns = {
     'dpcm-1': dpcm1,
     'dpcm-2': dpcm2,
     'dpcm-3': dpcm3,
+    'dpcm-seq': audio.dpcm_seq,
     'tri-seq': audio.tri_seq,
     'drum-seq': audio.drum_seq,
     'pulse0-seq': audio.pulse0_seq,

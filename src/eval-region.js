@@ -99,7 +99,6 @@ export function updateDocBar(view) {
     //console.log("update docbar")
     var pos = view.state.selection.main.head
     var sym = cursorNodeString(view.state)
-    console.log(Object.hasOwn(repl_env.data, sym))
     if (syntaxTree(view.state).resolveInner(pos, -1).name === 'Symbol'
         && Object.hasOwn(repl_env.data, sym)
         && Object.hasOwn(repl_env.data[sym], '__meta__')
