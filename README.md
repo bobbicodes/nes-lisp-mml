@@ -7,7 +7,7 @@ This tool faithfully emulates the 4 channels of the [audio processing unit](http
 - Variable duty-cycle pulse waves (for leads)
 - 1-bit DPCM samples
 
-The interpreter is based on [MAL (Make-a-Lisp)](https://github.com/kanaka/mal) and closely follows Clojure (including [destructuring syntax](https://clojure.org/guides/destructuring)).
+Songs are built using a dialect of the Lisp programming language, connected to a custom text editor. It is conceptually similar to [MML](https://en.wikipedia.org/wiki/Music_Macro_Language) (Music Macro Language), but benefits from Lisp's highly structured syntax which facilitates a highly ergonomic style of interactive evaluation. The interpreter is based on [MAL (Make-a-Lisp)](https://github.com/kanaka/mal) and closely follows Clojure including its [destructuring syntax](https://clojure.org/guides/destructuring), powerful sequence processing library and macro system.
 
 Note: The code that loads when the tool starts is the classic title theme from Legend of Zelda, by Koji Kondo. It is purely there as a demo.
 
