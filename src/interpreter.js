@@ -5,9 +5,6 @@ import * as types from './types.js'
 import * as core from './core.js'
 import core_clj from './clj/core.clj?raw'
 import pprint from './clj/pprint.clj?raw'
-import simLispy from './simlispy/core.clj?raw'
-import confuzion from './simlispy/confuzion.clj?raw'
-import megaman from './simlispy/megaman.clj?raw'
 
 // read
 export function READ(str) {
@@ -313,9 +310,6 @@ repl_env.set(types._symbol('*ARGV*'), []);
 // load core.clj
 evalString("(do " + core_clj + ")")
 evalString("(do " + pprint + ")")
-evalString("(do " + simLispy + ")")
-evalString("(do " + confuzion + ")")
-evalString("(do " + megaman + ")")
 
 export const repp = function (str) {
     //return evalString("(do " + str + ")")

@@ -4,8 +4,6 @@ import * as types from './types.js'
 import { repl_env, evalString, PRINT, EVAL } from './interpreter.js';
 import zip from './clj/zip.clj?raw'
 import * as audio from './audio.js'
-import { mapTiles } from './tiles.js';
-import factory from '../tiles/factory.svg'
 
 export var out_buffer = ""
 
@@ -1081,7 +1079,7 @@ export function hex2DPCM(hex) {
     return le.map(x => hex2bin(x)).join("")
 }
 
-// takes a hex string, outputs a string of binary digits repeated n times
+// takes a hex string, outputs an array of binary digits repeated n times
 
 function loopDPCM(s, n) {
     return (hex2DPCM(s).repeat(n)).split('').map(x => parseInt(x, 10))
@@ -1192,7 +1190,6 @@ function dpcm3() {
 // types.ns is namespace of type functions
 export var ns = {
     'env': printEnv,
-    'map-tiles': mapTiles,
     'play': audio.playBuffer,
     'mix': audio.mix,
     'dpcm-0': dpcm0,

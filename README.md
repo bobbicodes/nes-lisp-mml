@@ -1,23 +1,132 @@
-# SimLispy
+# NES Music Engine
 
-City-builder game written in Bobbi-lisp
+This tool faithfully emulates the 4 channels of the [audio processing unit](https://www.nesdev.org/wiki/APU) of the NES. These are:
 
-The data model is based on [SimCity BuildIt](https://en.wikipedia.org/wiki/SimCity:_BuildIt). I found it to be genuinely addictive due to its very carefully tuned slot-machine mechanics. This project [began](https://github.com/porkostomus/simter) as a way to aid in production strategies. I was a new programmer who saw a problem that could be solved with programming, and created an ad-hoc GUI app to solve my problem (managing production of items in the game) without realizing I could have just used a spreadsheet. 
+- White noise (for snares, hihats) produced by linear feedback shift register PRNG, played back at 16 different sample rates
+- 16-step quantized triangle waves (for basslines, kicks, toms)
+- Variable duty-cycle pulse waves (for leads)
+- 1-bit DPCM samples
 
-I recently found that while looking through my old GitHub repos, possibly to clean things up in order to focus? I wouldn't know, because it turned out to be a trap and now I'm not only playing the game again, but writing still new programs to better understand it. Now I'm more interested in studying the game's data model, and possibly shed some light on what characteristics are involved in creating something so endlessly engaging.
+The interpreter is based on [MAL (Make-a-Lisp)](https://github.com/kanaka/mal) and closely follows Clojure (including [destructuring syntax](https://clojure.org/guides/destructuring)).
 
-I actually was under an illusion that I was the only one still playing the game since it came out in 2013. But then I found there is a discord and reddit community for it and my entire worldview had to shift to accomodate such a novel discovery.
+Note: The code that loads when the tool starts is the classic title theme from Legend of Zelda, by Koji Kondo. It is purely there as a demo.
 
-It's very important to talk about FarmVille, from which the game inherits its exploitative mechanics. When I looked into it, I found an article that talked about how Facebook used it to discover where the line is where so many notifications will cause a certain number of users to become annoyed but still effectively increase use, and here we have what we have today... the invasive ad-driven unusable trash heap of an internet. 
+## Evaluation key bindings
 
-I actually hate the game in so many ways and feel like an addict for continuing to play it. In truth it is a form of escape, because in real life I have relatively few resources and little influence it feels great to be put in a position where I have the safety, freedom and power to build communities and see them flourish. For this reason it is especially depressing that even my power fantasy involves engaging with an entity that is literally trying to prey upon me by misleading me and exploiting my weaknesses.
+- Shift+Enter = Eval top-level form
+- Alt/Cmd+Enter = Eval all
+- Ctrl+Enter = Eval at cursor
 
-Oh what's that? You want links?
+## Synth/sequence API
 
-https://kottke.org/16/07/the-behavioral-psychology-behind-freemium-mobile-games
-https://yukaichou.com/gamification-examples/farmville-game-mechanics-winning-addicting/
-https://medium.com/strategy-insider/https-medium-com-sk-sohamkulkarni-the-psychology-of-freemium-games-b66f68a51205
-https://uxplanet.org/the-psychology-of-freemium-games-69024d80273b
-https://www.psychguides.com/interact/the-psychology-of-freemium/
+### Functions returning audio buffers
 
-The way I think that I can turn this power around for "good" would be to use it as a data science project. Can you hear Satan laughing?
+- drum-seq
+- tri
+- pulse0, pulse1, pulse2, pulse3 
+- dpcm-seq
+
+These functions take a sequence (list/vector) of notes. Each note is a map with the following keys:
+
+- pitch (triangle/pulse only) - a MIDI number representing frequency (middle C is 60)
+- length - note duration in seconds
+- time - the number of seconds at which the note occurs
+- vibrato (optional) - applies a sine wave to the frequency
+
+The vibrato key also takes a map with the following keys:
+
+- speed - the rate at which the frequency cycles
+- width - the degree to which the frequency changes
+
+Recommended vibrato values for speed/width are 1-10, but there is no limit (a speed of 300 makes a pretty crazy sound!)
+
+The 4 different pulse waves are:
+
+- pulse0 - 12.5% duty
+- pulse1 - 25% duty
+- pulse2 - 50% duty (square)
+- pulse3 - 75% duty (inverse of pulse1)
+
+The note data can be produced however you like, as long as it ends up a sequence of maps with the right keys.  Here is an example lead from Megaman 2 by Takashi Tateishi:
+
+```clojure
+(defn lead [time]
+  (into []
+    (for [[beat length note]
+          [[0 0.5 61] [1 0.5 61] [1.5 0.5 61] [2 0.5 59]
+           [2.5 1 61] [3.5 0.5 69] [4 1 66] [5 1 66] [6 1 64]
+           [7 1 63] [8 0.5 63] [9 0.5 64] [9.5 0.5 64] 
+           [10.5 0.5 64] [12 0.5 63] [13 0.5 64] [13.5 0.5 64]
+           [14.5 0.5 64] [15.5 0.5 63] [16 0.5 61] [17 0.5 61] 
+           [17.5 0.5 61] [18 0.5 59] [18.5 1 61] [19.5 0.5 69] 
+           [20 1 66] [21 1 66] [22 1 64] [23 1 63] [24.5 0.5 59] 
+           [25 0.5 61] [25.5 0.5 59] [26 3 56]]]
+     {:time (* tempo (+ beat time)) :length (* tempo length) :pitch note})))
+
+(play (pulse0 (lead 0)))
+```
+
+## Mixing, playing and rendering audio files
+
+- mix - takes a sequence of audio buffers, sums them and returns a new buffer
+- play - plays an audio buffer
+- spit-wav - takes a filename and an audio buffer and downloads it
+
+## Tips
+
+The interpreter was designed for education and is not optimized for performance. Generating long sequences of notes (e.g. with `for`) can be particularly slow, however this can be greatly mitigated by saving audio buffers in vars (i.e. with `def`) while composing, as subsequent operations like mixing and playing are extremely fast. This also makes your song easier to read.
+
+### Triangle kicks
+
+A classic technique for creating drums on the NES is to use rapidly descending notes with the triangle channel, like this excerpt from Asterix by Alberto Jose González:
+
+```clojure
+(def tempo 0.6)
+
+(defn triangle-kicks [time root]
+  [{:time (* tempo (+ time 0)) :length 0.1 :pitch (+ root 14)}
+   {:time (* tempo (+ time 0.07)) :length 0.1 :pitch (+ root 10)}
+   {:time (* tempo (+ time 0.09)) :length 0.1 :pitch (+ root 6)}  
+   {:time (* tempo (+ time 0.11)) :length 0.1 :pitch (+ root 4)} 
+   {:time (* tempo (+ time 0.13)) :length 0.3 :pitch root} 
+   {:time (* tempo (+ time 0.5)) :length 0.1 :pitch (+ root 24)} 
+   {:time (* tempo (+ time 0.55)) :length 0.3 :pitch (+ root 12)} 
+   {:time (* tempo (+ time 1)) :length 0.1 :pitch (+ root 22)} 
+   {:time (* tempo (+ time 1.03)) :length 0.1 :pitch (+ root 19)} 
+   {:time (* tempo (+ time 1.06)) :length 0.1 :pitch (+ root 16)} 
+   {:time (* tempo (+ time 1.06)) :length 0.1 :pitch (+ root 6)}  
+   {:time (* tempo (+ time 1.12)) :length 0.3 :pitch (+ root 7)}  
+   {:time (* tempo (+ time 1.5)) :length 0.1 :pitch (+ root 24)} 
+   {:time (* tempo (+ time 1.53)) :length 0.3 :pitch (+ root 12)}])  
+
+(play (tri (apply concat
+  (for [[time note]     
+        [[0 36] [2 36] [4 36] [6 36] [8 36] [10 36] [12 41] [14 41]    
+        [16 43] [18 43] [20 36] [22 36] [24 44] [26 43] [28 36] [30 36]]]   
+    (triangle-kicks time note)))))
+```
+
+Layering these with bursts of white noise creates a satisfying percussive effect.
+
+## Building from source
+
+Requires [Node.js](https://nodejs.org/en/) version 14.18+, 16+.
+
+Download and unzip NES-music-engine-source.zip and run:
+
+```
+npm install
+```
+
+## Develop
+
+```
+npm run dev
+```
+
+## Create optimized build
+
+```
+npm run build
+npm preview
+```
