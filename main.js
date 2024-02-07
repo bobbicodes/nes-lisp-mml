@@ -267,6 +267,7 @@ function runFrame() {
   getSamples(audio.sampleBuffer, audio.samplesPerFrame);
   audio.nextBuffer();
   drawVisual();
+  updateDebugView()
 }
 
 function drawVisual() {

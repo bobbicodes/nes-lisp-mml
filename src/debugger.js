@@ -1,12 +1,25 @@
+import * as cpu from "./cpu";
+import * as apu from "./apu";
+import * as mapper from "./nsfmapper";
+
 function el(id) {
     return document.getElementById(id);
 }
 
 function getRomAdr(adr) {
-    if (header.banks === 2) {
-        return adr & 0x7fff;
-    }
     return adr & 0x3fff;
+}
+
+function getWordRep(val) {
+    return ("000" + val.toString(16)).slice(-4);
+}
+
+function getByteRep(val) {
+    if (val) {
+        return ("0" + val.toString(16)).slice(-2);
+    } else {
+        return "00"
+    }
 }
 
 export function updateDebugView() {
@@ -15,6 +28,7 @@ export function updateDebugView() {
 }
 
 let disScroll = 0;
+let ramScroll = 0;
 const opLengths = [1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 0, 3, 2, 2, 3, 3];
 
 const opNames = [
@@ -38,6 +52,32 @@ const opNames = [
 
 let ramCdl = new Uint8Array(0x8000); // addresses $0-$7fff
 let romCdl = new Uint8Array(0x4000);
+
+function peek(adr) {
+    adr &= 0xffff;
+    if (adr < 0x2000) {
+        // ram
+        return ram[adr & 0x7ff];
+    }
+    if (adr < 0x4000) {
+        // ppu ports
+        return
+    }
+    if (adr < 0x4020) {
+        // apu/misc ports
+        if (adr === 0x4014) {
+            return 0; // not readable
+        }
+        if (adr === 0x4016) {
+            return 0
+        }
+        if (adr === 0x4017) {
+            return 0
+        }
+        return apu.peek(adr);
+    }
+    return mapper.read(adr);
+}
 
 function instrStr(adr) {
     let pc = adr;
