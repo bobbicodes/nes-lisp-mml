@@ -1,4 +1,4 @@
-import {read} from "./cpu";
+import * as cpu from "./cpu";
 
 const dutyCycles = [
     [0, 1, 0, 0, 0, 0, 0, 0],
@@ -364,7 +364,7 @@ function cycleDmc() {
     }
     if (dmcBytesLeft > 0 && dmcSampleEmpty) {
         dmcSampleEmpty = false;
-        dmcSample = read(dmcAddress);
+        dmcSample = cpu.read(dmcAddress);
         dmcAddress++;
         if (dmcAddress === 0x10000) {
             dmcAddress = 0x8000;

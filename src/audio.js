@@ -207,7 +207,6 @@ export function make_download(name, abuffer) {
 
 // Convert an AudioBuffer to a Blob using WAVE representation
 function bufferToWave(abuffer, len) {
-    console.log("calling bufferToWave")
     var numOfChan = abuffer.numberOfChannels,
         length = len * numOfChan * 2 + 44,
         buffer = new ArrayBuffer(length),

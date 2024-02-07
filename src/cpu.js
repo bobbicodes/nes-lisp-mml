@@ -1,6 +1,6 @@
-import { read, write } from "./main";
 import * as apu from "./apu";
 import * as mapper from "./nsfmapper";
+import {callArea} from "../main";
 
 function log(text) {
     el("log").innerHTML += text + "<br>";
@@ -143,7 +143,6 @@ export function cycle() {
         }
         // get the effective address, and execute the instruction
         let eff = getAdr(mode);
-        //log("Instr: " + instr + " adr: " + eff)
         functions[instr].call(null, eff, instr);
     }
     cyclesLeft--;
@@ -308,7 +307,7 @@ function getByteRep(val) {
 
 function uni(adr, num) {
     // unimplemented instruction
-    log("unimplemented instruction " + getByteRep(num));
+    //log("unimplemented instruction " + getByteRep(num));
 }
 
 function ora(adr) {

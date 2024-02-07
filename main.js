@@ -3,110 +3,14 @@ import { EditorView, basicSetup } from 'codemirror'
 import { EditorState } from '@codemirror/state'
 import { clojure } from "./src/clojure"
 import { updateDocBar } from "./src/eval-region";
+import { updateDebugView } from "./src/debugger";
+import * as cpu from "./src/cpu";
+import * as apu from "./src/apu";
+import * as mapper from "./src/nsfmapper";
+import {AudioHandler} from "./src/audiohandler";
 
 let editorState = EditorState.create({
-  doc: `(for [[time note]
-  [[0 0] [1 0] [1.75 0] [2.25 0] [3 0]]]
-  {:buffer (audio-buffer (dpcm2pcm (loop-dpcm (dpcm-0) 1) 2.85))
-   :time (* tempo time)})
-
-(def sunsoft-bass
-  [(audio-buffer (dpcm2pcm (loop-dpcm (dpcm-0) 1) 2.85))
-   (audio-buffer (dpcm2pcm (loop-dpcm (dpcm-0) 1) 1.45))
-   (audio-buffer (dpcm2pcm (loop-dpcm (dpcm-1) 1) 2.9))
-   (audio-buffer (dpcm2pcm (loop-dpcm (dpcm-1) 1) 1.45))
-   (audio-buffer (dpcm2pcm (loop-dpcm (dpcm-0) 1) 3.8))
-   (audio-buffer (dpcm2pcm (loop-dpcm (dpcm-0) 1) 1.9))
-   (audio-buffer (dpcm2pcm (loop-dpcm (dpcm-2) 1) 2.3))
-   (audio-buffer (dpcm2pcm (loop-dpcm (dpcm-1) 1) 2.3))
-   (audio-buffer (dpcm2pcm (loop-dpcm (dpcm-3) 1) 2.9))
-   (audio-buffer (dpcm2pcm (loop-dpcm (dpcm-2) 1) 3.8))
-   (audio-buffer (dpcm2pcm (loop-dpcm (dpcm-2) 1) 1.9))
-   (audio-buffer (dpcm2pcm (loop-dpcm (dpcm-1) 1) 3.8))])
-
-(def tempo 0.8)
-
-(defn bass-1
-  "Generates eighth-notes alternating between downbeat note d 
-   and upbeat note u starting at time t for n beats."
-  [t d u n]
-  (apply concat
-    (for [beat (range 0 n 0.5)]
-    [[(+ t beat) d] [(+ t beat 0.25) u]])))
-
-(defn bass-2 [t p]
-  [[(+ t 0) p] [(+ t 0.25) p] [(+ t 0.75) p] [(+ t 1.25) p] [(+ t 1.5) p]
-   [(+ t 2) p] [(+ t 2.25) p] [(+ t 2.75) p] [(+ t 3.25) p] [(+ t 3.5) p]])
-
-(do
-(for [[time note]
-  [[0 0] [1 0] [1.75 0] [2.25 0] [3 0]
-   [4 0] [5 0] [5.75 0] [6.25 0] [7 0]
-   [8 0] [8.25 1] [8.5 0] [8.75 1] [9 0] [9.25 1] [9.5 0] [9.75 1]
-   [10 0] [10.25 1] [10.5 0] [10.75 1] [11 0] [11.25 1] [11.5 0] [11.75 1]
-   [12 2] [12.25 3] [12.5 2] [12.75 3] [13 2] [13.25 3] [13.5 2] [13.75 3]
-   [14 2] [14.25 3] [14.5 2] [14.75 3] [15 2] [15.25 3] [15.5 2] [15.75 3]
-   [16 4] [16.25 5] [16.5 4] [16.75 5] [17 4] [17.25 5] [17.5 4] [17.75 5]
-   [18 4] [18.25 5] [18.5 4] [18.75 5] [19 4] [19.25 5] [19.5 4] [19.75 5]]]
-(play (sunsoft-bass note) (inc (* tempo time))))
-
-(for [[time note]
-  [[0 5] [0.25 6] [0.5 7] [0.75 8]
-   [1 0] [1.25 0] [1.75 4] [2 0] [2.25 0] [2.75 4]
-   [3 0] [3.25 0] [3.75 4] [4 0] [4.25 5] [4.5 7] [4.75 0]
-   [5 2] [5.25 2] [5.75 4] [6 2] [6.25 2] [6.75 4] 
-   [7 8] [7.25 4] [7.75 4] [8 5] [8.25 4] [8.75 4]]]
-(play (sunsoft-bass note) (inc (* tempo (+ 24 time)))))
-
-(for [[time note]
-  (concat (bass-1 0 0 1 4)
-          (bass-1 4 4 5 8)
-          (bass-1 12 0 1 7.5) [[19.5 9] [19.75 10]]
-          (bass-1 20 0 1 1.5) [[21.5 4] [21.75 5]]
-          (bass-1 22 0 1 1.5) [[23.5 9] [23.75 10]] (bass-1 24 0 1 2)
-          (bass-2 26 0) (bass-2 30 11) (bass-2 34 0) (bass-2 38 11))]
-(play (sunsoft-bass note) (inc (* tempo (+ 33 time))))))
-
-(defn instrument 
-  "Takes a time and a sequence of pitch/volume pairs,
-   outputs data expected by the sequence functions."
-  [time seq]
-  (map-indexed (fn [beat [pitch volume]]
-       {:time (* tempo (+ 0.45 time (* 0.0125 beat))) 
-        :length 0.0125 :pitch pitch :volume volume})
-  seq))
-
-(defn kick [time]
-  (instrument time 
-    [[14 14] [12 15] [15 15] [15 15] [15 14]
-     [15 11] [15 8] [15 5] [15 1]]))
-
-(defn hat [time]
-  (instrument time [[12 13] [15 12] [15 9] [12 6] [12 3]]))
-
-(defn snare [time]
-  (instrument time
-    [[14 14] [6 15] [12 15] [12 15] [12 14] [12 13] [12 11] [12 10] 
-     [12 8] [12 6] [12 5] [12 3] [14 14] [14 9] [14 5] [14 4]]))
-
-(defn drum-1 [time]
-  (concat (kick time) (kick (+ time 0.25)) (snare (+ time 0.5))))
-
-(def drums (drum-seq (concat (mapcat hat [0 1 1.75 2.25 3 4 5 5.75 6.25 7])
-                        (drum-1 8) (drum-1 9) (drum-1 10) (drum-1 11) (drum-1 12) (drum-1 13) (drum-1 14)
-                        (kick 14.75) (snare 15) (kick 15.25) (snare 15.5) (kick 15.75))))
-
-(do
-(for [[time note]
-    (concat
-      [[0 0] [1 0] [1.75 0] [2.25 0] [3 0]
-       [4 0] [5 0] [5.75 0] [6.25 0] [7 0]]
-      (bass-1 8 0 1 4)
-      (bass-1 12 2 3 4))]
-(play (sunsoft-bass note) (inc (* tempo time))))
-(play drums))
-
-(play (drum-seq (concat (drum-1 0) (kick 0.75))))`,
+  doc: ``,
   extensions: [basicSetup, clojure()]
 })
 
@@ -116,3 +20,570 @@ let view = new EditorView({
 })
 
 document.querySelector('#app').onclick = (e) => updateDocBar(view)
+
+let audio = new AudioHandler();
+
+export function getByteRep(val) {
+  return ("0" + val.toString(16)).slice(-2);
+}
+
+let ram = new Uint8Array(0x800);
+export let callArea = new Uint8Array(0x10);
+let totalSongs = 0;
+let startSong = 0;
+let tags = {
+  name: "",
+  artist: "",
+  copyright: ""
+}
+let playReturned = true;
+let frameIrqWanted = false;
+let dmcIrqWanted = false;
+
+let paused = false;
+let loaded = false;
+let pausedInBg = false;
+let loopId = 0;
+
+function el(id) {
+  return document.getElementById(id);
+}
+
+let c = el("output");
+c.width = 256;
+c.height = 240;
+let ctx = c.getContext("2d");
+
+let currentSong = 1;
+
+el("rom").onchange = function (e) {
+  audio.resume();
+  let freader = new FileReader();
+  freader.onload = function () {
+    let buf = freader.result;
+    let arr = new Uint8Array(buf);
+    loadRom(arr);
+  }
+  freader.readAsArrayBuffer(e.target.files[0]);
+}
+
+el("pause").onclick = function(e) {
+  if(paused && loaded) {
+    loopId = requestAnimationFrame(update);
+    audio.start();
+    paused = false;
+    el("pause").innerText = "Pause";
+  } else {
+    cancelAnimationFrame(loopId);
+    audio.stop();
+    paused = true;
+    el("pause").innerText = "Unpause";
+  }
+}
+
+el("reset").onclick = function(e) {
+  if(loaded) {
+    playSong(currentSong);
+    drawVisual();
+  }
+}
+
+el("nextsong").onclick = function(e) {
+  if(loaded) {
+    currentSong++;
+    currentSong = currentSong > totalSongs ? totalSongs : currentSong;
+    playSong(currentSong);
+    drawVisual();
+  }
+}
+
+el("prevsong").onclick = function(e) {
+  if(loaded) {
+    currentSong--;
+    currentSong = currentSong < 1 ? 1 : currentSong;
+    playSong(currentSong);
+    drawVisual();
+  }
+}
+
+function loadRom(rom) {
+  if(loadNsf(rom)) {
+    if(!loaded && !paused) {
+      loopId = requestAnimationFrame(update);
+      audio.start();
+    }
+    loaded = true;
+    currentSong = startSong;
+  }
+}
+
+function loadNsf(nsf) {
+  if (nsf.length < 0x80) {
+    //log("Invalid NSF loaded");
+    return false;
+  }
+  if (
+    nsf[0] !== 0x4e || nsf[1] !== 0x45 || nsf[2] !== 0x53 ||
+    nsf[3] !== 0x4d || nsf[4] !== 0x1a
+  ) {
+    //log("Invalid NSF loaded");
+    return false;
+  }
+  if (nsf[5] !== 1) {
+    //log("Unknown NSF version: " + nsf[5]);
+    return false;
+  }
+  totalSongs = nsf[6];
+  startSong = nsf[7];
+  let loadAdr = nsf[8] | (nsf[9] << 8);
+  if (loadAdr < 0x8000) {
+    //log("Load address less than 0x8000 is not supported");
+    return false;
+  }
+  let initAdr = nsf[0xa] | (nsf[0xb] << 8);
+  let playAdr = nsf[0xc] | (nsf[0xd] << 8);
+  for (let i = 0; i < 32; i++) {
+    if (nsf[0xe + i] === 0) {
+      break;
+    }
+    tags.name += String.fromCharCode(nsf[0xe + i]);
+  }
+  for (let i = 0; i < 32; i++) {
+    if (nsf[0x2e + i] === 0) {
+      break;
+    }
+    tags.artist += String.fromCharCode(nsf[0x2e + i]);
+  }
+  for (let i = 0; i < 32; i++) {
+    if (nsf[0x4e + i] === 0) {
+      break;
+    }
+    tags.copyright += String.fromCharCode(nsf[0x4e + i]);
+  }
+  let initBanks = [0, 0, 0, 0, 0, 0, 0, 0];
+  let total = 0;
+  for (let i = 0; i < 8; i++) {
+    initBanks[i] = nsf[0x70 + i];
+    total += nsf[0x70 + i];
+  }
+  let banking = total > 0;
+
+  // set up the NSF mapper
+
+  mapper.set_data(nsf)
+  mapper.set_loadAdr(loadAdr)
+  mapper.set_banked(banking)
+  mapper.set_banks(initBanks)
+  mapper.reset()
+
+  callArea[0] = 0x20; // JSR
+  callArea[1] = initAdr & 0xff;
+  callArea[2] = initAdr >> 8;
+  callArea[3] = 0xea // NOP
+  callArea[4] = 0xea // NOP
+  callArea[5] = 0xea // NOP
+  callArea[6] = 0xea // NOP
+  callArea[7] = 0xea // NOP
+  callArea[8] = 0x20; // JSR
+  callArea[9] = playAdr & 0xff;
+  callArea[0xa] = playAdr >> 8;
+  callArea[0xb] = 0xea // NOP
+  callArea[0xc] = 0xea // NOP
+  callArea[0xd] = 0xea // NOP
+  callArea[0xe] = 0xea // NOP
+  callArea[0xf] = 0xea // NOP
+
+  playSong(startSong);
+  //log("Loaded NSF file");
+  return true;
+}
+
+function playSong(songNum) {
+  // also acts as a reset
+  for (let i = 0; i < ram.length; i++) {
+    ram[i] = 0;
+  }
+  playReturned = true;
+  apu.reset();
+  cpu.reset();
+  mapper.reset();
+  frameIrqWanted = false;
+  dmcIrqWanted = false;
+  for (let i = 0x4000; i <= 0x4013; i++) {
+    apu.write(i, 0);
+  }
+  apu.write(0x4015, 0);
+  apu.write(0x4015, 0xf);
+  apu.write(0x4017, 0x40);
+
+  // run the init routine
+  cpu.br[0] = 0x3ff0;
+  cpu.r[0] = songNum - 1;
+  cpu.r[1] = 0;
+  // don't allow init to take more than 10 frames
+  let cycleCount = 0;
+  let finished = false;
+  while (cycleCount < 297800) {
+    //console.log("cycling cpu")
+    cpu.cycle();
+    //console.log("cycling apu")
+    apu.cycle();
+    if (cpu.br[0] === 0x3ff5) {
+      // we are in the nops after the init-routine, it finished
+      finished = true;
+      break;
+    }
+    cycleCount++;
+  }
+  if (!finished) {
+    //log("Init did not finish within 10 frames");
+  }
+}
+
+function update() {
+  runFrame();
+  loopId = requestAnimationFrame(update);
+}
+
+function runFrame() {
+  // run the cpu until either a frame has passed, or the play-routine returned
+  if (playReturned) {
+    cpu.set_pc(0x3ff8)
+  }
+  playReturned = false;
+  let cycleCount = 0;
+  while (cycleCount < 29780) {
+    cpu.setIrqWanted(dmcIrqWanted || frameIrqWanted)
+    if (!playReturned) {
+      cpu.cycle();
+    }
+    apu.cycle();
+    if (cpu.br[0] === 0x3ffd) {
+      // we are in the nops after the play-routine, it finished
+      playReturned = true;
+    }
+    cycleCount++;
+  }
+  getSamples(audio.sampleBuffer, audio.samplesPerFrame);
+  audio.nextBuffer();
+  drawVisual();
+}
+
+function drawVisual() {
+  const green = "rgb(85,199,83)";
+  const red = "rgb(255,139,127)";
+  const yellow = "rgb(189,172,44)";
+  const blue = "rgb(143,161,255)";
+  const yellowDark = "rgb(52,40,0)";
+  const blueDark = "rgb(19,31,127)";
+  ctx.fillStyle = "rgb(0,0,0)";
+  ctx.fillRect(0, 0, c.width, c.height);
+  // draw text
+  ctx.fillStyle = green;
+  ctx.font = "6pt arial";
+  fillString(ctx, "Title: ", 8, 8);
+  fillString(ctx, "Artist: ", 8, 32);
+  fillString(ctx, "Copyright: ", 8, 56);
+  fillString(ctx, tags.name, 8, 16);
+  fillString(ctx, tags.artist, 8, 40);
+  fillString(ctx, tags.copyright, 8, 64);
+  let songNumStr = "Song " + currentSong + " of " + totalSongs;
+  fillString(ctx, songNumStr, 8, 80);
+  let xPos = 16;
+  // pulse 1
+  ctx.fillStyle = yellowDark;
+  ctx.fillRect(xPos, 96, 16, 120);
+  ctx.fillStyle = blueDark;
+  ctx.fillRect(xPos + 16, 96, 16, 120);
+  ctx.fillStyle = yellow;
+  let scale = apu.p1ConstantVolume ? apu.p1Volume : apu.p1Decay;
+  scale = apu.p1Counter === 0 ? 0 : scale;
+  scale = scale * 120 / 0xf;
+  ctx.fillRect(xPos, 216 - scale, 16, scale);
+  ctx.fillStyle = blue;
+  let logVal = Math.log2(apu.p1Timer + 1);
+  scale = logVal * 112 / 11;
+  ctx.fillRect(xPos + 16, Math.floor(96 + scale), 16, 8);
+  ctx.fillStyle = red;
+  fillWaveVis(ctx, apu.p1Duty, xPos + 8, 224);
+  xPos += 48;
+  // pulse 2
+  ctx.fillStyle = yellowDark;
+  ctx.fillRect(xPos, 96, 16, 120);
+  ctx.fillStyle = blueDark;
+  ctx.fillRect(xPos + 16, 96, 16, 120);
+  ctx.fillStyle = yellow;
+  scale = apu.p2ConstantVolume ? apu.p2Volume : apu.p2Decay;
+  scale = apu.p2Counter === 0 ? 0 : scale;
+  scale = scale * 120 / 0xf;
+  ctx.fillRect(xPos, 216 - scale, 16, scale);
+  ctx.fillStyle = blue;
+  logVal = Math.log2(apu.p2Timer + 1);
+  scale = logVal * 112 / 11;
+  ctx.fillRect(xPos + 16, Math.floor(96 + scale), 16, 8);
+  ctx.fillStyle = red;
+  fillWaveVis(ctx, apu.p2Duty, xPos + 8, 224);
+  xPos += 48;
+  // triangle
+  ctx.fillStyle = yellowDark;
+  ctx.fillRect(xPos, 96, 16, 120);
+  ctx.fillStyle = blueDark;
+  ctx.fillRect(xPos + 16, 96, 16, 120);
+  ctx.fillStyle = yellow;
+  scale = apu.triCounter === 0 || apu.triLinearCounter === 0 ? 0 : 1;
+  scale = scale * 120;
+  ctx.fillRect(xPos, 216 - scale, 16, scale);
+  ctx.fillStyle = blue;
+  logVal = Math.log2(apu.triTimer + 1);
+  scale = logVal * 112 / 11;
+  ctx.fillRect(xPos + 16, Math.floor(96 + scale), 16, 8);
+  ctx.fillStyle = red;
+  fillWaveVis(ctx, 4, xPos + 8, 224);
+  xPos += 48;
+  // noise
+  ctx.fillStyle = yellowDark;
+  ctx.fillRect(xPos, 96, 16, 120);
+  ctx.fillStyle = blueDark;
+  ctx.fillRect(xPos + 16, 96, 16, 120);
+  ctx.fillStyle = yellow;
+  scale = apu.noiseConstantVolume ? apu.noiseVolume : apu.noiseDecay;
+  scale = apu.noiseCounter === 0 ? 0 : scale;
+  scale = scale * 120 / 0xf;
+  ctx.fillRect(xPos, 216 - scale, 16, scale);
+  ctx.fillStyle = blue;
+  logVal = Math.log2(apu.noiseTimer + 1);
+  scale = logVal * 112 / 12;
+  ctx.fillRect(xPos + 16, Math.floor(96 + scale), 16, 8);
+  ctx.fillStyle = red;
+  fillWaveVis(ctx, apu.noiseTonal ? 6 : 5, xPos + 8, 224);
+  xPos += 48;
+  // dmc
+  ctx.fillStyle = yellowDark;
+  ctx.fillRect(xPos, 96, 16, 120);
+  ctx.fillStyle = blueDark;
+  ctx.fillRect(xPos + 16, 96, 16, 120);
+  ctx.fillStyle = yellow;
+  scale = apu.dmcBytesLeft === 0 ? 0 : 1;
+  scale = scale * 120;
+  ctx.fillRect(xPos, 216 - scale, 16, scale);
+  ctx.fillStyle = blue;
+  logVal = Math.log2(apu.dmcTimer + 1);
+  scale = logVal * 112 / 9;
+  ctx.fillRect(xPos + 16, Math.floor(96 + scale), 16, 8);
+  ctx.fillStyle = red;
+  fillWaveVis(ctx, 7, xPos + 8, 224);
+}
+
+function getSamples(data, count) {
+  // apu returns 29780 or 29781 samples (0 - 1) for a frame
+  // we need count values (0 - 1)
+  let samples = apu.getOutput();
+  let runAdd = (29780 / count);
+  let total = 0;
+  let inputPos = 0;
+  let running = 0;
+  for (let i = 0; i < count; i++) {
+    running += runAdd;
+    let total = 0;
+    let avgCount = running & 0xffff;
+    for (let j = inputPos; j < inputPos + avgCount; j++) {
+      total += samples[1][j];
+    }
+    data[i] = total / avgCount;
+    inputPos += avgCount;
+    running -= avgCount;
+  }
+}
+
+export function read(adr) {
+  adr &= 0xffff;
+
+  if (adr < 0x2000) {
+    // ram
+    return ram[adr & 0x7ff];
+  }
+  if (adr < 0x3ff0) {
+    // ppu ports, not readable in NSF
+    return 0;
+  }
+  if (adr < 0x4000) {
+    // special call area used internally by player
+    return callArea[adr & 0xf];
+  }
+  if (adr < 0x4020) {
+    // apu/misc ports
+    if (adr === 0x4014) {
+      return 0; // not readable
+    }
+    if (adr === 0x4016 || adr === 0x4017) {
+      return 0; // not readable in NSF
+    }
+    return apu.read(adr);
+  }
+  return mapper.read(adr);
+}
+
+export function write(adr, value) {
+  adr &= 0xffff;
+
+  if (adr < 0x2000) {
+    // ram
+    ram[adr & 0x7ff] = value;
+    return;
+  }
+  if (adr < 0x4000) {
+    // ppu ports, not writable in NSF
+    return;
+  }
+  if (adr < 0x4020) {
+    // apu/misc ports
+    if (adr === 0x4014 || adr === 0x4016) {
+      // not writable in NSF
+      return;
+    }
+    apu.write(adr, value);
+    return;
+  }
+  mapper.write(adr, value);
+}
+
+const fontData = [
+  0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+  0x00,0x10,0x10,0x10,0x10,0x10,0x00,0x10,
+  0x00,0x28,0x28,0x00,0x00,0x00,0x00,0x00,
+  0x00,0x14,0x14,0x7c,0x28,0x7c,0x50,0x50,
+  0x00,0x10,0x38,0x50,0x38,0x14,0x38,0x10,
+  0x00,0x24,0x54,0x28,0x10,0x28,0x54,0x48,
+  0x00,0x30,0x48,0x50,0x20,0x54,0x48,0x34,
+  0x00,0x10,0x10,0x00,0x00,0x00,0x00,0x00,
+  0x00,0x08,0x10,0x20,0x20,0x20,0x10,0x08,
+  0x00,0x20,0x10,0x08,0x08,0x08,0x10,0x20,
+  0x00,0x54,0x38,0x38,0x54,0x00,0x00,0x00,
+  0x00,0x00,0x10,0x10,0x7c,0x10,0x10,0x00,
+  0x00,0x00,0x00,0x00,0x00,0x10,0x10,0x20,
+  0x00,0x00,0x00,0x00,0x7c,0x00,0x00,0x00,
+  0x00,0x00,0x00,0x00,0x00,0x00,0x10,0x10,
+  0x00,0x08,0x08,0x10,0x10,0x10,0x20,0x20,
+  0x00,0x38,0x44,0x4c,0x54,0x64,0x44,0x38,
+  0x00,0x10,0x30,0x10,0x10,0x10,0x10,0x38,
+  0x00,0x38,0x44,0x04,0x18,0x20,0x40,0x7c,
+  0x00,0x38,0x44,0x04,0x18,0x04,0x44,0x38,
+  0x00,0x08,0x18,0x28,0x48,0x7c,0x08,0x08,
+  0x00,0x7c,0x40,0x40,0x38,0x04,0x44,0x38,
+  0x00,0x38,0x44,0x40,0x78,0x44,0x44,0x38,
+  0x00,0x7c,0x04,0x04,0x08,0x08,0x10,0x10,
+  0x00,0x38,0x44,0x44,0x38,0x44,0x44,0x38,
+  0x00,0x38,0x44,0x44,0x3c,0x04,0x44,0x38,
+  0x00,0x10,0x10,0x00,0x00,0x00,0x10,0x10,
+  0x00,0x10,0x10,0x00,0x00,0x10,0x10,0x20,
+  0x00,0x08,0x10,0x20,0x40,0x20,0x10,0x08,
+  0x00,0x00,0x00,0x7c,0x00,0x7c,0x00,0x00,
+  0x00,0x20,0x10,0x08,0x04,0x08,0x10,0x20,
+  0x00,0x38,0x44,0x04,0x08,0x10,0x00,0x10,
+  0x00,0x38,0x44,0x54,0x6c,0x5c,0x40,0x3c,
+  0x00,0x38,0x44,0x44,0x7c,0x44,0x44,0x44,
+  0x00,0x78,0x44,0x44,0x78,0x44,0x44,0x78,
+  0x00,0x38,0x44,0x40,0x40,0x40,0x44,0x38,
+  0x00,0x78,0x44,0x44,0x44,0x44,0x44,0x78,
+  0x00,0x7c,0x40,0x40,0x78,0x40,0x40,0x7c,
+  0x00,0x7c,0x40,0x40,0x78,0x40,0x40,0x40,
+  0x00,0x38,0x44,0x40,0x4c,0x44,0x44,0x38,
+  0x00,0x44,0x44,0x44,0x7c,0x44,0x44,0x44,
+  0x00,0x38,0x10,0x10,0x10,0x10,0x10,0x38,
+  0x00,0x3c,0x08,0x08,0x08,0x08,0x48,0x30,
+  0x00,0x44,0x48,0x50,0x60,0x50,0x48,0x44,
+  0x00,0x40,0x40,0x40,0x40,0x40,0x40,0x7c,
+  0x00,0x44,0x6c,0x54,0x54,0x44,0x44,0x44,
+  0x00,0x44,0x64,0x64,0x54,0x4c,0x4c,0x44,
+  0x00,0x38,0x44,0x44,0x44,0x44,0x44,0x38,
+  0x00,0x78,0x44,0x44,0x78,0x40,0x40,0x40,
+  0x00,0x38,0x44,0x44,0x44,0x54,0x4c,0x38,
+  0x00,0x78,0x44,0x44,0x78,0x50,0x48,0x44,
+  0x00,0x38,0x44,0x40,0x38,0x04,0x44,0x38,
+  0x00,0x7c,0x10,0x10,0x10,0x10,0x10,0x10,
+  0x00,0x44,0x44,0x44,0x44,0x44,0x44,0x38,
+  0x00,0x44,0x44,0x44,0x28,0x28,0x10,0x10,
+  0x00,0x44,0x44,0x54,0x54,0x54,0x54,0x28,
+  0x00,0x44,0x44,0x28,0x10,0x28,0x44,0x44,
+  0x00,0x44,0x44,0x28,0x10,0x10,0x10,0x10,
+  0x00,0x7c,0x04,0x08,0x10,0x20,0x40,0x7c,
+  0x00,0x38,0x20,0x20,0x20,0x20,0x20,0x38,
+  0x00,0x20,0x20,0x10,0x10,0x10,0x08,0x08,
+  0x00,0x38,0x08,0x08,0x08,0x08,0x08,0x38,
+  0x00,0x10,0x28,0x44,0x00,0x00,0x00,0x00,
+  0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x7c,
+  0x00,0x20,0x10,0x08,0x00,0x00,0x00,0x00,
+  0x00,0x00,0x00,0x38,0x04,0x3c,0x44,0x3c,
+  0x00,0x40,0x40,0x78,0x44,0x44,0x44,0x78,
+  0x00,0x00,0x00,0x38,0x40,0x40,0x40,0x38,
+  0x00,0x04,0x04,0x3c,0x44,0x44,0x44,0x3c,
+  0x00,0x00,0x00,0x38,0x44,0x78,0x40,0x38,
+  0x00,0x0c,0x10,0x38,0x10,0x10,0x10,0x10,
+  0x00,0x00,0x00,0x3c,0x44,0x3c,0x04,0x38,
+  0x00,0x40,0x40,0x78,0x44,0x44,0x44,0x44,
+  0x00,0x10,0x00,0x10,0x10,0x10,0x10,0x10,
+  0x00,0x10,0x00,0x10,0x10,0x10,0x10,0x60,
+  0x00,0x40,0x40,0x48,0x50,0x60,0x50,0x48,
+  0x00,0x10,0x10,0x10,0x10,0x10,0x10,0x08,
+  0x00,0x00,0x00,0x68,0x54,0x54,0x54,0x54,
+  0x00,0x00,0x00,0x78,0x44,0x44,0x44,0x44,
+  0x00,0x00,0x00,0x38,0x44,0x44,0x44,0x38,
+  0x00,0x00,0x00,0x78,0x44,0x78,0x40,0x40,
+  0x00,0x00,0x00,0x3c,0x44,0x3c,0x04,0x04,
+  0x00,0x00,0x00,0x58,0x64,0x40,0x40,0x40,
+  0x00,0x00,0x00,0x38,0x40,0x38,0x04,0x38,
+  0x00,0x00,0x10,0x38,0x10,0x10,0x10,0x08,
+  0x00,0x00,0x00,0x44,0x44,0x44,0x44,0x38,
+  0x00,0x00,0x00,0x44,0x44,0x44,0x28,0x10,
+  0x00,0x00,0x00,0x54,0x54,0x54,0x54,0x28,
+  0x00,0x00,0x00,0x44,0x28,0x10,0x28,0x44,
+  0x00,0x00,0x00,0x44,0x44,0x3c,0x04,0x38,
+  0x00,0x00,0x00,0x7c,0x08,0x10,0x20,0x7c,
+  0x00,0x18,0x20,0x20,0x40,0x20,0x20,0x18,
+  0x00,0x10,0x10,0x10,0x10,0x10,0x10,0x10,
+  0x00,0x30,0x08,0x08,0x04,0x08,0x08,0x30,
+  0x00,0x00,0x00,0x00,0x34,0x48,0x00,0x00,
+  0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,
+];
+
+const waveVisData = [
+  0xe000, 0xa000, 0xa000, 0xa000, 0xa000, 0xa000, 0xa000, 0xbfff,
+  0xf800, 0x8800, 0x8800, 0x8800, 0x8800, 0x8800, 0x8800, 0x8fff,
+  0xff80, 0x8080, 0x8080, 0x8080, 0x8080, 0x8080, 0x8080, 0x80ff,
+  0x8fff, 0x8800, 0x8800, 0x8800, 0x8800, 0x8800, 0x8800, 0xf800,
+  0x0180, 0x0240, 0x0420, 0x0810, 0x1008, 0x2004, 0x4002, 0x8001,
+  0x5cfd, 0x54a5, 0x54a5, 0x54a5, 0x54a5, 0x54a5, 0x54a5, 0xf7a7,
+  0xaeae, 0xaaaa, 0xaaaa, 0xaaaa, 0xaaaa, 0xaaaa, 0xaaaa, 0xfbfb,
+  0x3800, 0x4400, 0x820c, 0x8213, 0x0120, 0x0120, 0x00c0, 0x0000
+];
+
+function fillCharacter(ctx, c, x, y) {
+  for(let py = 0; py < 8; py++) {
+    let code = c.charCodeAt(0);
+    if(code < 0x20 || code >= 0x7f) code = 0x7f;
+    code -= 0x20;
+    let line = fontData[8 * code + py];
+    for(let px = 0; px < 8; px++) {
+      if(line & 0x80) ctx.fillRect(x + px, y + py, 1, 1);
+      line <<= 1;
+    }
+  }
+}
+
+function fillWaveVis(ctx, t, x, y) {
+  for(let py = 0; py < 8; py++) {
+    let line = waveVisData[8 * t + py];
+    for(let px = 0; px < 16; px++) {
+      if(line & 0x8000) ctx.fillRect(x + px, y + py, 1, 1);
+      line <<= 1;
+    }
+  }
+}
+
+function fillString(ctx, str, x, y) {
+  for(let i = 0; i < str.length; i++) {
+    let c = str.charAt(i);
+    fillCharacter(ctx, c, x, y);
+    x += 8;
+  }
+}

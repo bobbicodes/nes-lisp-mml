@@ -27,7 +27,6 @@ export function AudioHandler() {
     this.sourceNode = undefined;
 
     this.resume = function () {
-        this.actx.onstatechange = function () { console.log(this.actx.state) };
         this.actx.resume();
     }
 

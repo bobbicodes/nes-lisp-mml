@@ -1,21 +1,34 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NES Music Engine</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <div id="results"></div>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NES Music Engine</title>
+</head>
+
+<body>
+  <div id="app"></div>
+  <h4>Memory viewer</h4>
+  <pre id="ram">0000: xx</pre>
+  <h4>Disassembly</h4>
+  <pre id="disassembly"></pre>
+  <div id="results"></div>
   <div id="doc"></div>
+  <canvas id="output"></canvas>
+  <button id="pause">Pause</button>
+  <button id="reset">Restart song</button>
+  <button id="prevsong">Previous song</button>
+  <button id="nextsong">Next song</button><br>
+  <input id="rom" type="file" accept=".nsf">
   <h4>DPCM Samples</h4>
   <input id="dpcm0" type="file">
   <input id="dpcm1" type="file">
   <input id="dpcm2" type="file">
   <input id="dpcm3" type="file">
-    <svg id="svg_out"></svg>
-    <script type="module" src="/main.js"></script>
-  </body>
+  <svg id="svg_out"></svg>
+  <script type="module" src="/main.js"></script>
+</body>
+
 </html>
