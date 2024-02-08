@@ -586,9 +586,18 @@ export function read(adr) {
     return 0;
 }
 
+export let registers = [
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0
+]
+
 export function write(adr, value) {
     switch (adr) {
         case 0x4000: {
+            registers[0] = value
             p1Duty = (value & 0xc0) >> 6;
             p1Volume = value & 0xf;
             p1CounterHalt = (value & 0x20) > 0;
@@ -596,6 +605,7 @@ export function write(adr, value) {
             break;
         }
         case 0x4001: {
+            registers[1] = value
             p1SweepEnabled = (value & 0x80) > 0;
             p1SweepPeriod = (value & 0x70) >> 4;
             p1SweepNegate = (value & 0x08) > 0;
@@ -605,12 +615,14 @@ export function write(adr, value) {
             break;
         }
         case 0x4002: {
+            registers[2] = value
             p1Timer &= 0x700;
             p1Timer |= value;
             updateSweepP1();
             break;
         }
         case 0x4003: {
+            registers[3] = value
             p1Timer &= 0xff;
             p1Timer |= (value & 0x7) << 8;
             p1DutyIndex = 0;
@@ -622,6 +634,7 @@ export function write(adr, value) {
             break;
         }
         case 0x4004: {
+            registers[4] = value
             p2Duty = (value & 0xc0) >> 6;
             p2Volume = value & 0xf;
             p2CounterHalt = (value & 0x20) > 0;
@@ -629,6 +642,7 @@ export function write(adr, value) {
             break;
         }
         case 0x4005: {
+            registers[5] = value
             p2SweepEnabled = (value & 0x80) > 0;
             p2SweepPeriod = (value & 0x70) >> 4;
             p2SweepNegate = (value & 0x08) > 0;
@@ -638,12 +652,14 @@ export function write(adr, value) {
             break;
         }
         case 0x4006: {
+            registers[6] = value
             p2Timer &= 0x700;
             p2Timer |= value;
             updateSweepP2();
             break;
         }
         case 0x4007: {
+            registers[7] = value
             p2Timer &= 0xff;
             p2Timer |= (value & 0x7) << 8;
             p2DutyIndex = 0;
@@ -655,6 +671,7 @@ export function write(adr, value) {
             break;
         }
         case 0x4008: {
+            registers[8] = value
             triCounterHalt = (value & 0x80) > 0;
             triLinearReload = value & 0x7f;
 
@@ -667,11 +684,13 @@ export function write(adr, value) {
             break;
         }
         case 0x400a: {
+            registers[9] = value
             triTimer &= 0x700;
             triTimer |= value;
             break;
         }
         case 0x400b: {
+            registers[10] = value
             triTimer &= 0xff;
             triTimer |= (value & 0x7) << 8;
             if (enableTriangle) {
@@ -681,17 +700,20 @@ export function write(adr, value) {
             break;
         }
         case 0x400c: {
+            registers[11] = value
             noiseCounterHalt = (value & 0x20) > 0;
             noiseConstantVolume = (value & 0x10) > 0;
             noiseVolume = value & 0xf;
             break;
         }
         case 0x400e: {
+            registers[12] = value
             noiseTonal = (value & 0x80) > 0;
             noiseTimer = noiseLoadValues[value & 0xf] - 1;
             break;
         }
         case 0x400f: {
+            registers[13] = value
             if (enableNoise) {
                 noiseCounter = lengthLoadValues[(value & 0xf8) >> 3];
             }
@@ -699,6 +721,7 @@ export function write(adr, value) {
             break;
         }
         case 0x4010: {
+            registers[14] = value
             dmcInterrupt = (value & 0x80) > 0;
             dmcLoop = (value & 0x40) > 0;
             dmcTimer = dmcLoadValues[value & 0xf] - 1;
@@ -708,18 +731,22 @@ export function write(adr, value) {
             break;
         }
         case 0x4011: {
+            registers[15] = value
             dmcOutput = value & 0x7f;
             break;
         }
         case 0x4012: {
+            registers[16] = value
             dmcSampleAddress = 0xc000 | (value << 6);
             break;
         }
         case 0x4013: {
+            registers[17] = value
             dmcSampleLength = (value << 4) + 1;
             break;
         }
         case 0x4015: {
+            registers[18] = value
             enableNoise = (value & 0x08) > 0;
             enableTriangle = (value & 0x04) > 0;
             enablePulse2 = (value & 0x02) > 0;
@@ -748,6 +775,7 @@ export function write(adr, value) {
             break;
         }
         case 0x4017: {
+            registers[19] = value
             step5Mode = (value & 0x80) > 0;
             interruptInhibit = (value & 0x40) > 0;
             if (interruptInhibit) {

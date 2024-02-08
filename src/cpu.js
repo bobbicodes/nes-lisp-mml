@@ -1,6 +1,6 @@
 import * as apu from "./apu";
 import * as mapper from "./nsfmapper";
-import {callArea} from "../main";
+import { callArea, setRamCdl, setRomCdl } from "../main";
 
 function log(text) {
     el("log").innerHTML += text + "<br>";
@@ -143,6 +143,12 @@ export function cycle() {
         }
         // get the effective address, and execute the instruction
         let eff = getAdr(mode);
+        // adr < $8000: set ram cdl, else set rom cdl
+        if (eff < 0x8000) {
+            setRamCdl(eff, 1)
+        } else {
+            setRomCdl(eff, 1)
+        }
         functions[instr].call(null, eff, instr);
     }
     cyclesLeft--;
@@ -301,7 +307,7 @@ function getAdr(mode) {
 
 function getByteRep(val) {
     return ("0" + val.toString(16)).slice(-2);
-  }
+}
 
 // instruction functions
 
@@ -871,52 +877,52 @@ const functions = [
 
 export function read(adr) {
     adr &= 0xffff;
-  
+
     if (adr < 0x2000) {
-      // ram
-      return ram[adr & 0x7ff];
+        // ram
+        return ram[adr & 0x7ff];
     }
     if (adr < 0x3ff0) {
-      // ppu ports, not readable in NSF
-      return 0;
+        // ppu ports, not readable in NSF
+        return 0;
     }
     if (adr < 0x4000) {
-      // special call area used internally by player
-      return callArea[adr & 0xf];
+        // special call area used internally by player
+        return callArea[adr & 0xf];
     }
     if (adr < 0x4020) {
-      // apu/misc ports
-      if (adr === 0x4014) {
-        return 0; // not readable
-      }
-      if (adr === 0x4016 || adr === 0x4017) {
-        return 0; // not readable in NSF
-      }
-      return apu.read(adr);
+        // apu/misc ports
+        if (adr === 0x4014) {
+            return 0; // not readable
+        }
+        if (adr === 0x4016 || adr === 0x4017) {
+            return 0; // not readable in NSF
+        }
+        return apu.read(adr);
     }
     return mapper.read(adr);
-  }
-  
-  export function write(adr, value) {
+}
+
+export function write(adr, value) {
     adr &= 0xffff;
-  
+
     if (adr < 0x2000) {
-      // ram
-      ram[adr & 0x7ff] = value;
-      return;
+        // ram
+        ram[adr & 0x7ff] = value;
+        return;
     }
     if (adr < 0x4000) {
-      // ppu ports, not writable in NSF
-      return;
+        // ppu ports, not writable in NSF
+        return;
     }
     if (adr < 0x4020) {
-      // apu/misc ports
-      if (adr === 0x4014 || adr === 0x4016) {
-        // not writable in NSF
+        // apu/misc ports
+        if (adr === 0x4014 || adr === 0x4016) {
+            // not writable in NSF
+            return;
+        }
+        apu.write(adr, value);
         return;
-      }
-      apu.write(adr, value);
-      return;
     }
     mapper.write(adr, value);
-  }
+}

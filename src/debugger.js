@@ -1,6 +1,7 @@
 import * as cpu from "./cpu";
 import * as apu from "./apu";
 import * as mapper from "./nsfmapper";
+import { ramCdl, romCdl } from "../main";
 
 function el(id) {
     return document.getElementById(id);
@@ -50,30 +51,13 @@ const opNames = [
     "beq", "sbc", "kil", "isc", "nop", "sbc", "inc", "isc", "sed", "sbc", "nop", "isc", "nop", "sbc", "inc", "isc", //fx
 ];
 
-let ramCdl = new Uint8Array(0x8000); // addresses $0-$7fff
-let romCdl = new Uint8Array(0x4000);
-
 function peek(adr) {
     adr &= 0xffff;
     if (adr < 0x2000) {
         // ram
         return ram[adr & 0x7ff];
     }
-    if (adr < 0x4000) {
-        // ppu ports
-        return
-    }
     if (adr < 0x4020) {
-        // apu/misc ports
-        if (adr === 0x4014) {
-            return 0; // not readable
-        }
-        if (adr === 0x4016) {
-            return 0
-        }
-        if (adr === 0x4017) {
-            return 0
-        }
         return apu.peek(adr);
     }
     return mapper.read(adr);
@@ -131,8 +115,8 @@ function drawDissasembly() {
             firstData = true;
             lines++;
         } else {
-            // ev.textContent += `${pcP} ${getWordRep(adr)}: .db $${getByteRep(op)}\n`;
-            // adr++;
+             ev.textContent += `${pcP} ${getWordRep(adr)}: .db $${getByteRep(op)}\n`;
+             adr++;
             if (firstData) {
                 ev.textContent += `  ${getWordRep(adr)}: -- UNIDENTIFIED BLOCK --\n`;
                 firstData = false;
@@ -152,11 +136,13 @@ function drawDissasembly() {
 function drawRam() {
     let ev = el("ram");
     ev.textContent = "";
-    let ramBasePos = ramScroll;
-    for (let r = ramBasePos; r < ramBasePos + 0x20; r++) {
-        let str = `${getWordRep(r * 16)}: `;
-        for (let c = 0; c < 16; c++) {
-            str += `${getByteRep(peek(r * 16 + c))} `;
+    let ramBasePos = 0x1000
+    let reg = 0
+    for (let r = ramBasePos; r < ramBasePos + 0x5; r++) {
+        let str = `${getWordRep(r * 4)}: `;
+        for (let c = 0; c < 4; c++) {
+            str += `${getByteRep(apu.registers[reg])} `;
+            reg++
         }
         ev.textContent += str + "\n";
     }

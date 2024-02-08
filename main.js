@@ -45,6 +45,11 @@ let loaded = false;
 let pausedInBg = false;
 let loopId = 0;
 
+function log(text) {
+  el("log").innerHTML += text + "<br>";
+  el("log").scrollTop = el("log").scrollHeight;
+}
+
 function el(id) {
   return document.getElementById(id);
 }
@@ -106,11 +111,32 @@ el("prevsong").onclick = function(e) {
   }
 }
 
+export let ramCdl = new Uint8Array(0x8000); // addresses $0-$7fff
+export let romCdl = new Uint8Array(0x4000);
+
+export function setRamCdl(adr, val) {
+  ramCdl[adr] = val
+}
+
+export function setRomCdl(adr, val) {
+  romCdl[adr] = val
+}
+
 function loadRom(rom) {
   if(loadNsf(rom)) {
     if(!loaded && !paused) {
       loopId = requestAnimationFrame(update);
       audio.start();
+    }
+    // clear ram cdl
+    for(let i = 0; i < 0x8000; i++) {
+      ramCdl[i] = 0;
+    }
+    // set up rom cdl
+    let prgSize = 0x4000;
+    romCdl = new Uint8Array(prgSize);
+    for(let i = 0; i < prgSize; i++) {
+      romCdl[i] = 0;
     }
     loaded = true;
     currentSong = startSong;
@@ -119,25 +145,25 @@ function loadRom(rom) {
 
 function loadNsf(nsf) {
   if (nsf.length < 0x80) {
-    //log("Invalid NSF loaded");
+    log("Invalid NSF loaded");
     return false;
   }
   if (
     nsf[0] !== 0x4e || nsf[1] !== 0x45 || nsf[2] !== 0x53 ||
     nsf[3] !== 0x4d || nsf[4] !== 0x1a
   ) {
-    //log("Invalid NSF loaded");
+    log("Invalid NSF loaded");
     return false;
   }
   if (nsf[5] !== 1) {
-    //log("Unknown NSF version: " + nsf[5]);
+    log("Unknown NSF version: " + nsf[5]);
     return false;
   }
   totalSongs = nsf[6];
   startSong = nsf[7];
   let loadAdr = nsf[8] | (nsf[9] << 8);
   if (loadAdr < 0x8000) {
-    //log("Load address less than 0x8000 is not supported");
+    log("Load address less than 0x8000 is not supported");
     return false;
   }
   let initAdr = nsf[0xa] | (nsf[0xb] << 8);
@@ -194,7 +220,7 @@ function loadNsf(nsf) {
   callArea[0xf] = 0xea // NOP
 
   playSong(startSong);
-  //log("Loaded NSF file");
+  log("Loaded NSF file");
   return true;
 }
 

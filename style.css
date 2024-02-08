@@ -46,3 +46,22 @@ textarea {
 .cm-tooltip-autocomplete.cm-tooltip.cm-tooltip-above {
   background-color: rgb(138, 205, 250)
 }
+
+#log {
+  font-family: monospace;
+  max-height: 200px;
+  min-height: 200px;
+  overflow: scroll;
+  text-align: left;
+  width: 512px;
+  margin: auto;
+  border: 1px solid #afafaf;
+  padding: 5px;
+}
+
+#output {
+  width: 256px;
+  height: 240px;
+  image-rendering: crisp-edges;
+  image-rendering: pixelated;
+}
