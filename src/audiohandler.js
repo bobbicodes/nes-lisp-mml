@@ -15,8 +15,7 @@ function process(e) {
     }
 }
 
-const Ac = window.AudioContext || window.webkitAudioContext;
-const actx = new Ac();
+const actx = new AudioContext()
 export const samplesPerFrame = actx.sampleRate / 60;
 export let sampleBuffer = new Float64Array(samplesPerFrame);
 
@@ -28,6 +27,20 @@ export function nextBuffer() {
     for (let i = 0; i < samplesPerFrame; i++) {
         let val = sampleBuffer[i];
         inputBuffer[(inputBufferPos++) & 0xfff] = val;
+    }
+}
+
+let processorNode;
+
+try {
+    processorNode = new AudioWorkletNode(actx, "audioworklet");
+} catch (e) {
+    try {
+        console.log("adding...");
+        await actx.audioWorklet.addModule("./src/audioworklet.js");
+        processorNode = new AudioWorkletNode(actx, "audioworklet");
+    } catch (e) {
+        console.log(`** Error: Unable to create worklet node: ${e}`);
     }
 }
 
@@ -47,7 +60,9 @@ export function AudioHandler() {
         this.biquadFilter.type = "highpass";
         this.biquadFilter.frequency.setValueAtTime(37, actx.currentTime);
         this.sourceNode.connect(this.scriptNode);
+        //this.sourceNode.connect(processorNode);
         this.scriptNode.connect(this.biquadFilter);
+        //processorNode.connect(this.biquadFilter);
         this.biquadFilter.connect(actx.destination);
         this.sourceNode.start();
     }
