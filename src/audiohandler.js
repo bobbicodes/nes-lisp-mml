@@ -40,8 +40,12 @@ export function AudioHandler() {
             process(e);
         }
 
+        this.biquadFilter = this.actx.createBiquadFilter();
+        this.biquadFilter.type = "highpass";
+        this.biquadFilter.frequency.setValueAtTime(37, this.actx.currentTime);
         this.sourceNode.connect(this.scriptNode);
-        this.scriptNode.connect(this.actx.destination);
+        this.scriptNode.connect(this.biquadFilter);
+        this.biquadFilter.connect(this.actx.destination);
         this.sourceNode.start();
     }
 

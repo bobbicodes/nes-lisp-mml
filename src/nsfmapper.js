@@ -16,13 +16,26 @@ export function set_loadAdr(adr) {
     loadAdr = adr
 }
 
-export function set_banked(n) {
-    banked = n
+export function set_banked(bool) {
+    banked = bool
 }
 
 export function set_banks(initBanks) {
     banks = initBanks
     origBanks = initBanks
+}
+
+function log(text) {
+    el("log").innerHTML += text + "<br>";
+    el("log").scrollTop = el("log").scrollHeight;
+}
+
+function el(id) {
+    return document.getElementById(id);
+}
+
+function getWordRep(val) {
+    return ("000" + val.toString(16)).slice(-4).toUpperCase();
 }
 
 export function reset() {
@@ -34,6 +47,7 @@ export function reset() {
     }
     if (banked) {
         loadAdr &= 0xfff;
+        console.log(loadAdr)
         let totalData = (data.length - 0x80) + loadAdr;
         maxBanks = Math.ceil(totalData / 0x1000);
         romData = new Uint8Array(maxBanks * 0x1000);

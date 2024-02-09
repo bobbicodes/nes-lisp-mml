@@ -518,8 +518,9 @@ function clockHalf() {
     }
 }
 
-function mix() {
+/* function mix() {
     // from https://wiki.nesdev.com/w/index.php/APU_Mixer
+    // linear approximation
     let tnd = (
         0.00851 * triOutput +
         0.00494 * noiseOutput +
@@ -527,6 +528,16 @@ function mix() {
     );
     let pulse = 0.00752 * (p1Output + p2Output);
     return tnd + pulse;
+} */
+
+function mix() {
+    // from https://wiki.nesdev.com/w/index.php/APU_Mixer
+    // non-linear approximation (more accurate)
+    let tnd = 159.79 / (( 1 / ((triOutput / 8227) + 
+                               (noiseOutput / 12241) + 
+                               (dmcOutput / 22638))) + 100)
+    let pulse = 95.88 / ((8128 / (p1Output + p2Output)) + 100)
+    return ((tnd + pulse) * 2) - 1
 }
 
 function handleFrameCounter() {

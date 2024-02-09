@@ -12,12 +12,12 @@ function getRomAdr(adr) {
 }
 
 function getWordRep(val) {
-    return ("000" + val.toString(16)).slice(-4);
+    return ("000" + val.toString(16)).slice(-4).toUpperCase();
 }
 
 function getByteRep(val) {
     if (val) {
-        return ("0" + val.toString(16)).slice(-2);
+        return ("0" + val.toString(16)).slice(-2).toUpperCase();
     } else {
         return "00"
     }
