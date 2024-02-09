@@ -15,37 +15,40 @@ function process(e) {
     }
 }
 
+const Ac = window.AudioContext || window.webkitAudioContext;
+const actx = new Ac();
+export const samplesPerFrame = actx.sampleRate / 60;
+export let sampleBuffer = new Float64Array(samplesPerFrame);
+
+export function resume() {
+    actx.resume();
+}
+
+export function nextBuffer() {
+    for (let i = 0; i < samplesPerFrame; i++) {
+        let val = sampleBuffer[i];
+        inputBuffer[(inputBufferPos++) & 0xfff] = val;
+    }
+}
+
 export function AudioHandler() {
 
-    let Ac = window.AudioContext || window.webkitAudioContext;
-    this.actx = new Ac();
-
-    this.samplesPerFrame = this.actx.sampleRate / 60;
-    this.sampleBuffer = new Float64Array(this.samplesPerFrame);
-
-    this.scriptNode = undefined;
-    this.sourceNode = undefined;
-
-    this.resume = function () {
-        this.actx.resume();
-    }
-
     this.start = function () {
-        this.sourceNode = this.actx.createBufferSource();
-        this.sourceNode.buffer = this.actx.createBuffer(1, 44100, 44100);
+        this.sourceNode = actx.createBufferSource();
+        this.sourceNode.buffer = actx.createBuffer(1, actx.sampleRate, actx.sampleRate);
         this.sourceNode.loop = true;
 
-        this.scriptNode = this.actx.createScriptProcessor(2048, 1, 1);
+        this.scriptNode = actx.createScriptProcessor(2048, 1, 1);
         this.scriptNode.onaudioprocess = function (e) {
             process(e);
         }
 
-        this.biquadFilter = this.actx.createBiquadFilter();
+        this.biquadFilter = actx.createBiquadFilter();
         this.biquadFilter.type = "highpass";
-        this.biquadFilter.frequency.setValueAtTime(37, this.actx.currentTime);
+        this.biquadFilter.frequency.setValueAtTime(37, actx.currentTime);
         this.sourceNode.connect(this.scriptNode);
         this.scriptNode.connect(this.biquadFilter);
-        this.biquadFilter.connect(this.actx.destination);
+        this.biquadFilter.connect(actx.destination);
         this.sourceNode.start();
     }
 
@@ -53,20 +56,11 @@ export function AudioHandler() {
         if (this.sourceNode) {
             this.sourceNode.stop();
             this.sourceNode.disconnect();
-            this.sourceNode = undefined;
         }
         if (this.scriptNode) {
             this.scriptNode.disconnect();
-            this.scriptNode = undefined;
         }
         inputBufferPos = 0;
         inputReadPos = 0;
-    }
-
-    this.nextBuffer = function () {
-        for (let i = 0; i < this.samplesPerFrame; i++) {
-            let val = this.sampleBuffer[i];
-            inputBuffer[(inputBufferPos++) & 0xfff] = val;
-        }
     }
 }

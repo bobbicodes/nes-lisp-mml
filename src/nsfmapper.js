@@ -47,7 +47,6 @@ export function reset() {
     }
     if (banked) {
         loadAdr &= 0xfff;
-        console.log(loadAdr)
         let totalData = (data.length - 0x80) + loadAdr;
         maxBanks = Math.ceil(totalData / 0x1000);
         romData = new Uint8Array(maxBanks * 0x1000);

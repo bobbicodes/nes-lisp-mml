@@ -7,7 +7,7 @@ import { updateDebugView } from "./src/debugger";
 import * as cpu from "./src/cpu";
 import * as apu from "./src/apu";
 import * as mapper from "./src/nsfmapper";
-import { AudioHandler } from "./src/audiohandler";
+import { AudioHandler, samplesPerFrame, sampleBuffer, resume, nextBuffer } from "./src/audiohandler";
 
 let editorState = EditorState.create({
   doc: ``,
@@ -62,7 +62,7 @@ let ctx = c.getContext("2d");
 let currentSong = 1;
 
 el("rom").onchange = function (e) {
-  audio.resume();
+  resume();
   let freader = new FileReader();
   freader.onload = function () {
     let buf = freader.result;
@@ -300,8 +300,8 @@ function runFrame() {
     }
     cycleCount++;
   }
-  getSamples(audio.sampleBuffer, audio.samplesPerFrame);
-  audio.nextBuffer();
+  getSamples(sampleBuffer, samplesPerFrame);
+  nextBuffer();
   drawVisual();
   updateDebugView()
 }
