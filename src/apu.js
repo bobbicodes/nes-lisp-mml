@@ -136,9 +136,7 @@ export function setDmcIrqWanted(bool) {
 }
 
 export function reset() {
-    for (let i = 0; i < outputValues.length; i++) {
-        outputValues[i] = 0;
-    }
+    outputValues = new Float32Array(29781);
 
     outputOffset = 0;
 
