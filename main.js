@@ -231,6 +231,7 @@ function loadNsf(nsf) {
 
   playSong(startSong);
   log("Loaded NSF file");
+  console.log(nsf)
   return true;
 }
 

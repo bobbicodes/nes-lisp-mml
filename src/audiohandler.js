@@ -1,6 +1,6 @@
 let inputReadPos = 0;
 let inputBufferPos = 0;
-let inputBuffer = new Float64Array(4096);
+let inputBuffer = new Float32Array(4096);
 
 function process(e) {
     if (inputReadPos + 2048 > inputBufferPos) {
@@ -17,7 +17,7 @@ function process(e) {
 
 const actx = new AudioContext()
 export const samplesPerFrame = actx.sampleRate / 60;
-export let sampleBuffer = new Float64Array(samplesPerFrame);
+export let sampleBuffer = new Float32Array(samplesPerFrame);
 
 export function resume() {
     actx.resume();

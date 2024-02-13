@@ -25,7 +25,7 @@ const dmcLoadValues = [
     428, 380, 340, 320, 286, 254, 226, 214, 190, 160, 142, 128, 106, 84, 72, 54
 ];
 
-let output = new Float64Array(29781);
+let outputValues = new Float32Array(29781);
 let outputOffset = 0;
 
 let frameCounter = 0;
@@ -136,8 +136,8 @@ export function setDmcIrqWanted(bool) {
 }
 
 export function reset() {
-    for (let i = 0; i < output.length; i++) {
-        output[i] = 0;
+    for (let i = 0; i < outputValues.length; i++) {
+        outputValues[i] = 0;
     }
 
     outputOffset = 0;
@@ -255,7 +255,7 @@ export function cycle() {
     cycleNoise();
     cycleDmc();
 
-    output[outputOffset++] = mix();
+    outputValues[outputOffset++] = mix();
     if (outputOffset === 29781) {
         // if we are going past the buffer (too many apu cycles per frame)
         outputOffset = 29780;
@@ -561,7 +561,7 @@ function handleFrameCounter() {
 }
 
 export function getOutput() {
-    let ret = [outputOffset, output];
+    let ret = [outputOffset, outputValues];
     outputOffset = 0;
     return ret;
 }
