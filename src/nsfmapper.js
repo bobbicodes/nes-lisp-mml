@@ -25,19 +25,6 @@ export function set_banks(initBanks) {
     origBanks = initBanks
 }
 
-function log(text) {
-    el("log").innerHTML += text + "<br>";
-    el("log").scrollTop = el("log").scrollHeight;
-}
-
-function el(id) {
-    return document.getElementById(id);
-}
-
-function getWordRep(val) {
-    return ("000" + val.toString(16)).slice(-4).toUpperCase();
-}
-
 export function reset() {
     for (let i = 0; i < prgRam.length; i++) {
         prgRam[i] = 0;

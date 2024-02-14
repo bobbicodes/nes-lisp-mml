@@ -36,7 +36,7 @@ try {
     processorNode = new AudioWorkletNode(actx, "audioworklet");
 } catch (e) {
     try {
-        console.log("adding...");
+        console.log("Creating audio worklet node");
         await actx.audioWorklet.addModule("./src/audioworklet.js");
         processorNode = new AudioWorkletNode(actx, "audioworklet");
     } catch (e) {

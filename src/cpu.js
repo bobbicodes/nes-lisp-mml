@@ -1,6 +1,6 @@
 import * as apu from "./apu";
 import * as mapper from "./nsfmapper";
-import { callArea, setRamCdl, setRomCdl } from "../main";
+import { ram, callArea, setRamCdl, setRomCdl } from "../main";
 
 function log(text) {
     el("log").innerHTML += text + "<br>";

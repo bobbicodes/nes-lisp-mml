@@ -27,7 +27,7 @@ export function getByteRep(val) {
   return ("0" + val.toString(16)).slice(-2);
 }
 
-let ram = new Uint8Array(0x800);
+export let ram = new Uint8Array(0x800);
 export let callArea = new Uint8Array(0x10);
 let totalSongs = 0;
 let startSong = 0;
@@ -53,11 +53,6 @@ function log(text) {
 function el(id) {
   return document.getElementById(id);
 }
-
-let c = el("output");
-c.width = 256;
-c.height = 240;
-let ctx = c.getContext("2d");
 
 let currentSong = 1;
 
@@ -89,7 +84,6 @@ el("pause").onclick = function (e) {
 el("reset").onclick = function (e) {
   if (loaded) {
     playSong(currentSong);
-    drawVisual();
   }
 }
 
@@ -98,7 +92,6 @@ el("nextsong").onclick = function (e) {
     currentSong++;
     currentSong = currentSong > totalSongs ? totalSongs : currentSong;
     playSong(currentSong);
-    drawVisual();
   }
 }
 
@@ -107,7 +100,6 @@ el("prevsong").onclick = function (e) {
     currentSong--;
     currentSong = currentSong < 1 ? 1 : currentSong;
     playSong(currentSong);
-    drawVisual();
   }
 }
 
@@ -128,16 +120,9 @@ function loadRom(rom) {
       loopId = requestAnimationFrame(update);
       audio.start();
     }
-    // clear ram cdl
-    for (let i = 0; i < 0x8000; i++) {
-      ramCdl[i] = 0;
-    }
-    // set up rom cdl
-    let prgSize = 0x4000;
-    romCdl = new Uint8Array(prgSize);
-    for (let i = 0; i < prgSize; i++) {
-      romCdl[i] = 0;
-    }
+    // clear ram cdl, rom cdl
+    ramCdl = new Uint8Array(0x8000)
+    romCdl = new Uint8Array(0x4000)
     loaded = true;
     currentSong = startSong;
   }
@@ -231,7 +216,6 @@ function loadNsf(nsf) {
 
   playSong(startSong);
   log("Loaded NSF file");
-  console.log(nsf)
   return true;
 }
 

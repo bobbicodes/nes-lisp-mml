@@ -1,7 +1,7 @@
 import * as cpu from "./cpu";
 import * as apu from "./apu";
 import * as mapper from "./nsfmapper";
-import { ramCdl, romCdl } from "../main";
+import { ram, ramCdl, romCdl } from "../main";
 
 function el(id) {
     return document.getElementById(id);
@@ -29,7 +29,6 @@ export function updateDebugView() {
 }
 
 let disScroll = 0;
-let ramScroll = 0;
 const opLengths = [1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 0, 3, 2, 2, 3, 3];
 
 const opNames = [
@@ -57,7 +56,7 @@ function peek(adr) {
         // ram
         return ram[adr & 0x7ff];
     }
-    if (adr < 0x4020) {
+    if (adr < 0x4020 && adr >= 0x4000) {
         return apu.peek(adr);
     }
     return mapper.read(adr);
@@ -92,9 +91,26 @@ function instrStr(adr) {
     }
 }
 
+function changeScrollPos(add) {
+    let old = disScroll;
+    let r = disScroll + add;
+    r = r < 0 ? 0 : r;
+    disScroll = r;
+    if (r !== old) {
+        drawDissasembly();
+    }
+}
+
+el("disassembly").onwheel = function (e) {
+    changeScrollPos(Math.floor(e.deltaY * 0.3));
+    e.preventDefault();
+}
+
 function drawDissasembly() {
     let ev = el("disassembly");
     ev.textContent = "";
+    // set scroll to be around PC
+    //disScroll = cpu.br[0] - 16;
     let adr = disScroll;
     let lines = 0;
     let firstData = true;
@@ -109,14 +125,14 @@ function drawDissasembly() {
             isOpcode = romCdl[prgAdr];
         }
         let pcP = adr === cpu.br[0] ? ">" : " ";
-        if (isOpcode) {
+        if (isOpcode && instrStr(adr) != 'brk') {
             ev.textContent += `${pcP} ${getWordRep(adr)}: ${instrStr(adr)}\n`;
             adr += length;
             firstData = true;
             lines++;
         } else {
-             ev.textContent += `${pcP} ${getWordRep(adr)}: .db $${getByteRep(op)}\n`;
-             adr++;
+            //ev.textContent += `${pcP} ${getWordRep(adr)}: .db $${getByteRep(op)}\n`;
+            //adr++;
             if (firstData) {
                 ev.textContent += `  ${getWordRep(adr)}: -- UNIDENTIFIED BLOCK --\n`;
                 firstData = false;
@@ -134,7 +150,7 @@ function drawDissasembly() {
 }
 
 function drawRam() {
-    let ev = el("ram");
+    let ev = el("memory");
     ev.textContent = "";
     let ramBasePos = 0x1000
     let reg = 0
