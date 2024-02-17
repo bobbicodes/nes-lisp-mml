@@ -1,5 +1,74 @@
 export const ctx = new AudioContext();
 
+const noteLengths = [
+    [1.5, 0x8A],     // dotted whole
+    [1, 0x85],       // whole
+    [0.75, 0x89],    // dotted half
+    [0.5, 0x84],     // half
+    [0.375, 0x88],   // dotted quarter
+    [0.25, 0x83],    // quarter
+    [0.1875, 0x87],  // dotted eighth
+    [0.125, 0x82],   // eighth
+    [0.09375, 0x86], // dotted sixteenth
+    [0.0625, 0x81],  // sixteenth
+    [0.03125, 0x80]  // thirtysecond
+]
+
+// find largest note length that will fit without going over
+function largestNote(delta) {
+    let l
+    for (let i = noteLengths.length; i >= 0; i--) {
+        if (delta > noteLengths[i][0]) {
+            l = noteLengths[i]
+        }
+    }
+    return l
+}
+
+export function assembleStream(notes) {
+    const sorted = notes.sort((a, b) => a.get("ʞtime") - b.get("ʞtime"))
+    let stream = []
+    let currentTime = 0
+    let currentLength
+    for (let i = 0; i < sorted.length; i++) {
+        // is there a rest before next note?
+        if (currentTime < sorted[i].get("ʞtime")) {
+            stream.push(largestNote(sorted[i].get("ʞtime") - currentTime)[1])
+            stream.push(0x5e)
+        } else {
+            stream.push(largestNote(sorted[i].get("ʞlength"))[1])
+            // Note A1 is our 0x00 which is MIDI number 33
+            stream.push(sorted[i].get("ʞpitch") - 33)
+        }
+    }
+    return sorted
+}
+
+const testNotes = [
+    { ʞtime: 0, ʞlength: 0.5, ʞpitch: 64 },
+    { ʞtime: 0.5, ʞlength: 0.5, ʞpitch: 67 },
+    { ʞtime: 1, ʞlength: 0.5, ʞpitch: 59 },
+    { ʞtime: 1.5, ʞlength: 0.5, ʞpitch: 63 },
+
+    { ʞtime: 4, ʞlength: 0.5, ʞpitch: 67 },
+    { ʞtime: 4.5, ʞlength: 0.5, ʞpitch: 71 },
+    { ʞtime: 5, ʞlength: 0.25, ʞpitch: 69 },
+    { ʞtime: 5.25, ʞlength: 0.25, ʞpitch: 71 },
+    { ʞtime: 5.5, ʞlength: 0.5, ʞpitch: 72 },
+
+    { ʞtime: 2, ʞlength: 0.5, ʞpitch: 66 },
+    { ʞtime: 2.5, ʞlength: 0.5, ʞpitch: 69 },
+    { ʞtime: 3, ʞlength: 0.5, ʞpitch: 59 },
+    { ʞtime: 3.5, ʞlength: 0.5, ʞpitch: 64 }
+]
+
+let noteMaps = []
+for (let i = 0; i < testNotes.length; i++) {
+    noteMaps.push(new Map(Object.entries(testNotes[i])))
+}
+
+console.log(assembleStream(noteMaps))
+
 // Linear feedback shift register for noise channel
 // https://www.nesdev.org/wiki/APU_Noise
 export var x = 1
@@ -279,7 +348,7 @@ export function dpcm_seq(notes) {
         }
         // loop through the appropriate samples for that note
         for (let j = 0; j < duration; j++) {
-            buf[start+j] = notes[i].get("ʞbuffer").getChannelData(0)[j]
+            buf[start + j] = notes[i].get("ʞbuffer").getChannelData(0)[j]
         }
     }
     return audioBuffer(buf)
