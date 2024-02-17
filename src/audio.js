@@ -17,7 +17,7 @@ const noteLengths = [
 // find largest note length that will fit without going over
 function largestNote(delta) {
     let l
-    for (let i = noteLengths.length; i >= 0; i--) {
+    for (let i = noteLengths.length-1; i >= 0; i--) {
         if (delta > noteLengths[i][0]) {
             l = noteLengths[i]
         }
@@ -31,17 +31,28 @@ export function assembleStream(notes) {
     let currentTime = 0
     let currentLength
     for (let i = 0; i < sorted.length; i++) {
+        let t = sorted[i].get("ʞtime")
+        let l = sorted[i].get("ʞlength")
+        let noteLen = largestNote((t+l) - currentTime)
         // is there a rest before next note?
-        if (currentTime < sorted[i].get("ʞtime")) {
-            stream.push(largestNote(sorted[i].get("ʞtime") - currentTime)[1])
+        if (currentTime < t) {
+            if (noteLen[0] != currentLength) {
+                stream.push(noteLen[1])
+            }
             stream.push(0x5e)
+            currentTime = t + l
+            currentLength = noteLen[0]
         } else {
-            stream.push(largestNote(sorted[i].get("ʞlength"))[1])
+            if (noteLen[0] != currentLength) {
+                stream.push(noteLen[1])
+            }
             // Note A1 is our 0x00 which is MIDI number 33
             stream.push(sorted[i].get("ʞpitch") - 33)
+            currentTime = t + l
+            currentLength = noteLen[0]
         }
     }
-    return sorted
+    return stream
 }
 
 const testNotes = [
