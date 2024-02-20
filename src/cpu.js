@@ -1,6 +1,9 @@
 import * as apu from "./apu";
 import * as mapper from "./nsfmapper";
 import { ram, callArea, setRamCdl, setRomCdl } from "../main";
+import { sq1Stream, sq2Stream, triStream, noiseStream } from "./audio";
+
+let streamNum = 0
 
 function log(text) {
     el("log").innerHTML += text + "<br>";
@@ -148,6 +151,14 @@ export function cycle() {
             setRamCdl(eff, 1)
         } else {
             setRomCdl(eff, 1)
+        }
+        if (instr === 32) {
+            log("jsr " + eff)
+            if (eff === 32991) {
+                log("Calling se_fetch_byte")
+            }
+        } else {
+            log(instr + " " + eff)
         }
         functions[instr].call(null, eff, instr);
     }
@@ -495,11 +506,20 @@ function ror(adr) {
 function lda(adr) {
     // loads a value in a, sets Z and N
     r[A] = read(adr);
+    //log("LDA " + r[A])
+    if (adr === 545) {
+        log("Setting stream channel: " + r[X])
+    }
     setZandN(r[A]);
 }
 
 function sta(adr) {
     // stores a to a memory location
+    //log("STA " + r[A])
+    if (adr === 611 || adr === 612 || adr === 613 || adr === 614) {
+        log("Setting note length for stream " + r[X])
+        streamNum = r[X]
+    }
     write(adr, r[A]);
 }
 
@@ -582,6 +602,11 @@ function php(adr) {
 }
 
 function bpl(adr) {
+    if (adr === 38) {
+        if (!n) {
+            log("Byte is a note")
+        }
+    }
     // branches if N is 0
     doBranch(!n, adr);
 }
@@ -602,6 +627,13 @@ function bvs(adr) {
 }
 
 function bcc(adr) {
+    if (adr === 12) {
+        if (!c) {
+            log("Byte is a note length")
+        } else {
+            //log("Byte is an opcode")
+        }
+    }
     // branches if C is 0
     doBranch(!c, adr);
 }

@@ -1,5 +1,10 @@
 export const ctx = new AudioContext();
 
+export let sq1Stream = []
+export let sq2Stream = []
+export let triStream = []
+export let noiseStream = []
+
 const noteLengths = [
     [1.5, 0x8A],     // dotted whole
     [1, 0x85],       // whole
@@ -36,16 +41,12 @@ export function assembleStream(notes) {
         let noteLen = largestNote((t+l) - currentTime)
         // is there a rest before next note?
         if (currentTime < t) {
-            if (noteLen[0] != currentLength) {
-                stream.push(noteLen[1])
-            }
+            stream.push(noteLen[1])
             stream.push(0x5e)
             currentTime = t + l
             currentLength = noteLen[0]
         } else {
-            if (noteLen[0] != currentLength) {
-                stream.push(noteLen[1])
-            }
+            stream.push(noteLen[1])
             // Note A1 is our 0x00 which is MIDI number 33
             stream.push(sorted[i].get("ʞpitch") - 33)
             currentTime = t + l

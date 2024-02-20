@@ -4,6 +4,8 @@ import * as types from './types.js'
 import { repl_env, evalString, PRINT, EVAL } from './interpreter.js';
 import zip from './clj/zip.clj?raw'
 import * as audio from './audio.js'
+import { nsfDriver } from './nsf.js';
+import { loadNsf, loadRom } from '../main.js';
 
 export var out_buffer = ""
 
@@ -1187,10 +1189,15 @@ function dpcm3() {
     return dpcm_3
 }
 
+function playNSF() {
+    loadRom(nsfDriver)
+}
+
 // types.ns is namespace of type functions
 export var ns = {
     'env': printEnv,
     'play': audio.playBuffer,
+    'play-nsf': playNSF,
     'mix': audio.mix,
     'dpcm-0': dpcm0,
     'dpcm-1': dpcm1,

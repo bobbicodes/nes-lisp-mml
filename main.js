@@ -10,7 +10,25 @@ import * as mapper from "./src/nsfmapper";
 import { AudioHandler, samplesPerFrame, sampleBuffer, resume, nextBuffer } from "./src/audiohandler";
 
 let editorState = EditorState.create({
-  doc: ``,
+  doc: `(def data [{:time 0 :length 0.5 :pitch 64}
+      {:time 0.5 :length 0.5 :pitch 67}
+      {:time 1 :length 0.5 :pitch 59}
+      {:time 1.5 :length 0.5 :pitch 63}
+ 
+      {:time 2 :length 0.5 :pitch 66}
+      {:time 2.5 :length 0.5 :pitch 69}
+      {:time 3 :length 0.5 :pitch 59}
+      {:time 3.5 :length 0.5 :pitch 64}
+ 
+      {:time 4 :length 0.5 :pitch 67}
+      {:time 4.5 :length 0.5 :pitch 71}
+      {:time 5 :length 0.25 :pitch 69}
+      {:time 5.25 :length 0.25 :pitch 71}
+      {:time 5.5 :length 0.5 :pitch 72}])
+
+(play (tri-seq data))
+
+(play-nsf)`,
   extensions: [basicSetup, clojure()]
 })
 
@@ -114,7 +132,7 @@ export function setRomCdl(adr, val) {
   romCdl[adr] = val
 }
 
-function loadRom(rom) {
+export function loadRom(rom) {
   if (loadNsf(rom)) {
     if (!loaded && !paused) {
       loopId = requestAnimationFrame(update);
@@ -132,7 +150,7 @@ function getWordRep(val) {
   return ("000" + val.toString(16)).slice(-4).toUpperCase();
 }
 
-function loadNsf(nsf) {
+export function loadNsf(nsf) {
   if (nsf.length < 0x80) {
     log("Invalid NSF loaded");
     return false;
