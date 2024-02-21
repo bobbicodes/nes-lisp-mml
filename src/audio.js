@@ -5,6 +5,22 @@ export let sq2Stream = []
 export let triStream = []
 export let noiseStream = []
 
+export function setSq1Stream(notes) {
+    sq1Stream = notes
+}
+
+export function setSq2Stream(notes) {
+    sq2Stream = notes
+}
+
+export function setTriStream(notes) {
+    triStream = notes
+}
+
+export function setNoiseStream(notes) {
+    noiseStream = notes
+}
+
 const noteLengths = [
     [1.5, 0x8A],     // dotted whole
     [1, 0x85],       // whole

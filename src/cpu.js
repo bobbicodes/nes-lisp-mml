@@ -5,6 +5,11 @@ import { sq1Stream, sq2Stream, triStream, noiseStream } from "./audio";
 
 let streamNum = 0
 
+let sq1Index = 0
+let sq2Index = 0
+let triIndex = 0
+let noiseIndex = 0
+
 function log(text) {
     el("log").innerHTML += text + "<br>";
     el("log").scrollTop = el("log").scrollHeight;
@@ -152,17 +157,39 @@ export function cycle() {
         } else {
             setRomCdl(eff, 1)
         }
-        if (instr === 32) {
-            log("jsr " + eff)
-            if (eff === 32991) {
-                log("Calling se_fetch_byte")
-            }
-        } else {
-            log(instr + " " + eff)
-        }
+        handleNotes(instr, eff)
+        //log(instr + " " + eff)
         functions[instr].call(null, eff, instr);
     }
     cyclesLeft--;
+}
+
+function handleNotes(instr, eff) {
+    if (instr === 16) {
+        if (eff === 38) {
+            if (r[A] < 0x80) {
+                // byte is a note
+                if (r[X] === 0) {
+                    if (sq1Stream.length === sq1Index) {
+                        r[A] = 0x5e
+                    } else {
+                        r[A] = sq1Stream[sq1Index]
+                        sq1Index++
+                    }
+                }
+            } else if (r[A] < 0xA0) {
+                // byte is a note length
+                if (r[X] === 0) {
+                    if (sq1Stream.length === sq1Index) {
+                        r[A] = 0x8a
+                    } else {
+                        r[A] = sq1Stream[sq1Index]
+                        sq1Index++
+                    }
+                }
+            }
+        }
+    }
 }
 
 // create a P value from the flags
@@ -508,18 +535,13 @@ function lda(adr) {
     r[A] = read(adr);
     //log("LDA " + r[A])
     if (adr === 545) {
-        log("Setting stream channel: " + r[X])
+        //log("Setting stream channel: " + r[X])
     }
     setZandN(r[A]);
 }
 
 function sta(adr) {
     // stores a to a memory location
-    //log("STA " + r[A])
-    if (adr === 611 || adr === 612 || adr === 613 || adr === 614) {
-        log("Setting note length for stream " + r[X])
-        streamNum = r[X]
-    }
     write(adr, r[A]);
 }
 
@@ -602,11 +624,6 @@ function php(adr) {
 }
 
 function bpl(adr) {
-    if (adr === 38) {
-        if (!n) {
-            log("Byte is a note")
-        }
-    }
     // branches if N is 0
     doBranch(!n, adr);
 }
@@ -629,7 +646,7 @@ function bvs(adr) {
 function bcc(adr) {
     if (adr === 12) {
         if (!c) {
-            log("Byte is a note length")
+            //log("Byte is a note length")
         } else {
             //log("Byte is an opcode")
         }

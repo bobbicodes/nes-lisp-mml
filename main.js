@@ -26,7 +26,7 @@ let editorState = EditorState.create({
       {:time 5.25 :length 0.25 :pitch 71}
       {:time 5.5 :length 0.5 :pitch 72}])
 
-(play (tri-seq data))
+(sq1-stream data)
 
 (play-nsf)`,
   extensions: [basicSetup, clojure()]

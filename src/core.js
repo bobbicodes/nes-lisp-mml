@@ -1193,11 +1193,35 @@ function playNSF() {
     loadRom(nsfDriver)
 }
 
+function sq1Stream(notes) {
+    audio.setSq1Stream(audio.assembleStream(notes))
+    return audio.sq1Stream 
+}
+
+function sq2Stream(notes) {
+    audio.setSq2Stream(audio.assembleStream(notes))
+    return audio.sq2Stream
+}
+
+function triStream(notes) {
+    audio.setTriStream(audio.assembleStream(notes))
+    return audio.triStream
+}
+
+function noiseStream(notes) {
+    audio.setNoiseStream(audio.assembleStream(notes))
+    return audio.noiseStream
+}
+
 // types.ns is namespace of type functions
 export var ns = {
     'env': printEnv,
     'play': audio.playBuffer,
     'play-nsf': playNSF,
+    'sq1-stream': sq1Stream,
+    'sq2-stream': sq2Stream,
+    'tri-stream': triStream,
+    'noise-stream': noiseStream,
     'mix': audio.mix,
     'dpcm-0': dpcm0,
     'dpcm-1': dpcm1,
