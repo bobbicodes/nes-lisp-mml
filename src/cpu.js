@@ -10,6 +10,13 @@ let sq2Index = 0
 let triIndex = 0
 let noiseIndex = 0
 
+export function resetNSF() {
+    sq1Index = 0
+    sq2Index = 0
+    triIndex = 0
+    noiseIndex = 0
+}
+
 function log(text) {
     el("log").innerHTML += text + "<br>";
     el("log").scrollTop = el("log").scrollHeight;

@@ -6,6 +6,7 @@ import zip from './clj/zip.clj?raw'
 import * as audio from './audio.js'
 import { nsfDriver } from './nsf.js';
 import { loadNsf, loadRom } from '../main.js';
+import { resetNSF } from './cpu.js';
 
 export var out_buffer = ""
 
@@ -1190,6 +1191,7 @@ function dpcm3() {
 }
 
 function playNSF() {
+    resetNSF()
     loadRom(nsfDriver)
 }
 

@@ -217,7 +217,7 @@ export const evalCell = (view) => {
     var doc = view.state.doc.toString()
     if (parent === 'app') {
         posBeforeEval = view.state.selection.main.head
-        evalResult = tryEval("(do " + view.state.doc.text.join(" ") + ")")
+        evalResult = tryEval("(do " + view.state.doc.toString() + ")")
         var codeWithResult = doc + "\n" + "=> " + "\n" + out_buffer + evalResult
         updateEditor(view, codeWithResult, posBeforeEval)
         clearBuffer()
@@ -226,7 +226,7 @@ export const evalCell = (view) => {
     }
     if (parent === 'test') {
         testPosBeforeEval = view.state.selection.main.head
-        evalResult = tryEval("(do " + view.state.doc.text.join(" ") + ")")
+        evalResult = tryEval("(do " + view.state.doc.toString() + ")")
         var codeWithResult = doc + "\n" + "=> " + "\n" + out_buffer + evalResult
         updateEditor(view, codeWithResult, testPosBeforeEval)
         clearBuffer()
