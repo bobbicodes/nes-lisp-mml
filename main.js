@@ -10,23 +10,27 @@ import * as mapper from "./src/nsfmapper";
 import { AudioHandler, samplesPerFrame, sampleBuffer, resume, nextBuffer } from "./src/audiohandler";
 
 let editorState = EditorState.create({
-  doc: `(def data [{:time 0 :length 0.5 :pitch 64}
-      {:time 0.5 :length 0.5 :pitch 67}
-      {:time 1 :length 0.5 :pitch 59}
-      {:time 1.5 :length 0.5 :pitch 63}
- 
-      {:time 2 :length 0.5 :pitch 66}
-      {:time 2.5 :length 0.5 :pitch 69}
-      {:time 3 :length 0.5 :pitch 59}
-      {:time 3.5 :length 0.5 :pitch 64}
- 
-      {:time 4 :length 0.5 :pitch 67}
-      {:time 4.5 :length 0.5 :pitch 71}
-      {:time 5 :length 0.25 :pitch 69}
-      {:time 5.25 :length 0.25 :pitch 71}
-      {:time 5.5 :length 0.5 :pitch 72}])
+  doc: `(def tempo 0.5)
 
-(sq1-stream data)
+(defn zeldalead1 [time]
+       [{:time (* (+ time 0) tempo) :length (* tempo 2.5) :pitch 70}
+        {:time (* (+ time 2.5) tempo) :length (* tempo 0.5) :pitch 65}
+        {:time (* (+ time 3) tempo) :length (* tempo 0.5) :pitch 65}
+        {:time (* (+ time 3.5) tempo) :length (* tempo 0.5) :pitch 70}
+        {:time (* (+ time 4) tempo) :length (* tempo 0.25) :pitch 68}
+        {:time (* (+ time 4.25) tempo) :length (* tempo 0.25) :pitch 66}
+        {:time (* (+ time 4.5) tempo) :length (* tempo 3) :pitch 68}
+        {:time (* (+ time 8) tempo) :length (* tempo 2.5) :pitch 70}
+        {:time (* (+ time 10.5) tempo) :length (* tempo 0.5) :pitch 66}
+        {:time (* (+ time 11) tempo) :length (* tempo 0.5) :pitch 66}
+        {:time (* (+ time 11.5) tempo) :length (* tempo 0.5) :pitch 70}
+        {:time (* (+ time 12) tempo) :length (* tempo 0.25) :pitch 69}
+        {:time (* (+ time 12.25) tempo) :length (* tempo 0.25) :pitch 67}
+        {:time (* (+ time 12.5) tempo) :length (* tempo 3) :pitch 69}
+        {:time (* (+ time 16) tempo) :length (* tempo 1) :pitch 49}
+        {:time (* (+ time 20) tempo) :length (* tempo 1) :pitch 49}])
+
+(sq1-stream (zeldalead1 0))
 
 (play-nsf)`,
   extensions: [basicSetup, clojure()]

@@ -177,6 +177,30 @@ function handleNotes(instr, eff) {
                         sq1Index++
                     }
                 }
+                if (r[X] === 1) {
+                    if (sq2Stream.length === sq2Index) {
+                        r[A] = 0x5e
+                    } else {
+                        r[A] = sq2Stream[sq2Index]
+                        sq2Index++
+                    }
+                }
+                if (r[X] === 2) {
+                    if (triStream.length === triIndex) {
+                        r[A] = 0x5e
+                    } else {
+                        r[A] = triStream[triIndex]
+                        triIndex++
+                    }
+                }
+                if (r[X] === 3) {
+                    if (noiseStream.length === noiseIndex) {
+                        r[A] = 0x5e
+                    } else {
+                        r[A] = noiseStream[noiseIndex]
+                        noiseIndex++
+                    }
+                }
             } else if (r[A] < 0xA0) {
                 // byte is a note length
                 if (r[X] === 0) {
@@ -185,6 +209,30 @@ function handleNotes(instr, eff) {
                     } else {
                         r[A] = sq1Stream[sq1Index]
                         sq1Index++
+                    }
+                }
+                if (r[X] === 1) {
+                    if (sq2Stream.length === sq2Index) {
+                        r[A] = 0x8a
+                    } else {
+                        r[A] = sq2Stream[sq2Index]
+                        sq2Index++
+                    }
+                }
+                if (r[X] === 2) {
+                    if (triStream.length === triIndex) {
+                        r[A] = 0x8a
+                    } else {
+                        r[A] = triStream[triIndex]
+                        triIndex++
+                    }
+                }
+                if (r[X] === 3) {
+                    if (noiseStream.length === noiseIndex) {
+                        r[A] = 0x8a
+                    } else {
+                        r[A] = noiseStream[noiseIndex]
+                        noiseIndex++
                     }
                 }
             }
