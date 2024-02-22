@@ -1,23 +1,35 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite App</title>
-    <script type="module" crossorigin src="/nes-music-engine/assets/index-ead1a1b5.js"></script>
-    <link rel="stylesheet" href="/nes-music-engine/assets/index-e6c19540.css">
-  </head>
-  <body>
-    <div id="app"></div>
-    <div id="results"></div>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/nes-music-engine/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NES Music Engine</title>
+  <script type="module" crossorigin src="/nes-music-engine/assets/index-b09d4763.js"></script>
+  <link rel="stylesheet" href="/nes-music-engine/assets/index-2d84ab7a.css">
+</head>
+
+<body>
+  <div id="app"></div>
+  <h4>APU Registers</h4>
+  <pre id="memory">0000: xx</pre>
+  <h4>Disassembly</h4>
+  <pre id="disassembly"></pre>
+  <div id="results"></div>
   <div id="doc"></div>
+  <button id="pause">Pause</button>
+  <button id="reset">Restart song</button>
+  <button id="prevsong">Previous song</button>
+  <button id="nextsong">Next song</button><br>
+  <input id="rom" type="file" accept=".nsf">
+  <pre id="log"></pre>
   <h4>DPCM Samples</h4>
   <input id="dpcm0" type="file">
   <input id="dpcm1" type="file">
   <input id="dpcm2" type="file">
   <input id="dpcm3" type="file">
-    <svg id="svg_out"></svg>
-    
-  </body>
+  
+</body>
+
 </html>
