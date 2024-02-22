@@ -1,19 +1,5 @@
-let inputReadPos = 0;
 let inputBufferPos = 0;
 let inputBuffer = new Float32Array(4096);
-
-function process(e) {
-    if (inputReadPos + 2048 > inputBufferPos) {
-        inputReadPos = inputBufferPos - 2048;
-    }
-    if (inputReadPos + 4096 < inputBufferPos) {
-        inputReadPos += 2048;
-    }
-    let output = e.outputBuffer.getChannelData(0);
-    for (let i = 0; i < 2048; i++) {
-        output[i] = inputBuffer[(inputReadPos++) & 0xfff];
-    }
-}
 
 const actx = new AudioContext()
 export const samplesPerFrame = actx.sampleRate / 60;
@@ -30,19 +16,12 @@ export function nextBuffer() {
     }
 }
 
-let processorNode;
+await actx.audioWorklet.addModule("./src/audioworklet.js");
 
-try {
-    processorNode = new AudioWorkletNode(actx, "audioworklet");
-} catch (e) {
-    try {
-        console.log("Creating audio worklet node");
-        await actx.audioWorklet.addModule("./src/audioworklet.js");
-        processorNode = new AudioWorkletNode(actx, "audioworklet");
-    } catch (e) {
-        console.log(`** Error: Unable to create worklet node: ${e}`);
-    }
-}
+const processor = new AudioWorkletNode(
+    actx,
+    "audioworklet"
+  )
 
 export function AudioHandler() {
 
@@ -50,19 +29,11 @@ export function AudioHandler() {
         this.sourceNode = actx.createBufferSource();
         this.sourceNode.buffer = actx.createBuffer(1, actx.sampleRate, actx.sampleRate);
         this.sourceNode.loop = true;
-
-        this.scriptNode = actx.createScriptProcessor(2048, 1, 1);
-        this.scriptNode.onaudioprocess = function (e) {
-            process(e);
-        }
-
         this.biquadFilter = actx.createBiquadFilter();
         this.biquadFilter.type = "highpass";
         this.biquadFilter.frequency.setValueAtTime(37, actx.currentTime);
-        this.sourceNode.connect(this.scriptNode);
-        //this.sourceNode.connect(processorNode);
-        this.scriptNode.connect(this.biquadFilter);
-        //processorNode.connect(this.biquadFilter);
+        this.sourceNode.connect(processor);
+        processor.connect(this.biquadFilter);
         this.biquadFilter.connect(actx.destination);
         this.sourceNode.start();
     }

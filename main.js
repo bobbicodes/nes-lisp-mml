@@ -327,7 +327,6 @@ function getSamples(data, count) {
   // we need count values (0 - 1)
   let samples = apu.getOutput();
   let runAdd = (29780 / count);
-  let total = 0;
   let inputPos = 0;
   let running = 0;
   for (let i = 0; i < count; i++) {
