@@ -1045,12 +1045,6 @@ function _map(f, colls) {
     return EVAL(loop, repl_env)
 }
 
-var svgDiv = document.getElementById("svg_out")
-svgDiv.setAttribute("width", "1000")
-svgDiv.setAttribute("height", "1000")
-var svgGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
-svgDiv.appendChild(svgGroup);
-
 function appendPath(d, color, x, y, scale) {
     var newElement = document.createElementNS("http://www.w3.org/2000/svg", 'path');
     newElement.setAttribute("d", d)
@@ -1241,12 +1235,8 @@ export var ns = {
     'pulse1-seq': audio.pulse1_seq,
     'pulse2-seq': audio.pulse2_seq,
     'pulse3-seq': audio.pulse3_seq,
-    'sample-rate': audio.ctx.sampleRate,
     'channel-data': audio.channelData,
     'midi->freq': audio.midiToFreq,
-    'current-time': audio.ctx.currentTime,
-    'ctx-state': audio.ctx.state,
-    'audio-buffer': audio.audioBuffer,
     'spit-wav': audio.make_download,
     'append-path': appendPath,
     'clear-svg': clearSVG,
