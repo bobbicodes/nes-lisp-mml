@@ -12,23 +12,58 @@ import { AudioHandler, samplesPerFrame, sampleBuffer, resume, nextBuffer } from 
 let editorState = EditorState.create({
   doc: `(def tempo 1)
 
-(defn zeldalead1 [time]
-       [{:time (* (+ time 0) tempo) :length 148 :pitch 70}
-        {:time (* (+ time 2.5) tempo) :length 139 :pitch 65}
-        {:time (* (+ time 3) tempo) :length 139 :pitch 65}
-        {:time (* (+ time 3.5) tempo) :length 139 :pitch 70}
-        {:time (* (+ time 4) tempo) :length 134 :pitch 68}
-        {:time (* (+ time 4.25) tempo) :length 134 :pitch 66}
-        {:time (* (+ time 4.5) tempo) :length 145 :pitch 68}
-        {:time (* (+ time 5) tempo) :length 145 :pitch 127}
-        {:time (* (+ time 8) tempo) :length 148 :pitch 70}
-        {:time (* (+ time 10.5) tempo) :length 139 :pitch 66}
-        {:time (* (+ time 11) tempo) :length 139 :pitch 66}
-        {:time (* (+ time 11.5) tempo) :length 139 :pitch 70}
-        {:time (* (+ time 12) tempo) :length 134 :pitch 69}
-        {:time (* (+ time 12.25) tempo) :length 134 :pitch 67}
-        {:time (* (+ time 12.5) tempo) :length 150 :pitch 69}])
+(defn zeldabass1 [time note]
+  [{:time time  :length 20 :pitch note}
+   {:time (+ 1 time) :length 20 :pitch note}
+   {:time (+ 2 time) :length 20 :pitch (+ note 7)}
+   {:time (+ 3 time) :length 20 :pitch (+ note 7)}
+   {:time (+ 4 time) :length 20 :pitch (+ note 12)}
+   {:time (+ 5 time) :length 20 :pitch (+ note 12)}
+   {:time (+ 6 time) :length 20 :pitch (+ note 12)}
+   {:time (+ 7 time) :length 20 :pitch (+ note 12)}])
 
+(defn zeldabass2 [time]
+  (apply concat
+      (for [[beat note] [[0 46] [8 44] [16 42] [24 41]]]
+        (zeldabass1 (+ time beat) note))))
+
+(defn zeldalead1 [time]
+       [{:time (+ time 0) :length 20 :pitch 70}
+        {:time (+ time 0.1) :length 20 :pitch 70}
+        {:time (+ time 0.2) :length 20 :pitch 70}
+        {:time (+ time 0.3) :length 20 :pitch 70}
+        {:time (+ time 0.4) :length 20 :pitch 70}
+        {:time (+ time 0.6) :length 20 :pitch 65}
+        {:time (+ time 1) :length 20 :pitch 65}
+        {:time (+ time 1.1) :length 20 :pitch 70}
+        {:time (+ time 1.2) :length 10 :pitch 68}
+        {:time (+ time 1.3) :length 10 :pitch 66}
+        {:time (+ time 6.5) :length 20 :pitch 68}
+        {:time (+ time 6.6) :length 20 :pitch 68}
+        {:time (+ time 6.7) :length 20 :pitch 68}
+        {:time (+ time 6.8) :length 20 :pitch 68}
+        {:time (+ time 6.9) :length 20 :pitch 68}
+        {:time (+ time 7) :length 20 :pitch 68}
+        {:time (+ time 7.1) :length 20 :pitch 68}
+        {:time (+ time 7.4) :length 20 :pitch 70}
+        {:time (+ time 7.5) :length 20 :pitch 70}
+        {:time (+ time 7.6) :length 20 :pitch 70}
+        {:time (+ time 7.7) :length 20 :pitch 70}
+        {:time (+ time 7.8) :length 20 :pitch 70}
+        {:time (+ time 10.5) :length 20 :pitch 66}
+        {:time (+ time 11) :length 20 :pitch 66}
+        {:time (+ time 11.5) :length 20 :pitch 70}
+        {:time (+ time 12) :length 10 :pitch 69}
+        {:time (+ time 12.25) :length 10 :pitch 67}
+        {:time (+ time 12.5) :length 20 :pitch 69}
+        {:time (+ time 12.6) :length 20 :pitch 69}
+        {:time (+ time 12.7) :length 20 :pitch 69}
+        {:time (+ time 12.8) :length 20 :pitch 69}
+        {:time (+ time 12.9) :length 20 :pitch 69}
+        {:time (+ time 13.6) :length 20 :pitch 69}
+        {:time (+ time 13.7) :length 20 :pitch 69}])
+
+(tri-stream (zeldabass2 0))
 (sq1-stream (zeldalead1 0))
 
 (play-nsf)`,

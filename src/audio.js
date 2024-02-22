@@ -26,7 +26,7 @@ export function assembleStream(notes) {
     for (let i = 0; i < sorted.length; i++) {
         let t = sorted[i].get("ʞtime")
         let l = sorted[i].get("ʞlength")
-        stream.push(l)
+        stream.push(l+128)
         // Note A1 is our 0x00 which is MIDI number 33
         stream.push(sorted[i].get("ʞpitch") - 33)
         currentTime = t + l
