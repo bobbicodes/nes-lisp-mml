@@ -173,7 +173,7 @@ export function cycle() {
 
 function handleNotes(instr, eff) {
     if (instr === 16) {
-        if (eff === 38) {
+        if (eff === 28) {
             if (r[A] < 0x80) {
                 // byte is a note
                 if (r[X] === 0) {

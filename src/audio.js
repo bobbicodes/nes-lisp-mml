@@ -19,53 +19,17 @@ export function setNoiseStream(notes) {
     noiseStream = notes
 }
 
-const noteLengths = [
-    [1.5, 0x8A],     // dotted whole
-    [1, 0x85],       // whole
-    [0.75, 0x89],    // dotted half
-    [0.5, 0x84],     // half
-    [0.375, 0x88],   // dotted quarter
-    [0.25, 0x83],    // quarter
-    [0.1875, 0x87],  // dotted eighth
-    [0.125, 0x82],   // eighth
-    [0.09375, 0x86], // dotted sixteenth
-    [0.0625, 0x81],  // sixteenth
-    [0.03125, 0x80]  // thirtysecond
-]
-
-// find largest note length that will fit without going over
-function largestNote(delta) {
-    let l
-    for (let i = noteLengths.length-1; i >= 0; i--) {
-        if (delta > noteLengths[i][0]) {
-            l = noteLengths[i]
-        }
-    }
-    return l
-}
-
 export function assembleStream(notes) {
     const sorted = notes.sort((a, b) => a.get("ʞtime") - b.get("ʞtime"))
     let stream = []
     let currentTime = 0
-    let currentLength
     for (let i = 0; i < sorted.length; i++) {
         let t = sorted[i].get("ʞtime")
         let l = sorted[i].get("ʞlength")
-        let noteLen = largestNote((t+l) - currentTime)
-        // is there a rest before next note?
-        if (currentTime < t) {
-            stream.push(noteLen[1])
-            stream.push(0x5e)
-            currentTime = t + l
-            currentLength = noteLen[0]
-        } else {
-            stream.push(noteLen[1])
-            // Note A1 is our 0x00 which is MIDI number 33
-            stream.push(sorted[i].get("ʞpitch") - 33)
-            currentTime = t + l
-            currentLength = noteLen[0]
-        }
+        stream.push(l)
+        // Note A1 is our 0x00 which is MIDI number 33
+        stream.push(sorted[i].get("ʞpitch") - 33)
+        currentTime = t + l
     }
     return stream
 }

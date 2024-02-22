@@ -10,37 +10,26 @@ import * as mapper from "./src/nsfmapper";
 import { AudioHandler, samplesPerFrame, sampleBuffer, resume, nextBuffer } from "./src/audiohandler";
 
 let editorState = EditorState.create({
-  doc: `(def tempo 0.5)
-
-(defn zeldabass1 [time note]
-  [{:time (* time tempo)  :length (* tempo 1) :pitch note}
-   {:time (* tempo (+ 1 time)) :length (* tempo 1) :pitch (+ note 7)}
-   {:time (* tempo (+ 2 time)) :length (* tempo 2) :pitch (+ note 12)}])
-
-(defn zeldabass2 [time]
-  (apply concat
-      (for [[beat note] [[0 46] [4 44] [8 42] [12 41]]]
-        (zeldabass1 (+ time beat) note))))
+  doc: `(def tempo 1)
 
 (defn zeldalead1 [time]
-       [{:time (* (+ time 0) tempo) :length (* tempo 2.5) :pitch 70}
-        {:time (* (+ time 2.5) tempo) :length (* tempo 0.5) :pitch 65}
-        {:time (* (+ time 3) tempo) :length (* tempo 0.5) :pitch 65}
-        {:time (* (+ time 3.5) tempo) :length (* tempo 0.5) :pitch 70}
-        {:time (* (+ time 4) tempo) :length (* tempo 0.25) :pitch 68}
-        {:time (* (+ time 4.25) tempo) :length (* tempo 0.25) :pitch 66}
-        {:time (* (+ time 4.5) tempo) :length (* tempo 0.5) :pitch 68}
-        {:time (* (+ time 5) tempo) :length (* tempo 3) :pitch 68}
-        {:time (* (+ time 8) tempo) :length (* tempo 2.5) :pitch 70}
-        {:time (* (+ time 10.5) tempo) :length (* tempo 0.5) :pitch 66}
-        {:time (* (+ time 11) tempo) :length (* tempo 0.5) :pitch 66}
-        {:time (* (+ time 11.5) tempo) :length (* tempo 0.5) :pitch 70}
-        {:time (* (+ time 12) tempo) :length (* tempo 0.25) :pitch 69}
-        {:time (* (+ time 12.25) tempo) :length (* tempo 0.25) :pitch 67}
-        {:time (* (+ time 12.5) tempo) :length (* tempo 3) :pitch 69}])
+       [{:time (* (+ time 0) tempo) :length 145 :pitch 70}
+        {:time (* (+ time 2.5) tempo) :length 139 :pitch 65}
+        {:time (* (+ time 3) tempo) :length 139 :pitch 65}
+        {:time (* (+ time 3.5) tempo) :length 139 :pitch 70}
+        {:time (* (+ time 4) tempo) :length 134 :pitch 68}
+        {:time (* (+ time 4.25) tempo) :length 134 :pitch 66}
+        {:time (* (+ time 4.5) tempo) :length 145 :pitch 68}
+        {:time (* (+ time 5) tempo) :length 145 :pitch 127}
+        {:time (* (+ time 8) tempo) :length 145 :pitch 70}
+        {:time (* (+ time 10.5) tempo) :length 139 :pitch 66}
+        {:time (* (+ time 11) tempo) :length 139 :pitch 66}
+        {:time (* (+ time 11.5) tempo) :length 139 :pitch 70}
+        {:time (* (+ time 12) tempo) :length 134 :pitch 69}
+        {:time (* (+ time 12.25) tempo) :length 134 :pitch 67}
+        {:time (* (+ time 12.5) tempo) :length 150 :pitch 69}])
 
 (sq1-stream (zeldalead1 0))
-(tri-stream (zeldabass2 0))
 
 (play-nsf)`,
   extensions: [basicSetup, clojure()]
