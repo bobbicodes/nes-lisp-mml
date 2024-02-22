@@ -1,12 +1,9 @@
-let inputReadPos = 0;
-let inputBufferPos = 0;
 export let inputBuffer = new Float32Array(4096);
 
 class MyAudioProcessor extends AudioWorkletProcessor {
 
-    bufferSize = 4096
     _bytesWritten = 0
-    _buffer = new Float32Array(this.bufferSize)
+    inputBuffer = new Float32Array(4096)
 
     constructor() {
         super();
@@ -22,7 +19,7 @@ class MyAudioProcessor extends AudioWorkletProcessor {
     }
 
     isBufferFull() {
-        return this._bytesWritten === this.bufferSize
+        return this._bytesWritten === 4096
     }
 
     process(inputList, outputList, parameters) {
@@ -46,7 +43,7 @@ class MyAudioProcessor extends AudioWorkletProcessor {
     flush() {
         // trim the buffer if ended prematurely
         this.port.postMessage(
-          this._bytesWritten < this.bufferSize
+          this._bytesWritten < 4096
             ? this._buffer.slice(0, this._bytesWritten)
             : this._buffer
         )
