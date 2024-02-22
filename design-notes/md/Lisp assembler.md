@@ -225,7 +225,7 @@
 - Let's uh... track the execution of the NSF and see what we can learn, and see how we want to store it. It might be easiest just to store it as a big array but I want to explore other ideas.
 - So yeah... let's hardcode it somehow.
 - Lol, how is this my entire NSF driver
-	- ![image.png](../assets/image_1708231706768_0.png){:height 1510, :width 681}
+	- ![image.png](.../assets/image_1708231706768_0.png){:height 1510, :width 681}
 - Cool, I made a function called `play-nsf` which when evaluated, just plays the driver demo.
 - So that's the first step in connecting the editor to the NSF player
 - We're running instruction 32, addressing mode 7 (absolute)

@@ -68,7 +68,7 @@
   => 
   "11111111111111111111000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000" 
   ```
-- I was confused why the wave ends up like this ![image.png](./assets/image_1706444053344_0.png)
+- I was confused why the wave ends up like this ![image.png](../assets/image_1706444053344_0.png)
 - Like where do those extra values come from when it flattens out?
 - And I realized, by experimenting that they're not extra values. Those are in the file, and it flattens out when it exceeds the acceptable values. Cool!
 - How about with a function
@@ -217,7 +217,7 @@
   ```
 - I'll commit this with it on the default page
 - ok so TakuikaNinja pointed out that that's not how DPCM looping works, it needs to keep track of the delta value *across* the loops, so it ends up like this:
-- ![image.png](./assets/image_1706494944246_0.png)
+- ![image.png](../assets/image_1706494944246_0.png)
 - > the thing is, it probably also relies on the output filtering
   so flatlines would trend back towards the middle
 - I can ignore the filtering thing for now and just try to get looping working properly... so it will need to be a stateful thing
@@ -280,7 +280,7 @@
      return result
   }
   ```
-- it hung trying to eval this ![image.png](./assets/image_1706512908141_0.png)
+- it hung trying to eval this ![image.png](../assets/image_1706512908141_0.png)
 - Anyway... now I need to scale them. This is the Lisp function
 - ```clojure
   (defn scale-pcm [values t-min t-max]
@@ -294,7 +294,7 @@
   (spit-wav "dpcm-loop-test.wav"
     (audio-buffer (dpcm2pcm (loop-dpcm (apply str (mapcat #(repeat 6 %) saw)) 100))))
   ```
-- ![image.png](./assets/image_1706515395192_0.png)
+- ![image.png](../assets/image_1706515395192_0.png)
 - huh, I think the scaling is actually fine... the problem is how I'm doing the sample rate, you can't just repeat the differentials like that!
 - But even if I do it normally it's still fucked
 - ```clojure
@@ -303,11 +303,11 @@
   (spit-wav "dpcm-loop-test.wav"
     (audio-buffer (dpcm2pcm (loop-dpcm saw 500))))
   ```
-- ![image.png](./assets/image_1706516884850_0.png)
+- ![image.png](../assets/image_1706516884850_0.png)
 - it's uh... going down too many steps
 - no... it's just... wait... could it actually be right, and just the output filter is supposed to be balancing it?
 - Here's the beginning of the original:
-- ![image.png](./assets/image_1706517916702_0.png)
+- ![image.png](../assets/image_1706517916702_0.png)
 - ok so the sample rate needs to be handled by the function that actually builds the sequence of PCM values, so it can insert the proper number of repetitions then
 - Actually I think instead of doing even repetitions, we have to do something more precise, by keeping count of how many samples are being processed, and changing the value every n samples, where n could be say, 1.5
 - So how would I write that function? This is breaking my brain and it should be so simple. How do I think of this?
@@ -635,7 +635,7 @@
   ```
 - ok I've got the bass pretty much done, it's basically just repeats now. I need to tackle the drums next I think, which will be interesting because I need to make, uh, drums
 - It starts off with this thing
-- ![image.png](./assets/image_1706787235661_0.png)
+- ![image.png](../assets/image_1706787235661_0.png)
 - The A#3 is the highest noise note
 - Oh shit, I need to implement volume. Won't be hard because the value is literally set in the function
 - Cool, that works great!
@@ -822,7 +822,7 @@
      :time (* tempo time)})
   ```
 - Something is fucked about the samples, actually. They're being truncated, and... whatever this is:
-- ![image.png](./assets/image_1706945460220_0.png)
+- ![image.png](../assets/image_1706945460220_0.png)
 - One thing that's complicating things is that the loopdpcm function is being used.
 - Well... that shouldn't be a problem because it's just converting it to 1s and 0s.
 - The most confusing part is that it's not even close to the right length.

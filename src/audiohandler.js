@@ -1,5 +1,5 @@
 let inputBufferPos = 0;
-let inputBuffer = new Float32Array(4096);
+export let inputBuffer = new Float32Array(4096);
 
 const actx = new AudioContext()
 export const samplesPerFrame = actx.sampleRate / 60;
@@ -42,9 +42,6 @@ export function AudioHandler() {
         if (this.sourceNode) {
             this.sourceNode.stop();
             this.sourceNode.disconnect();
-        }
-        if (this.scriptNode) {
-            this.scriptNode.disconnect();
         }
         inputBufferPos = 0;
         inputReadPos = 0;

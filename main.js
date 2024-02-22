@@ -319,7 +319,7 @@ function runFrame() {
   }
   getSamples(sampleBuffer, samplesPerFrame);
   nextBuffer();
-  //updateDebugView()
+  updateDebugView()
 }
 
 function getSamples(data, count) {
