@@ -13,7 +13,7 @@ let editorState = EditorState.create({
   doc: `(def tempo 1)
 
 (defn zeldalead1 [time]
-       [{:time (* (+ time 0) tempo) :length 145 :pitch 70}
+       [{:time (* (+ time 0) tempo) :length 148 :pitch 70}
         {:time (* (+ time 2.5) tempo) :length 139 :pitch 65}
         {:time (* (+ time 3) tempo) :length 139 :pitch 65}
         {:time (* (+ time 3.5) tempo) :length 139 :pitch 70}
@@ -21,7 +21,7 @@ let editorState = EditorState.create({
         {:time (* (+ time 4.25) tempo) :length 134 :pitch 66}
         {:time (* (+ time 4.5) tempo) :length 145 :pitch 68}
         {:time (* (+ time 5) tempo) :length 145 :pitch 127}
-        {:time (* (+ time 8) tempo) :length 145 :pitch 70}
+        {:time (* (+ time 8) tempo) :length 148 :pitch 70}
         {:time (* (+ time 10.5) tempo) :length 139 :pitch 66}
         {:time (* (+ time 11) tempo) :length 139 :pitch 66}
         {:time (* (+ time 11.5) tempo) :length 139 :pitch 70}
