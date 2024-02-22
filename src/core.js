@@ -1218,7 +1218,6 @@ function noiseStream(notes) {
 // types.ns is namespace of type functions
 export var ns = {
     'env': printEnv,
-    'play': audio.playBuffer,
     'play-nsf': playNSF,
     'sq1-stream': sq1Stream,
     'sq2-stream': sq2Stream,
@@ -1241,12 +1240,8 @@ export var ns = {
     'pulse1-seq': audio.pulse1_seq,
     'pulse2-seq': audio.pulse2_seq,
     'pulse3-seq': audio.pulse3_seq,
-    'sample-rate': audio.ctx.sampleRate,
     'channel-data': audio.channelData,
     'midi->freq': audio.midiToFreq,
-    'current-time': audio.ctx.currentTime,
-    'ctx-state': audio.ctx.state,
-    'audio-buffer': audio.audioBuffer,
     'spit-wav': audio.make_download,
     'append-path': appendPath,
     'clear-svg': clearSVG,
