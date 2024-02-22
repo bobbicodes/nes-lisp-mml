@@ -1,4 +1,4 @@
-# NES Music Engine
+# nes-lisp-mml
 
 This tool faithfully emulates the 4 channels of the [audio processing unit](https://www.nesdev.org/wiki/APU) of the NES. These are:
 

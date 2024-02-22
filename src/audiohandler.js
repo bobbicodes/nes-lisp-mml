@@ -30,26 +30,11 @@ export function nextBuffer() {
     }
 }
 
-let processorNode;
-
-try {
-    processorNode = new AudioWorkletNode(actx, "audioworklet");
-} catch (e) {
-    try {
-        console.log("Creating audio worklet node");
-        await actx.audioWorklet.addModule("./src/audioworklet.js");
-        processorNode = new AudioWorkletNode(actx, "audioworklet");
-    } catch (e) {
-        console.log(`** Error: Unable to create worklet node: ${e}`);
-    }
-}
-
 export function AudioHandler() {
 
     this.start = function () {
         this.sourceNode = actx.createBufferSource();
         this.sourceNode.buffer = actx.createBuffer(1, actx.sampleRate, actx.sampleRate);
-        this.sourceNode.loop = true;
 
         this.scriptNode = actx.createScriptProcessor(2048, 1, 1);
         this.scriptNode.onaudioprocess = function (e) {
@@ -60,9 +45,7 @@ export function AudioHandler() {
         this.biquadFilter.type = "highpass";
         this.biquadFilter.frequency.setValueAtTime(37, actx.currentTime);
         this.sourceNode.connect(this.scriptNode);
-        //this.sourceNode.connect(processorNode);
         this.scriptNode.connect(this.biquadFilter);
-        //processorNode.connect(this.biquadFilter);
         this.biquadFilter.connect(actx.destination);
         this.sourceNode.start();
     }
