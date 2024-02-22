@@ -1,54 +1,28 @@
 class MyAudioProcessor extends AudioWorkletProcessor {
 
-    _bytesWritten = 0
-    _buffer = new Float32Array(4096)
+  inputReadPos = 0;
+  inputBufferPos = 0;
+  
 
-    constructor() {
-        super();
-        this.initBuffer()
+  constructor(options) {
+    super(options);
+    this.buffer = options.processorOptions.buffer;
+  }
+
+
+  process(inputList, outputList, parameters) {
+    if (this.inputReadPos + 2048 > this.inputBufferPos) {
+      this.inputReadPos = this.inputBufferPos - 2048;
     }
-
-    initBuffer() {
-        this._bytesWritten = 0
+    if (this.inputReadPos + 4096 < this.inputBufferPos) {
+      this.inputReadPos += 2048;
     }
-
-    isBufferEmpty() {
-        return this._bytesWritten === 0
+    let output = outputList[0][0]
+    for (let i = 0; i < 2048; i++) {
+      output[i] = this.buffer[(this.inputReadPos++) & 0xfff];
     }
-
-    isBufferFull() {
-        return this._bytesWritten === 4096
-    }
-
-    process(inputList, outputList, parameters) {
-        this.append(inputList[0][0])
-        return true;
-    }
-
-    append(channelData) {
-        if (this.isBufferFull()) {
-          this.flush()
-        }
-    
-        if (!channelData) return
-    
-        for (let i = 0; i < channelData.length; i++) {
-          this._buffer[this._bytesWritten++] = channelData[i]
-        }
-      }
-
-
-    flush() {
-        // trim the buffer if ended prematurely
-        this.port.postMessage(
-          this._bytesWritten < 4096
-            ? this._buffer.slice(0, this._bytesWritten)
-            : this._buffer
-        )
-        this.initBuffer()
-      }
-
-
+    return true;
+  }
 }
 
 registerProcessor("audioworklet", MyAudioProcessor);

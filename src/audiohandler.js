@@ -20,7 +20,8 @@ await actx.audioWorklet.addModule("./src/audioworklet.js");
 
 const processor = new AudioWorkletNode(
     actx,
-    "audioworklet"
+    "audioworklet",
+    {processorOptions: inputBuffer}
   )
 
 export function AudioHandler() {
