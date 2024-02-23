@@ -34,7 +34,8 @@ let editorState = EditorState.create({
         {:time (+ time 0.3) :length 20 :pitch 70}
         {:time (+ time 0.4) :length 20 :pitch 70}
         {:time (+ time 0.6) :length 20 :pitch 65}
-        {:time (+ time 1) :length 20 :pitch 65}
+        {:time (+ time 0.7) :length 2 :pitch 127}
+        {:time (+ time 1) :length 18 :pitch 65}
         {:time (+ time 1.1) :length 20 :pitch 70}
         {:time (+ time 1.2) :length 10 :pitch 68}
         {:time (+ time 1.3) :length 10 :pitch 66}
@@ -51,6 +52,7 @@ let editorState = EditorState.create({
         {:time (+ time 7.7) :length 20 :pitch 70}
         {:time (+ time 7.8) :length 20 :pitch 70}
         {:time (+ time 10.5) :length 20 :pitch 66}
+        {:time (+ time 10.6) :length 2 :pitch 127}
         {:time (+ time 11) :length 20 :pitch 66}
         {:time (+ time 11.5) :length 20 :pitch 70}
         {:time (+ time 12) :length 10 :pitch 69}
