@@ -10,28 +10,21 @@ import * as mapper from "./src/nsfmapper";
 import { AudioHandler, samplesPerFrame, sampleBuffer, resume, nextBuffer } from "./src/audiohandler";
 
 let editorState = EditorState.create({
-  doc: `(defn zeldabass1 [note]
-  [{:length 20 :pitch note}
-   {:length 20 :pitch note}
-   {:length 20 :pitch (+ note 7)}
-   {:length 20 :pitch (+ note 7)}
-   {:length 20 :pitch (+ note 12)}
-   {:length 20 :pitch (+ note 12)}
-   {:length 20 :pitch (+ note 12)}
-   {:length 20 :pitch (+ note 12)}])
+  doc: `(defn zeldabass [note]
+  [{:length 40 :pitch note}
+   {:length 40 :pitch (+ note 7)}
+   {:length 80 :pitch (+ note 12)}])
 
-(def zeldabass2
+(triangle
   (apply concat
-      (for [[beat note] [[0 46] [8 44] [16 42] [24 41]]]
-        (zeldabass1 note))))
+      (for [note [46 44 42 41]]
+        (zeldabass note))))
 
-(tri-stream zeldabass2)
-
-(sq1-stream 
+(square1 
   (for [[length pitch]
-      [[100 70] [20 65] [2 127] [18 65] [20 70] [10 68] [10 66]
-       [140 68] [100 70] [20 66] [2 127] [20 66] [20 70]
-       [10 69] [10 67] [140 69]]]
+      [[100 70] [20 65] [2 127] [18 65] [20 70] [10 68] 
+       [10 66] [140 68] [100 70] [20 66] [2 127] [20 66]
+       [20 70] [10 69] [10 67] [140 69]]]
   {:length length :pitch pitch}))
 
 (play-nsf)`,
