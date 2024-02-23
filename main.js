@@ -25,26 +25,14 @@ let editorState = EditorState.create({
       (for [[beat note] [[0 46] [8 44] [16 42] [24 41]]]
         (zeldabass1 note))))
 
-(def zeldalead1
-       [{:length 100 :pitch 70}
-        {:length 20 :pitch 65}
-        {:length 2 :pitch 127}
-        {:length 18 :pitch 65}
-        {:length 20 :pitch 70}
-        {:length 10 :pitch 68}
-        {:length 10 :pitch 66}
-        {:length 140 :pitch 68}
-        {:length 100 :pitch 70}
-        {:length 20 :pitch 66}
-        {:length 2 :pitch 127}
-        {:length 20 :pitch 66}
-        {:length 20 :pitch 70}
-        {:length 10 :pitch 69}
-        {:length 10 :pitch 67}
-        {:length 140 :pitch 69}])
-
 (tri-stream zeldabass2)
-(sq1-stream zeldalead1)
+
+(sq1-stream 
+  (for [[length pitch]
+      [[100 70] [20 65] [2 127] [18 65] [20 70] [10 68] [10 66]
+       [140 68] [100 70] [20 66] [2 127] [20 66] [20 70]
+       [10 69] [10 67] [140 69]]]
+  {:length length :pitch pitch}))
 
 (play-nsf)`,
   extensions: [basicSetup, clojure()]
