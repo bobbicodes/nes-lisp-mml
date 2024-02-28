@@ -1209,9 +1209,14 @@ function noiseStream(notes) {
     return audio.noiseStream
 }
 
+function hex(n) {
+    return (n).toString(16);
+}
+
 // types.ns is namespace of type functions
 export var ns = {
     'env': printEnv,
+    'hex': hex,
     'play': audio.playBuffer,
     'play-nsf': playNSF,
     'square1': sq1Stream,
