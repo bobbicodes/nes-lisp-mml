@@ -1,3 +1,42 @@
+const nsfFormat = [0x4e, 0x45, 0x53, 0x4d, 0x1a]
+const version = 1
+let totalSongs = 1
+let startingSong = 1
+const loadAdr = [0x00, 0x80]
+const initAdr = [0x00, 0x80]
+const playAdr = [0x09, 0x80]
+
+function pad32(string) {
+  let name = []
+  for (let i = 0; i < 32; i++) {
+    if (i < string.length) {
+        name.push(string.charCodeAt(i))
+    } else {
+      name.push(0)
+    }
+  }
+  return name
+}
+
+let songName = pad32("Untitled")
+let artist = pad32("Unknown")
+let copyright = pad32("")
+
+let ntscSpeed = [0xff, 0x40]
+let banking = [0,0,0,0,0,0,0,0]
+let palSpeed = [0x1d, 0x4e]
+let playMode = 3
+let expansionAudio = 0
+let prgLength = 0
+
+let header = nsfFormat
+header.push(version, totalSongs, startingSong);
+header = header.concat(loadAdr, initAdr, playAdr,
+  songName, artist, copyright, ntscSpeed, banking, palSpeed,
+  playMode, expansionAudio, prgLength)
+
+//console.log(header)
+
 export const nsfDriver = [
 	78, 69, 83, 77, 26, 1, 1, 1, 0, 128, 0, 128, 9, 128, 83, 111, 117, 110, 100,
 	32, 101, 110, 103, 105, 110, 101, 32, 100, 101, 109, 111, 0, 0, 0, 0, 0, 0,
