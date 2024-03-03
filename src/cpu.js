@@ -164,87 +164,10 @@ export function cycle() {
         } else {
             setRomCdl(eff, 1)
         }
-        handleNotes(instr, eff)
         //log(instr + " " + eff)
         functions[instr].call(null, eff, instr);
     }
     cyclesLeft--;
-}
-
-function handleNotes(instr, eff) {
-    if (instr === 16) {
-        if (eff === 28) {
-            if (r[A] < 0x80) {
-                // byte is a note
-                if (r[X] === 0) {
-                    if (sq1Stream.length === sq1Index) {
-                        r[A] = 0x5e
-                    } else {
-                        r[A] = sq1Stream[sq1Index]
-                        sq1Index++
-                    }
-                }
-                if (r[X] === 1) {
-                    if (sq2Stream.length === sq2Index) {
-                        r[A] = 0x5e
-                    } else {
-                        r[A] = sq2Stream[sq2Index]
-                        sq2Index++
-                    }
-                }
-                if (r[X] === 2) {
-                    if (triStream.length === triIndex) {
-                        r[A] = 0x5e
-                    } else {
-                        r[A] = triStream[triIndex]
-                        triIndex++
-                    }
-                }
-                if (r[X] === 3) {
-                    if (noiseStream.length === noiseIndex) {
-                        r[A] = 0x5e
-                    } else {
-                        r[A] = noiseStream[noiseIndex]
-                        noiseIndex++
-                    }
-                }
-            } else if (r[A] < 0xA0) {
-                // byte is a note length
-                if (r[X] === 0) {
-                    if (sq1Stream.length === sq1Index) {
-                        r[A] = 0x8a
-                    } else {
-                        r[A] = sq1Stream[sq1Index]
-                        sq1Index++
-                    }
-                }
-                if (r[X] === 1) {
-                    if (sq2Stream.length === sq2Index) {
-                        r[A] = 0x8a
-                    } else {
-                        r[A] = sq2Stream[sq2Index]
-                        sq2Index++
-                    }
-                }
-                if (r[X] === 2) {
-                    if (triStream.length === triIndex) {
-                        r[A] = 0x8a
-                    } else {
-                        r[A] = triStream[triIndex]
-                        triIndex++
-                    }
-                }
-                if (r[X] === 3) {
-                    if (noiseStream.length === noiseIndex) {
-                        r[A] = 0x8a
-                    } else {
-                        r[A] = noiseStream[noiseIndex]
-                        noiseIndex++
-                    }
-                }
-            }
-        }
-    }
 }
 
 // create a P value from the flags
