@@ -1,6 +1,6 @@
 # nes-lisp-mml
 
-This is a tool for programmatically composing NES music. Songs are built using a dialect of the Lisp programming language, running in a live interpreter connected to a custom text editor. It is conceptually similar to [MML](https://en.wikipedia.org/wiki/Music_Macro_Language) (Music Macro Language), but benefits from Lisp's structured syntax which facilitates a highly ergonomic style of interactive evaluation. The interpreter is based on [MAL (Make-a-Lisp)](https://github.com/kanaka/mal) and closely follows Clojure including its [destructuring syntax](https://clojure.org/guides/destructuring), powerful sequence processing library and macro system. This project also aims to provide a more accessible composition environment for those with impaired vision or who otherwise have difficulty with graphical interfaces. 
+This is a tool for programmatically composing NES music. Songs are built using a dialect of the Lisp programming language, running in a live interpreter connected to a custom text editor. It is conceptually similar to [MML](https://en.wikipedia.org/wiki/Music_Macro_Language) (Music Macro Language), but benefits from Lisp's structured syntax which facilitates a highly ergonomic style of interactive evaluation. The interpreter is based on [MAL (Make-a-Lisp)](https://github.com/kanaka/mal) and closely follows Clojure including its [destructuring syntax](https://clojure.org/guides/destructuring), powerful [sequence processing library](https://clojure.org/reference/sequences) and [macro system](https://clojure.org/reference/macros). This project also aims to provide a more accessible composition environment for those with impaired vision or who otherwise have difficulty with graphical interfaces. 
 
 ## Evaluation key bindings
 
@@ -30,21 +30,13 @@ The note data can be produced however you like, as long as it ends up a sequence
 This is rather verbose however, and does not take advantage of the fact that we have a complete programming language at our disposal. We could be more concise by writing a function which takes a sequence of length/pitch pairs and outputs the appropriate maps:
 
 ```clojure
-(defn zeldabass [note]
-  [{:length 40 :pitch note}
-   {:length 40 :pitch (+ note 7)}
-   {:length 80 :pitch (+ note 12)}])
-
-(triangle
-  (apply concat
-      (for [note [46 44 42 41]]
-        (zeldabass note))))
+(def data
+  [[100 70] [20 65] [2 127] [18 65] [20 70] [10 68] 
+   [10 66] [140 68] [100 70] [20 66] [2 127] [20 66]
+   [20 70] [10 69] [10 67] [140 69]])
 
 (square1 
-  (for [[length pitch]
-      [[100 70] [20 65] [2 127] [18 65] [20 70] [10 68] 
-       [10 66] [140 68] [100 70] [20 66] [2 127] [20 66]
-       [20 70] [10 69] [10 67] [140 69]]]
+  (for [[length pitch] data]
   {:length length :pitch pitch}))
 ```
 
