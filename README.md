@@ -1,6 +1,6 @@
 # nes-lisp-mml
 
-This is a tool for programmatically composing NES music. Songs are built using a dialect of the Lisp programming language, connected to a custom text editor. It is conceptually similar to [MML](https://en.wikipedia.org/wiki/Music_Macro_Language) (Music Macro Language), but benefits from Lisp's structured syntax which facilitates a highly ergonomic style of interactive evaluation. The interpreter is based on [MAL (Make-a-Lisp)](https://github.com/kanaka/mal) and closely follows Clojure including its [destructuring syntax](https://clojure.org/guides/destructuring), powerful sequence processing library and macro system. This project also aims to provide a more accessible composition environment for those with impaired sight or who otherwise have difficulty with graphical interfaces.
+This is a tool for programmatically composing NES music. Songs are built using a dialect of the Lisp programming language, running in a live interpreter connected to a custom text editor. It is conceptually similar to [MML](https://en.wikipedia.org/wiki/Music_Macro_Language) (Music Macro Language), but benefits from Lisp's structured syntax which facilitates a highly ergonomic style of interactive evaluation. The interpreter is based on [MAL (Make-a-Lisp)](https://github.com/kanaka/mal) and closely follows Clojure including its [destructuring syntax](https://clojure.org/guides/destructuring), powerful sequence processing library and macro system. This project also aims to provide a more accessible composition environment for those with impaired vision or who otherwise have difficulty with graphical interfaces. 
 
 ## Evaluation key bindings
 
@@ -36,6 +36,17 @@ The note data can be produced however you like, as long as it ends up a sequence
        [20 70] [10 69] [10 67] [140 69]]]
   {:length length :pitch pitch}))
 ```
+
+### Volume/duty cycle changes
+
+To facilitate volume envelopes and duty changes, a note can also be given `volume` and `duty` keys. Volume is an integer 0-15, and duty is 0-3:
+
+0 = 12.5%
+1 = 25%
+2 = 50%
+3 = 75%
+
+A volume or duty change is persistent, i.e. it will affect all subsequent notes until there is another change.
 
 ## Building from source
 
