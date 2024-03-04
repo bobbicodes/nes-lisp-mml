@@ -4,7 +4,7 @@ import * as types from './types.js'
 import { repl_env, evalString, PRINT, EVAL } from './interpreter.js';
 import zip from './clj/zip.clj?raw'
 import * as audio from './audio.js'
-import { nsfDriver } from './nsf.js';
+import { nsfDriver, assembleDriver } from './nsf.js';
 import { loadNsf, loadRom } from '../main.js';
 import { resetNSF } from './cpu.js';
 
@@ -1184,7 +1184,8 @@ function dpcm3() {
     return dpcm_3
 }
 
-function playNSF() {
+function playNSF(square1, square2, triangle, noise) {
+    assembleDriver(square1, square2, triangle, noise)
     resetNSF()
     loadRom(nsfDriver)
 }
