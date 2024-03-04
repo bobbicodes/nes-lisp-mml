@@ -10,34 +10,30 @@ import * as mapper from "./src/nsfmapper";
 import { AudioHandler, samplesPerFrame, sampleBuffer, resume, nextBuffer } from "./src/audiohandler";
 
 let editorState = EditorState.create({
-  doc: `(defn zeldabass [note]
-  [{:length 40 :pitch note}
-   {:length 40 :pitch (+ note 7)}
-   {:length 80 :pitch (+ note 12)}])
-
-(triangle
-  (apply concat
-      (for [note [46 44 42 41]]
-        (zeldabass note))))
-
-(square1 
-  (for [[length pitch]
-      [[100 70] [20 65] [2 127] [18 65] [20 70] [10 68] 
-       [10 66] [140 68] [100 70] [20 66] [2 127] [20 66]
-       [20 70] [10 69] [10 67] [140 69]]]
-  {:length length :pitch pitch}))
-
-(play-nsf
-  [0xA8, 0x1F, 0x9E, 0xF0, 0x22, 0xF1, 0x94, 0x21, 0xF2, 0x1F, 0xF3, 0x1E,
-	0xF0, 0x1F, 0xF1, 0x21, 0xF2, 0xDF, 0xF3, 0x5E, 0xA8, 0x5E, 0x21, 0xF0,
-	0x9E, 0x24, 0xF1, 0x94, 0x22, 0xF2, 0x21, 0xF3, 0x9C, 0x1F, 0xF0, 0x21, 0xFF],
-  [0x94, 0x13, 0x5E, 0x1A, 0x5E, 0x1A, 0x5E, 0x1A, 0x5E, 0x0E, 0x5E, 0x15,
-	0x5E, 0x15, 0x5E, 0x15, 0x5E, 0x15, 0x5E, 0x18, 0x5E, 0x18, 0x5E, 0x18,
-	0x5E, 0x0E, 0x5E, 0x13, 0x5E, 0x13, 0x5E, 0x13, 0x5E, 0xE5, 0x13, 0x5E, 0xFF],
-  [0xA8, 0x1F, 0x22, 0x1A, 0x1E, 0x21, 0x24, 0x1A, 0x1F, 0x22, 0x26, 0x9E,
-	0x24, 0x26, 0xA8, 0x27, 0x94, 0x1F, 0x21, 0x22, 0x24, 0x1A, 0x1B, 0x1D,
-	0x1E, 0x18, 0x1F, 0xDA, 0x5E, 0xFF],
-  [0x90, 0x0D, 0x5E, 0x07, 0x5E, 0x0D, 0xFF])`,
+  doc: `(play-nsf
+  [{:length 168 :pitch 31} {:length 158 :duty 240 :pitch 34} 
+   {:duty 241 :length 148 :pitch 33} {:duty 242 :pitch 31} 
+   {:duty 243 :pitch 30} {:duty 240 :pitch 31} {:duty 241 :pitch 33} 
+   {:length 223 :duty 243 :pitch 94} {:length 168 :pitch 94} 
+   {:pitch 33} {:duty 240 :length 158 :pitch 36} 
+   {:duty 241 :length 148 :pitch 34} {:duty 242 :pitch 33} 
+   {:duty 243 :length 156 :pitch 31} {:duty 240 :pitch 33}],
+  [{:length 148 :pitch 19} {:pitch 94} {:pitch 26} {:pitch 94} {:pitch 26}
+   {:pitch 94} {:pitch 26} {:pitch 94} {:pitch 14} {:pitch 94}  {:pitch 21}
+   {:pitch 94} {:pitch 21} {:pitch 94} {:pitch 21} {:pitch 94} {:pitch 21}
+   {:pitch 94} {:pitch 24} {:pitch 94} {:pitch 24} {:pitch 94} {:pitch 24}
+   {:pitch 94} {:pitch 14} {:pitch 94} {:pitch 19} {:pitch 94} {:pitch 19}
+   {:pitch 94} {:pitch 19} {:pitch 94} {:volume 229 :pitch 19} {:pitch 94}],
+  [{:length 168 :pitch 31} {:pitch 34} {:pitch 26} {:pitch 30} {:pitch 33}
+   {:pitch 36} {:pitch 26} {:pitch 31} {:pitch 34} {:pitch 38} {:length 158 :pitch 36} 
+   {:pitch 38} {:length 168 :pitch 39} {:length 148 :pitch 31} {:pitch 33} {:pitch 34} 
+   {:pitch 36} {:pitch 26} {:pitch 27} {:pitch 29} {:pitch 30} {:pitch 24} {:pitch 31}
+   {:length 218 :pitch 94}],
+  [{:length 148 :pitch 13} {:pitch 94} {:pitch 7} {:pitch 94} {:pitch 13} {:pitch 94} 
+   {:pitch 7} {:pitch 94} {:pitch 13} {:pitch 94} {:pitch 7} {:pitch 94} {:pitch 13}
+   {:pitch 94} {:pitch 7} {:pitch 94} {:pitch 13} {:pitch 94} {:pitch 7} {:pitch 94}
+   {:pitch 13} {:pitch 94} {:pitch 7} {:pitch 94} {:pitch 13} {:pitch 94} {:pitch 7}
+   {:pitch 94} {:pitch 13} {:pitch 94} {:pitch 7} {:pitch 94} {:pitch 13}])`,
   extensions: [basicSetup, clojure()]
 })
 

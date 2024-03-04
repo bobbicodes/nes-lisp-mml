@@ -1185,6 +1185,10 @@ function dpcm3() {
 }
 
 function playNSF(square1, square2, triangle, noise) {
+    square1 = audio.assembleStream(square1)
+    square2 = audio.assembleStream(square2)
+    triangle = audio.assembleStream(triangle)
+    noise = audio.assembleStream(noise)
     assembleDriver(square1, square2, triangle, noise)
     resetNSF()
     loadRom(nsfDriver)

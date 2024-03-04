@@ -22,22 +22,20 @@ export function setNoiseStream(notes) {
 export function assembleStream(notes) {
     let stream = []
     for (let i = 0; i < notes.length; i++) {
-        let l = notes[i].get("ʞlength")
-        // Our maximum length is 30 frames, so need to separate longer notes
-        if (l > 30) {
-            let n = Math.floor(l / 30)
-            for (let j = 0; j < n; j++) {
-                stream.push(30 + 128)
-                // Note A1 is our 0x00 which is MIDI number 33
-                stream.push(notes[i].get("ʞpitch") - 33)
-            }
-            stream.push((l % 30) + 128)
-            stream.push(notes[i].get("ʞpitch") - 33)
-        } else {
-            stream.push(l + 128)
-            stream.push(notes[i].get("ʞpitch") - 33)
+        if (notes[i].has("ʞlength")) {
+          stream.push(notes[i].get("ʞlength"))  
+        }
+        if (notes[i].has("ʞvolume")) {
+          stream.push(notes[i].get("ʞvolume"))  
+        }
+        if (notes[i].has("ʞduty")) {
+          stream.push(notes[i].get("ʞduty"))  
+        }
+        if (notes[i].has("ʞpitch")) {
+          stream.push(notes[i].get("ʞpitch"))  
         }
     }
+    stream.push(0xFF)
     return stream
 }
 
