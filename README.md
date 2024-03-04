@@ -12,11 +12,22 @@ This is a tool for programmatically composing NES music. Songs are built using a
 
 A part is represented by a sequence of notes, each of which is a hashmap with a length (expressed in ticks) and a pitch (MIDI numbers). These sequences are passed to the respective channels:
 
-- noise (not yet implemented)
+- noise
 - triangle
 - square1, square2
 
-The note data can be produced however you like, as long as it ends up a sequence of maps with the right keys. A convenient way is to use a function which takes a sequence of length/pitch pairs and outputs the appropriate maps:
+The note data can be produced however you like, as long as it ends up a sequence of maps with the right keys. So you could use a literal sequence of maps:
+
+```clojure
+[{:length 100 :pitch 70}
+ {:length 20 :pitch 65}
+ {:length 2 :pitch 127}
+ {:length 18 :pitch 65}
+ {:length 20 :pitch 70}
+ {:length 10 :pitch 68}]
+```
+
+This is rather verbose however, and does not take advantage of the fact that we have a complete programming language at our disposal. We could be more concise by writing a function which takes a sequence of length/pitch pairs and outputs the appropriate maps:
 
 ```clojure
 (defn zeldabass [note]
@@ -41,10 +52,11 @@ The note data can be produced however you like, as long as it ends up a sequence
 
 To facilitate volume envelopes and duty changes, a note can also be given `volume` and `duty` keys. Volume is an integer 0-15, and duty is 0-3:
 
-0 = 12.5%
-1 = 25%
-2 = 50%
-3 = 75%
+
+- 0 = 12.5%
+- 1 = 25%
+- 2 = 50%
+- 3 = 75%
 
 A volume or duty change is persistent, i.e. it will affect all subsequent notes until there is another change.
 
