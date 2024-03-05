@@ -24,6 +24,10 @@ function freqToPeriod(freq) {
     return c / (freq * 16) - 1
 }
 
+function midiToFreq(n) {
+    return 440 * (Math.pow(2, ((n-69) / 12)))
+}
+
 export function assembleStream(notes) {
     let stream = []
     for (let i = 0; i < notes.length; i++) {
