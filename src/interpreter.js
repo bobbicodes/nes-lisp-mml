@@ -312,9 +312,9 @@ evalString("(do " + core_clj + ")")
 evalString("(do " + pprint + ")")
 
 export const repp = function (str) {
-    return evalString("(do " + str + ")")
+    //return evalString("(do " + str + ")")
     //repl_env.set(types._symbol('*1'), READ(evalString("(do " + str + ")")))
-    //return EVAL(READ("(pprint " + "(do " + str + "))"), repl_env)
+    return EVAL(READ("(pprint " + "(do " + str + "))"), repl_env)
 };
 
 function addDoc(sym, arglists, doc) {
