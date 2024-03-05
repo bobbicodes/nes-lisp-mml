@@ -28,6 +28,13 @@ function midiToFreq(n) {
     return 440 * (Math.pow(2, ((n-69) / 12)))
 }
 
+function fmtWord(n) {
+  n = Math.round(n)
+  const pad = String(n.toString(16)).padStart(4, '0');
+  return [parseInt(pad.slice(2), 16),
+          parseInt(pad.slice(0, 2), 16)];
+}
+
 export function assembleStream(notes) {
     let stream = []
     for (let i = 0; i < notes.length; i++) {
