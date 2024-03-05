@@ -48,7 +48,11 @@ export function assembleStream(notes) {
           stream.push(notes[i].get("ʞduty"))  
         }
         if (notes[i].has("ʞpitch")) {
-          stream.push(notes[i].get("ʞpitch"))  
+          const freq = midiToFreq(notes[i].get("ʞpitch"))
+          const period = freqToPeriod(freq)
+          const word = fmtWord(period)
+          stream.push(word[0])
+          stream.push(word[1])  
         }
     }
     stream.push(0xFF)
