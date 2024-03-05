@@ -19,6 +19,11 @@ export function setNoiseStream(notes) {
     noiseStream = notes
 }
 
+function freqToPeriod(freq) {
+    const c = 1789773;
+    return c / (freq * 16) - 1
+}
+
 export function assembleStream(notes) {
     let stream = []
     for (let i = 0; i < notes.length; i++) {
