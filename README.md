@@ -12,21 +12,17 @@ The *Eval at cursor* command is particularly powerful - it evaluates the express
 
 ## API
 
-A part is represented by a sequence of notes, each of which is a hashmap with a length (expressed in ticks) and a pitch (MIDI numbers). These sequences are passed to the respective channels:
+A part is represented by a sequence of commands, each of which is a hashmap with various keys representing `length` (expressed in ticks), `pitch` (MIDI numbers, including decimal values for vibrato/microtones), `volume` and `duty`. These sequences are passed to their respective channels.
 
-- noise
-- triangle
-- square1, square2
+Valid lengths begin at 0x81, which represents a single tick or 1/60 of a second. (TODO: This should really be 1, this is merely a holdover from driver implementation detail)
 
 The note data can be produced however you like, as long as it ends up a sequence of maps with the right keys. So you could use a literal sequence of maps:
 
 ```clojure
-[{:length 100 :pitch 70}
- {:length 20 :pitch 65}
- {:length 2 :pitch 127}
- {:length 18 :pitch 65}
- {:length 20 :pitch 70}
- {:length 10 :pitch 68}]
+[{:volume 0xe9 :length 0x90 :pitch 60} {:length 0x89 :pitch 67} 
+   {:length 0x90 :pitch 65} {:pitch 67}
+ {:length 0x90 :pitch 68} {:length 0x89 :pitch 67} 
+   {:length 0x90 :pitch 65} {:length 0x89 :pitch 67}]
 ```
 
 This is rather verbose however, and does not take advantage of the fact that we have a complete programming language at our disposal. We could be more concise by writing a function which takes a sequence of length/pitch pairs and outputs the appropriate maps:
@@ -44,13 +40,14 @@ This is rather verbose however, and does not take advantage of the fact that we 
 
 ### Volume/duty cycle changes
 
-To facilitate volume envelopes and duty changes, a note can also be given `volume` and `duty` keys. Volume is an integer 0-15, and duty is 0-3:
+To facilitate volume envelopes and duty changes, a note can also be given `volume` and `duty` keys. Volume is in 16 steps, from 0xE0 tto 0xEF. Duty is from 0xF0-0xF3:
 
+- 0xF0 = 12.5%
+- 0xF1 = 25%
+- 0xF2 = 50%
+- 0xF3 = 75%
 
-- 0 = 12.5%
-- 1 = 25%
-- 2 = 50%
-- 3 = 75%
+TODO: Volume should be an integer 0-15, and duty should be 0-3.
 
 A volume or duty change is persistent, i.e. it will affect all subsequent notes until there is another change.
 
@@ -58,7 +55,7 @@ A volume or duty change is persistent, i.e. it will affect all subsequent notes 
 
 The `play-nsf` takes 4 arguments which are the 4 sequences for sq1, sq2, triangle and noise. To mute a channel just pass an empty vector.
 
-## NSF/audio output
+## NSF/audio export
 
 Call `spit-nsf` with a filename to download the most recently played tune. To render an audio file, pass the same sequences to `export-wav`. TODO: Make this more consistent 
 
