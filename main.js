@@ -16,15 +16,28 @@ let editorState = EditorState.create({
     (for [x (reverse (range 55 69 3))]
       {:pitch x})))
 
-(export-wav
-[][]
+(defn drum [pitch]
+  (concat [{:length 0x81}]
+    (map #(hash-map :volume % :pitch pitch)
+      (reverse (range 0xE4 0xEF)))))
+
+(play-nsf
+[{:volume 0xe6 :length 0x90 :pitch 60} {:length 0x90 :pitch 67} {:length 0x89 :pitch 65} {:pitch 67}
+ {:length 0x90 :pitch 68} {:length 0x89 :pitch 67} {:length 0x90 :pitch 65} {:pitch 67} {:pitch 60}]
+  [{:length 0x90 :pitch 36} {:length 0x89 :pitch 43} {:length 0x90 :pitch 39} {:pitch 43}
+ {:length 0x89 :pitch 34} {:length 0x89 :pitch 43} {:length 0x90 :pitch 35} {:pitch 43} {:pitch 36}]
   (concat 
-    tri-kick {:length 0x94 :pitch 0}
-    tri-kick {:length 0x94 :pitch 0}
-    tri-kick {:length 0x94 :pitch 0}
-    tri-kick {:length 0x94 :pitch 0}
-    tri-kick {:length 0x94 :pitch 0})
-[])`,
+    tri-kick {:length 0x96 :pitch 0}
+    tri-kick {:length 0x96 :pitch 0}
+    tri-kick {:length 0x96 :pitch 0}
+    tri-kick {:length 0x96 :pitch 0}
+    tri-kick {:length 0x96 :pitch 0})
+(concat 
+    (drum 0x0D) {:length 0x90 :volume 0xE0 :pitch 0}
+    (drum 0x07) {:length 0x90 :volume 0xE0 :pitch 0}
+    (drum 0x0D) {:length 0x90 :volume 0xE0 :pitch 0}
+    (drum 0x07) {:length 0x90 :volume 0xE0 :pitch 0}
+    (drum 0x0D) {:length 0x90 :volume 0xE0 :pitch 0}))`,
   extensions: [basicSetup, clojure()]
 })
 

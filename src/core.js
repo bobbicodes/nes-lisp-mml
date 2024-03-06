@@ -1194,6 +1194,7 @@ function playNSF(square1, square2, triangle, noise) {
     resetNSF()
     loadRom(nsfDriver)
     console.log("song length: " + audio.songLength + " frames")
+    return square2
 }
 
 function saveWav(square1, square2, triangle, noise) {
