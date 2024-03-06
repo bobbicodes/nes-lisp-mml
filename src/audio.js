@@ -57,19 +57,12 @@ export function assembleStream(notes) {
           stream.push(notes[i].get("ʞduty"))  
         }
         if (notes[i].has("ʞpitch")) {
-          // pitch of 0 represents a rest
-          if (notes[i].get("ʞpitch") === 0) {
-             stream.push(0)
-             stream.push(0)
-             totalLength += currentLength
-          } else {
              const freq = midiToFreq(notes[i].get("ʞpitch"))
              const period = freqToPeriod(freq)
              const word = fmtWord(period)
              stream.push(word[1])
              stream.push(word[0])
              totalLength += currentLength
-          }
         }
     }
     stream.push(0xFF)

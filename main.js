@@ -14,7 +14,7 @@ let editorState = EditorState.create({
   doc: `(def tri-kick
   (concat [{:length 0x81}]
     (for [x (reverse (range 55 69 3))]
-      {:pitch x})))
+      {:pitch x :volume 0xEF})))
 
 (defn drum [pitch]
   (concat [{:length 0x81}]
@@ -22,16 +22,16 @@ let editorState = EditorState.create({
       (reverse (range 0xE4 0xEF)))))
 
 (play-nsf
-[{:volume 0xe6 :length 0x90 :pitch 60} {:length 0x90 :pitch 67} {:length 0x89 :pitch 65} {:pitch 67}
+[{:volume 0xe9 :length 0x90 :pitch 60} {:length 0x89 :pitch 67} {:length 0x90 :pitch 65} {:pitch 67}
  {:length 0x90 :pitch 68} {:length 0x89 :pitch 67} {:length 0x90 :pitch 65} {:pitch 67} {:pitch 60}]
-  [{:length 0x90 :pitch 36} {:length 0x89 :pitch 43} {:length 0x90 :pitch 39} {:pitch 43}
- {:length 0x89 :pitch 34} {:length 0x89 :pitch 43} {:length 0x90 :pitch 35} {:pitch 43} {:pitch 36}]
+  [{:volume 0xe9 :length 0x90 :pitch 36} {:length 0x89 :pitch 43} {:length 0x90 :pitch 39} {:pitch 43}
+ {:length 0x89 :pitch 34} {:length 0x90 :pitch 43} {:length 0x90 :pitch 35} {:pitch 43} {:pitch 36}]
   (concat 
-    tri-kick {:length 0x96 :pitch 0}
-    tri-kick {:length 0x96 :pitch 0}
-    tri-kick {:length 0x96 :pitch 0}
-    tri-kick {:length 0x96 :pitch 0}
-    tri-kick {:length 0x96 :pitch 0})
+    tri-kick {:length 0x96 :volume 0xE0 :pitch 0}
+    tri-kick {:length 0x96 :volume 0xE0 :pitch 0}
+    tri-kick {:length 0x96 :volume 0xE0 :pitch 0}
+    tri-kick {:length 0x96 :volume 0xE0 :pitch 0}
+    tri-kick {:length 0x96 :volume 0xE0 :pitch 0})
 (concat 
     (drum 0x0D) {:length 0x90 :volume 0xE0 :pitch 0}
     (drum 0x07) {:length 0x90 :volume 0xE0 :pitch 0}
