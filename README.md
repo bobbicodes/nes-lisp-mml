@@ -54,6 +54,14 @@ To facilitate volume envelopes and duty changes, a note can also be given `volum
 
 A volume or duty change is persistent, i.e. it will affect all subsequent notes until there is another change.
 
+## Playing audio
+
+The `play-nsf` takes 4 arguments which are the 4 sequences for sq1, sq2, triangle and noise. To mute a channel just pass an empty vector.
+
+## NSF/audio output
+
+Call `spit-nsf` with a filename to download the most recently played tune. To render an audio file, pass the same sequences to `export-wav`. TODO: Make this more consistent 
+
 ## Building from source
 
 Requires [Node.js](https://nodejs.org/en/) version 14.18+, 16+.
