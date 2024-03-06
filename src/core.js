@@ -1218,10 +1218,28 @@ function hex(n) {
     return (n).toString(16);
 }
 
+function spitNSF(name) {
+    let buffer = new ArrayBuffer(nsfDriver.length);
+    let view = new DataView(buffer)
+    for (let i = 0; i < nsfDriver.length; i++) {
+      view.setInt8(i, nsfDriver[i], true); 
+    }
+    console.log(buffer)
+    const blob = new Blob([view], { type: "application/octet-stream" }); 
+    var new_file = URL.createObjectURL(blob);
+    var downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href", new_file);
+    downloadAnchorNode.setAttribute("download", name);
+    document.body.appendChild(downloadAnchorNode); // required for firefox
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+}
+
 // types.ns is namespace of type functions
 export var ns = {
     'env': printEnv,
     'hex': hex,
+    'spit-nsf': spitNSF,
     'play': audio.playBuffer,
     'play-nsf': playNSF,
     'square1': sq1Stream,

@@ -10,17 +10,23 @@ import * as mapper from "./src/nsfmapper";
 import { AudioHandler, samplesPerFrame, sampleBuffer, resume, nextBuffer } from "./src/audiohandler";
 
 let editorState = EditorState.create({
-  doc: `(play-nsf
-  [{:length 0x94 :pitch 0} {:pitch 57} {:pitch 0} {:pitch 59} {:pitch 0}
-   {:pitch 60} {:pitch 0} {:pitch 62} {:pitch 0} {:pitch 64}]
-[{:length 0x94 :pitch 69} {:pitch 0} {:pitch 67} {:pitch 0} {:pitch 65}
- {:pitch 0} {:pitch 64} {:pitch 0} {:pitch 62}]
-[{:length 0x94 :pitch 69} {:pitch 0} {:pitch 69} {:pitch 0} {:pitch 69}
- {:pitch 0} {:pitch 69} {:pitch 0} {:pitch 69} {:pitch 0} {:pitch 69}]
-[{:length 0x94 :pitch 0x0D} {:volume 0xE0 :pitch 0} {:volume 0xE9 :pitch 0x09}
- {:volume 0xE0 :pitch 0} {:volume 0xE9 :pitch 0x0D} {:volume 0xE0 :pitch 0} 
- {:volume 0xE9 :pitch 0x09} {:volume 0xE0 :pitch 0} {:volume 0xE9 :pitch 0x0D}
- {:volume 0xE0 :pitch 0} {:volume 0xE9 :pitch 0x09}])`,
+  doc: `(def tri-kick
+  (concat [{:length 0x81}]
+    (for [x (reverse (range 55 69 3))]
+      {:pitch x})))
+
+(play-nsf
+[]
+[]
+  (concat 
+    tri-kick {:length 0x94 :pitch 0}
+    tri-kick {:length 0x94 :pitch 0}
+    tri-kick {:length 0x94 :pitch 0}
+    tri-kick {:length 0x94 :pitch 0}
+    tri-kick {:length 0x94 :pitch 0})
+[])
+
+(spit-nsf "test.nsf")`,
   extensions: [basicSetup, clojure()]
 })
 
@@ -297,7 +303,7 @@ function runFrame() {
   }
   getSamples(sampleBuffer, samplesPerFrame);
   nextBuffer();
-  updateDebugView()
+  //updateDebugView()
 }
 
 function getSamples(data, count) {
