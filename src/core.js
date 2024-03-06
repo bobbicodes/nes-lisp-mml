@@ -1204,6 +1204,7 @@ function saveWav(square1, square2, triangle, noise) {
     noise = audio.assembleNoise(noise)
     assembleDriver(square1, square2, triangle, noise)
     resetNSF()
+    console.log("song length: " + audio.songLength)
     exportAudio(nsfDriver)
 }
 
@@ -1254,6 +1255,7 @@ export var ns = {
     'spit-nsf': spitNSF,
     'play': audio.playBuffer,
     'play-nsf': playNSF,
+    'export-wav': saveWav,
     'square1': sq1Stream,
     'square2': sq2Stream,
     'triangle': triStream,

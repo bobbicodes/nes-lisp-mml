@@ -6,6 +6,7 @@ import { updateDocBar } from "./src/eval-region";
 import { updateDebugView } from "./src/debugger";
 import * as cpu from "./src/cpu";
 import * as apu from "./src/apu";
+import {songLength, make_download} from "./src/audio";
 import * as mapper from "./src/nsfmapper";
 import { AudioHandler, samplesPerFrame, sampleBuffer, resume, nextBuffer } from "./src/audiohandler";
 
@@ -15,7 +16,7 @@ let editorState = EditorState.create({
     (for [x (reverse (range 55 69 3))]
       {:pitch x})))
 
-(play-nsf
+(export-wav
 [][]
   (concat 
     tri-kick {:length 0x94 :pitch 0}
@@ -145,7 +146,39 @@ export function exportAudio(rom) {
   if (loadNsf(rom)) {
     loaded = true;
     currentSong = startSong;
+    let audioBuffer = new Float32Array()
+    let cycleCount = 0;
+    console.log("song length: " + songLength)
+    while (cycleCount < songLength) {
+      runFrameSilent()
+      let newBuffer = Float32Array.of(...audioBuffer, ...sampleBuffer);
+      audioBuffer = newBuffer;
+      cycleCount++;
+    }
+    make_download("test.wav", audioBuffer)
   }
+}
+
+function runFrameSilent() {
+  // version of runFrame that doesn't call `nextBuffer()`
+  if (playReturned) {
+    cpu.set_pc(0x3ff8)
+  }
+  playReturned = false;
+  let cycleCount = 0;
+  while (cycleCount < 29780) {
+    cpu.setIrqWanted(dmcIrqWanted || frameIrqWanted)
+    if (!playReturned) {
+      cpu.cycle();
+    }
+    apu.cycle();
+    if (cpu.br[0] === 0x3ffd) {
+      // we are in the nops after the play-routine, it finished
+      playReturned = true;
+    }
+    cycleCount++;
+  }
+  getSamples(sampleBuffer, samplesPerFrame);
 }
 
 function getWordRep(val) {
