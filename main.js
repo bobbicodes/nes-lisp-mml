@@ -11,29 +11,16 @@ import { AudioHandler, samplesPerFrame, sampleBuffer, resume, nextBuffer } from 
 
 let editorState = EditorState.create({
   doc: `(play-nsf
-  [{:length 168 :pitch 31} {:length 158 :duty 240 :pitch 34} 
-   {:duty 241 :length 148 :pitch 33} {:duty 242 :pitch 31} 
-   {:duty 243 :pitch 30} {:duty 240 :pitch 31} {:duty 241 :pitch 33} 
-   {:length 223 :duty 243 :pitch 94} {:length 168 :pitch 94} 
-   {:pitch 33} {:duty 240 :length 158 :pitch 36} 
-   {:duty 241 :length 148 :pitch 34} {:duty 242 :pitch 33} 
-   {:duty 243 :length 156 :pitch 31} {:duty 240 :pitch 33}],
-  [{:length 148 :pitch 19} {:pitch 94} {:pitch 26} {:pitch 94} {:pitch 26}
-   {:pitch 94} {:pitch 26} {:pitch 94} {:pitch 14} {:pitch 94}  {:pitch 21}
-   {:pitch 94} {:pitch 21} {:pitch 94} {:pitch 21} {:pitch 94} {:pitch 21}
-   {:pitch 94} {:pitch 24} {:pitch 94} {:pitch 24} {:pitch 94} {:pitch 24}
-   {:pitch 94} {:pitch 14} {:pitch 94} {:pitch 19} {:pitch 94} {:pitch 19}
-   {:pitch 94} {:pitch 19} {:pitch 94} {:volume 229 :pitch 19} {:pitch 94}],
-  [{:length 168 :pitch 31} {:pitch 34} {:pitch 26} {:pitch 30} {:pitch 33}
-   {:pitch 36} {:pitch 26} {:pitch 31} {:pitch 34} {:pitch 38} {:length 158 :pitch 36} 
-   {:pitch 38} {:length 168 :pitch 39} {:length 148 :pitch 31} {:pitch 33} {:pitch 34} 
-   {:pitch 36} {:pitch 26} {:pitch 27} {:pitch 29} {:pitch 30} {:pitch 24} {:pitch 31}
-   {:length 218 :pitch 94}],
-  [{:length 148 :pitch 13} {:pitch 94} {:pitch 7} {:pitch 94} {:pitch 13} {:pitch 94} 
-   {:pitch 7} {:pitch 94} {:pitch 13} {:pitch 94} {:pitch 7} {:pitch 94} {:pitch 13}
-   {:pitch 94} {:pitch 7} {:pitch 94} {:pitch 13} {:pitch 94} {:pitch 7} {:pitch 94}
-   {:pitch 13} {:pitch 94} {:pitch 7} {:pitch 94} {:pitch 13} {:pitch 94} {:pitch 7}
-   {:pitch 94} {:pitch 13} {:pitch 94} {:pitch 7} {:pitch 94} {:pitch 13}])`,
+  [{:length 0x94 :pitch 0} {:pitch 57} {:pitch 0} {:pitch 59} {:pitch 0}
+   {:pitch 60} {:pitch 0} {:pitch 62} {:pitch 0} {:pitch 64}]
+[{:length 0x94 :pitch 69} {:pitch 0} {:pitch 67} {:pitch 0} {:pitch 65}
+ {:pitch 0} {:pitch 64} {:pitch 0} {:pitch 62}]
+[{:length 0x94 :pitch 69} {:pitch 0} {:pitch 69} {:pitch 0} {:pitch 69}
+ {:pitch 0} {:pitch 69} {:pitch 0} {:pitch 69} {:pitch 0} {:pitch 69}]
+[{:length 0x94 :pitch 0x0D} {:volume 0xE0 :pitch 0} {:volume 0xE9 :pitch 0x09}
+ {:volume 0xE0 :pitch 0} {:volume 0xE9 :pitch 0x0D} {:volume 0xE0 :pitch 0} 
+ {:volume 0xE9 :pitch 0x09} {:volume 0xE0 :pitch 0} {:volume 0xE9 :pitch 0x0D}
+ {:volume 0xE0 :pitch 0} {:volume 0xE9 :pitch 0x09}])`,
   extensions: [basicSetup, clojure()]
 })
 

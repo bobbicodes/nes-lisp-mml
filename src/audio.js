@@ -48,11 +48,37 @@ export function assembleStream(notes) {
           stream.push(notes[i].get("ʞduty"))  
         }
         if (notes[i].has("ʞpitch")) {
-          const freq = midiToFreq(notes[i].get("ʞpitch"))
-          const period = freqToPeriod(freq)
-          const word = fmtWord(period)
-          stream.push(word[0])
-          stream.push(word[1])  
+          // pitch of 0 represents a rest
+          if (notes[i].get("ʞpitch") === 0) {
+             stream.push(0)
+             stream.push(0)
+          } else {
+             const freq = midiToFreq(notes[i].get("ʞpitch"))
+             const period = freqToPeriod(freq)
+             const word = fmtWord(period)
+             stream.push(word[1])
+             stream.push(word[0])
+          }
+        }
+    }
+    stream.push(0xFF)
+    return stream
+}
+
+export function assembleNoise(notes) {
+    let stream = []
+    for (let i = 0; i < notes.length; i++) {
+        if (notes[i].has("ʞlength")) {
+          stream.push(notes[i].get("ʞlength"))  
+        }
+        if (notes[i].has("ʞvolume")) {
+          stream.push(notes[i].get("ʞvolume"))  
+        }
+        if (notes[i].has("ʞduty")) {
+          stream.push(notes[i].get("ʞduty"))  
+        }
+        if (notes[i].has("ʞpitch")) {
+             stream.push(notes[i].get("ʞpitch"))
         }
     }
     stream.push(0xFF)
