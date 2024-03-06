@@ -5,7 +5,7 @@ import { repl_env, evalString, PRINT, EVAL } from './interpreter.js';
 import zip from './clj/zip.clj?raw'
 import * as audio from './audio.js'
 import { nsfDriver, assembleDriver } from './nsf.js';
-import { loadNsf, loadRom } from '../main.js';
+import { loadNsf, loadRom, exportAudio } from '../main.js';
 import { resetNSF } from './cpu.js';
 
 export var out_buffer = ""
@@ -1185,6 +1185,7 @@ function dpcm3() {
 }
 
 function playNSF(square1, square2, triangle, noise) {
+    audio.resetSongLength()
     square1 = audio.assembleStream(square1)
     square2 = audio.assembleStream(square2)
     triangle = audio.assembleStream(triangle)
@@ -1192,6 +1193,18 @@ function playNSF(square1, square2, triangle, noise) {
     assembleDriver(square1, square2, triangle, noise)
     resetNSF()
     loadRom(nsfDriver)
+    console.log("song length: " + audio.songLength + " frames")
+}
+
+function saveWav(square1, square2, triangle, noise) {
+    audio.resetSongLength()
+    square1 = audio.assembleStream(square1)
+    square2 = audio.assembleStream(square2)
+    triangle = audio.assembleStream(triangle)
+    noise = audio.assembleNoise(noise)
+    assembleDriver(square1, square2, triangle, noise)
+    resetNSF()
+    exportAudio(nsfDriver)
 }
 
 function sq1Stream(notes) {
@@ -1222,9 +1235,8 @@ function spitNSF(name) {
     let buffer = new ArrayBuffer(nsfDriver.length);
     let view = new DataView(buffer)
     for (let i = 0; i < nsfDriver.length; i++) {
-      view.setInt8(i, nsfDriver[i], true); 
+      view.setInt8(i, nsfDriver[i]); 
     }
-    console.log(buffer)
     const blob = new Blob([view], { type: "application/octet-stream" }); 
     var new_file = URL.createObjectURL(blob);
     var downloadAnchorNode = document.createElement('a');

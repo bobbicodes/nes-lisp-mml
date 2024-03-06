@@ -16,17 +16,14 @@ let editorState = EditorState.create({
       {:pitch x})))
 
 (play-nsf
-[]
-[]
+[][]
   (concat 
     tri-kick {:length 0x94 :pitch 0}
     tri-kick {:length 0x94 :pitch 0}
     tri-kick {:length 0x94 :pitch 0}
     tri-kick {:length 0x94 :pitch 0}
     tri-kick {:length 0x94 :pitch 0})
-[])
-
-(spit-nsf "test.nsf")`,
+[])`,
   extensions: [basicSetup, clojure()]
 })
 
@@ -139,6 +136,13 @@ export function loadRom(rom) {
     // clear ram cdl, rom cdl
     ramCdl = new Uint8Array(0x8000)
     romCdl = new Uint8Array(0x4000)
+    loaded = true;
+    currentSong = startSong;
+  }
+}
+
+export function exportAudio(rom) {
+  if (loadNsf(rom)) {
     loaded = true;
     currentSong = startSong;
   }

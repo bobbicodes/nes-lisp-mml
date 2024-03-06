@@ -35,11 +35,20 @@ function fmtWord(n) {
           parseInt(pad.slice(0, 2), 16)];
 }
 
+export let songLength = 0
+
+export function resetSongLength() {
+  songLength = 0
+}
+
 export function assembleStream(notes) {
     let stream = []
+    let currentLength = 0
+    let totalLength = 0
     for (let i = 0; i < notes.length; i++) {
         if (notes[i].has("ʞlength")) {
-          stream.push(notes[i].get("ʞlength"))  
+          stream.push(notes[i].get("ʞlength"))
+          currentLength = notes[i].get("ʞlength") - 0x80
         }
         if (notes[i].has("ʞvolume")) {
           stream.push(notes[i].get("ʞvolume"))  
@@ -52,24 +61,30 @@ export function assembleStream(notes) {
           if (notes[i].get("ʞpitch") === 0) {
              stream.push(0)
              stream.push(0)
+             totalLength += currentLength
           } else {
              const freq = midiToFreq(notes[i].get("ʞpitch"))
              const period = freqToPeriod(freq)
              const word = fmtWord(period)
              stream.push(word[1])
              stream.push(word[0])
+             totalLength += currentLength
           }
         }
     }
     stream.push(0xFF)
+    if (totalLength > songLength) {songLength = totalLength}
     return stream
 }
 
 export function assembleNoise(notes) {
     let stream = []
+    let currentLength = 0
+    let totalLength = 0
     for (let i = 0; i < notes.length; i++) {
         if (notes[i].has("ʞlength")) {
-          stream.push(notes[i].get("ʞlength"))  
+          stream.push(notes[i].get("ʞlength"))
+          currentLength = notes[i].get("ʞlength") - 0x80
         }
         if (notes[i].has("ʞvolume")) {
           stream.push(notes[i].get("ʞvolume"))  
@@ -79,9 +94,11 @@ export function assembleNoise(notes) {
         }
         if (notes[i].has("ʞpitch")) {
              stream.push(notes[i].get("ʞpitch"))
+             totalLength += currentLength
         }
     }
     stream.push(0xFF)
+    if (totalLength > songLength) {songLength = totalLength}
     return stream
 }
 
