@@ -21,23 +21,42 @@ let editorState = EditorState.create({
     (map #(hash-map :volume % :pitch pitch)
       (reverse (range 0xE4 0xEF)))))
 
-(play-nsf
-[{:volume 0xe9 :length 0x90 :pitch 60} {:length 0x89 :pitch 67} {:length 0x90 :pitch 65} {:pitch 67}
- {:length 0x90 :pitch 68} {:length 0x89 :pitch 67} {:length 0x90 :pitch 65} {:pitch 67} {:pitch 60}]
-  [{:volume 0xe9 :length 0x90 :pitch 36} {:length 0x89 :pitch 43} {:length 0x90 :pitch 39} {:pitch 43}
- {:length 0x89 :pitch 34} {:length 0x90 :pitch 43} {:length 0x90 :pitch 35} {:pitch 43} {:pitch 36}]
+(defn transpose [note val]
+  (update note :pitch #(+ % val)))
+
+(def sq1
+  [{:volume 0xe9 :length 0x90 :pitch 60} {:length 0x89 :pitch 67} 
+   {:length 0x90 :pitch 65} {:pitch 67}
+ {:length 0x90 :pitch 68} {:length 0x89 :pitch 67} 
+   {:length 0x90 :pitch 65} {:length 0x89 :pitch 67}])
+
+(def sq2
+  [{:volume 0xe9 :length 0x90 :pitch 36} {:length 0x89 :pitch 43}
+   {:length 0x90 :pitch 39} {:pitch 43}
+ {:length 0x89 :pitch 34} {:length 0x90 :pitch 43}
+   {:length 0x90 :pitch 35} {:length 0x89 :pitch 43}])
+
+(def tri
   (concat 
     tri-kick {:length 0x96 :volume 0xE0 :pitch 0}
     tri-kick {:length 0x96 :volume 0xE0 :pitch 0}
     tri-kick {:length 0x96 :volume 0xE0 :pitch 0}
-    tri-kick {:length 0x96 :volume 0xE0 :pitch 0}
-    tri-kick {:length 0x96 :volume 0xE0 :pitch 0})
-(concat 
+    tri-kick {:length 0x96 :volume 0xE0 :pitch 0}))
+
+(def drums
+  (concat 
     (drum 0x0D) {:length 0x90 :volume 0xE0 :pitch 0}
     (drum 0x07) {:length 0x90 :volume 0xE0 :pitch 0}
     (drum 0x0D) {:length 0x90 :volume 0xE0 :pitch 0}
-    (drum 0x07) {:length 0x90 :volume 0xE0 :pitch 0}
-    (drum 0x0D) {:length 0x90 :volume 0xE0 :pitch 0}))`,
+    (drum 0x07) {:length 0x90 :volume 0xE0 :pitch 0}))
+
+(play-nsf
+  (concat sq1 (map #(transpose % 5) sq1) 
+    (map #(transpose % 7) sq1) {:length 0x95 :pitch 60})
+  (concat sq2 (map #(transpose % 5) sq2) 
+    (map #(transpose % 7) sq2) {:length 0x95 :pitch 36})
+  (concat tri tri tri)
+  (concat drums drums drums))`,
   extensions: [basicSetup, clojure()]
 })
 
@@ -82,53 +101,6 @@ function el(id) {
 }
 
 let currentSong = 1;
-
-el("rom").onchange = function (e) {
-  resume();
-  let freader = new FileReader();
-  freader.onload = function () {
-    let buf = freader.result;
-    let arr = new Uint8Array(buf);
-    loadRom(arr);
-  }
-  freader.readAsArrayBuffer(e.target.files[0]);
-}
-
-el("pause").onclick = function (e) {
-  if (paused && loaded) {
-    loopId = requestAnimationFrame(update);
-    audio.start();
-    paused = false;
-    el("pause").innerText = "Pause";
-  } else {
-    cancelAnimationFrame(loopId);
-    audio.stop();
-    paused = true;
-    el("pause").innerText = "Unpause";
-  }
-}
-
-el("reset").onclick = function (e) {
-  if (loaded) {
-    playSong(currentSong);
-  }
-}
-
-el("nextsong").onclick = function (e) {
-  if (loaded) {
-    currentSong++;
-    currentSong = currentSong > totalSongs ? totalSongs : currentSong;
-    playSong(currentSong);
-  }
-}
-
-el("prevsong").onclick = function (e) {
-  if (loaded) {
-    currentSong--;
-    currentSong = currentSong < 1 ? 1 : currentSong;
-    playSong(currentSong);
-  }
-}
 
 export let ramCdl = new Uint8Array(0x8000); // addresses $0-$7fff
 export let romCdl = new Uint8Array(0x4000);
@@ -215,19 +187,19 @@ export function loadNsf(nsf) {
     return false;
   }
   totalSongs = nsf[6];
-  log(totalSongs + " total songs");
+  //log(totalSongs + " total songs");
   startSong = nsf[7];
-  log("Start song: " + startSong);
+  //log("Start song: " + startSong);
   let loadAdr = nsf[8] | (nsf[9] << 8);
-  log("Load address: $" + getWordRep(loadAdr))
+  //log("Load address: $" + getWordRep(loadAdr))
   if (loadAdr < 0x8000) {
     log("Load address less than 0x8000 is not supported");
     return false;
   }
   let initAdr = nsf[0xa] | (nsf[0xb] << 8);
-  log("Init address: $" + getWordRep(initAdr))
+  //log("Init address: $" + getWordRep(initAdr))
   let playAdr = nsf[0xc] | (nsf[0xd] << 8);
-  log("Play address: $" + getWordRep(playAdr))
+  //log("Play address: $" + getWordRep(playAdr))
   for (let i = 0; i < 32; i++) {
     if (nsf[0xe + i] === 0) {
       break;
@@ -252,7 +224,7 @@ export function loadNsf(nsf) {
     initBanks[i] = nsf[0x70 + i];
     total += nsf[0x70 + i];
   }
-  log("Bankswitch init values: " + initBanks)
+  //log("Bankswitch init values: " + initBanks)
   let banking = total > 0;
 
   // set up the NSF mapper
@@ -281,7 +253,7 @@ export function loadNsf(nsf) {
   callArea[0xf] = 0xea // NOP
 
   playSong(startSong);
-  log("Loaded NSF file");
+  //log("Loaded NSF file");
   return true;
 }
 
@@ -353,7 +325,7 @@ function runFrame() {
   }
   getSamples(sampleBuffer, samplesPerFrame);
   nextBuffer();
-  //updateDebugView()
+  updateDebugView()
 }
 
 function getSamples(data, count) {

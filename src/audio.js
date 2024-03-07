@@ -138,6 +138,7 @@ function bufferToWave(abuffer, len) {
     while (pos < length) {
         for (i = 0; i < numOfChan; i++) {             // interleave channels
             sample = Math.max(-1, Math.min(1, channels[i][offset])); // clamp
+            sample += 0.5
             sample = (0.5 + sample < 0 ? sample * 32768 : sample * 32767) | 0; // scale to 16-bit signed int
             view.setInt16(pos, sample, true);          // write 16-bit sample
             pos += 2;
