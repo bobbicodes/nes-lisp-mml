@@ -52,7 +52,7 @@ The `play-nsf` takes 4 arguments which are the 4 sequences for sq1, sq2, triangl
 To save an audio file, pass a filename along with your note sequences to `export-wav`:
 
 ```clojure
-(export-wav
+(export-wav "mytune.wav"
   (for [[length pitch]
         [[20 60] [20 67] [50 65] [20 67] [10 68]
          [10 67] [10 65] [10 67] [20 60]]]
