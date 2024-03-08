@@ -11,52 +11,74 @@ import * as mapper from "./src/nsfmapper";
 import { AudioHandler, samplesPerFrame, sampleBuffer, resume, nextBuffer } from "./src/audiohandler";
 
 let editorState = EditorState.create({
-  doc: `(def tri-kick
-  (concat [{:length 0x81}]
-    (for [x (reverse (range 55 69 3))]
-      {:pitch x :volume 0xEF})))
-
-(defn drum [pitch]
+  doc: `(defn drum [pitch]
   (concat [{:length 0x81}]
     (map #(hash-map :volume % :pitch pitch)
       (reverse (range 0xE4 0xEF)))))
 
-(defn transpose [note val]
-  (update note :pitch #(+ % val)))
-
-(def sq1
-  [{:volume 0xe9 :length 0x90 :pitch 60} {:length 0x89 :pitch 67} 
-   {:length 0x90 :pitch 65} {:pitch 67}
- {:length 0x90 :pitch 68} {:length 0x89 :pitch 67} 
-   {:length 0x90 :pitch 65} {:length 0x89 :pitch 67}])
-
-(def sq2
-  [{:volume 0xe9 :length 0x90 :pitch 36} {:length 0x89 :pitch 43}
-   {:length 0x90 :pitch 39} {:pitch 43}
- {:length 0x89 :pitch 34} {:length 0x90 :pitch 43}
-   {:length 0x90 :pitch 35} {:length 0x89 :pitch 43}])
-
-(def tri
-  (concat 
-    tri-kick {:length 0x96 :volume 0xE0 :pitch 0}
-    tri-kick {:length 0x96 :volume 0xE0 :pitch 0}
-    tri-kick {:length 0x96 :volume 0xE0 :pitch 0}
-    tri-kick {:length 0x96 :volume 0xE0 :pitch 0}))
-
 (def drums
   (concat 
-    (drum 0x0D) {:length 0x90 :volume 0xE0 :pitch 0}
-    (drum 0x07) {:length 0x90 :volume 0xE0 :pitch 0}
-    (drum 0x0D) {:length 0x90 :volume 0xE0 :pitch 0}
-    (drum 0x07) {:length 0x90 :volume 0xE0 :pitch 0}))
+    (drum 0x0D) {:length 0xb5 :volume 0xE0 :pitch 0}
+    (drum 0x07) {:length 0xb5 :volume 0xE0 :pitch 0}
+    (drum 0x0D) {:length 0xb5 :volume 0xE0 :pitch 0}
+    (drum 0x07) {:length 0xb5 :volume 0xE0 :pitch 0}
+    (drum 0x0D) {:length 0xb5 :volume 0xE0 :pitch 0}))
+
+(defn vibrato [pitch length speed width]
+  (concat [{:length 0x81}]
+    (for [x (range length)]
+      {:pitch (+ pitch (* width (sin (* speed x))))})))
+
+(defn lead-inst
+  "Creates a note of a given pitch/length, applies linearly 
+   increasing vibrato at given rate up to the given depth."
+  [pitch length depth rate]
+  (apply concat (for [x (range length)]
+      (vibrato pitch 10 0.5 (min depth (+ (* x rate)))))))
+
+(defn lead
+  "Takes vector pairs of pitch/length,
+   outputs a part using lead-inst."
+  [notes]
+  (apply concat (for [[pitch length] notes]
+            (lead-inst pitch length 0.5 0.25))))
 
 (play-nsf
-  (concat sq1 (map #(transpose % 5) sq1) 
-    (map #(transpose % 7) sq1) {:length 0x95 :pitch 60})
-  (concat sq2 (map #(transpose % 5) sq2) 
-    (map #(transpose % 7) sq2) {:length 0x95 :pitch 36})
-  (concat tri tri tri)
-  (concat drums drums drums))`,
+  (lead (map (fn [[pitch length]] [(+ pitch 7) length])
+  [[50 2.5] [53 2.5] [52 1.25] [50 1.25] [48 2.5] [50 2.5]
+       [53 2.5] [55 1.25] [53 1.25] [52 1.25] [50 5]]))
+  (lead [[50 2.5] [53 2.5] [52 1.25] [50 1.25] [48 2.5] [50 2.5]
+       [53 2.5] [55 1.25] [53 1.25] [52 1.25] [50 5]])
+  (lead [[50 2.5] [53 2.5] [52 1.25] [50 1.25] [48 2.5] [50 2.5]
+       [53 2.5] [55 1.25] [53 1.25] [52 1.25] [50 5]])
+  drums)
+
+(def tri-kick
+  (concat [{:length 0x81}]
+    (for [x (reverse (range 55 69 3))]
+      {:pitch x})))
+
+(defn bass-kick-inst
+  "Precedes a note with a fixed 5-note descending arpeggio.
+   First 5 frames are replaced to maintain length."
+  [{:keys [pitch length]}]
+  (conj (vec tri-kick) {:pitch pitch :length (- length 5)}))
+
+(defn bass-kick [notes]
+  (apply concat (for [[pitch length] notes]
+            (bass-kick-inst {:pitch pitch :length length}))))
+
+(defn bass [pitch]
+  (bass-kick 
+      [[(+ pitch 60) 0x8c] [(+ pitch 60) 0x8c] [(+ pitch 63) 0x8c] [(+ pitch 63) 0x8c] 
+       [(+ pitch 65) 0x8c] [(+ pitch 65) 0x8c] [(+ pitch 66) 0x8c] [(+ pitch 65) 0x8c]]))
+
+(defn walking-bass [intervals]
+  (apply concat (for [pitch intervals]
+    (bass pitch))))
+
+(play-nsf [] []
+  (walking-bass [0 0 0 0 5 5 0 0 7 5 0 0]) [])`,
   extensions: [basicSetup, clojure()]
 })
 
@@ -136,7 +158,11 @@ export function exportAudio(rom) {
     console.log("song length: " + songLength)
     while (cycleCount < songLength) {
       runFrameSilent()
-      let newBuffer = Float32Array.of(...audioBuffer, ...sampleBuffer);
+      const newBuffer = new Float32Array(
+         audioBuffer.length + sampleBuffer.length
+      );
+      newBuffer.set(audioBuffer, 0);
+      newBuffer.set(sampleBuffer, audioBuffer.length);
       audioBuffer = newBuffer;
       cycleCount++;
     }
