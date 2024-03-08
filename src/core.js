@@ -1133,7 +1133,6 @@ function saveWav(square1, square2, triangle, noise) {
     noise = audio.assembleNoise(noise)
     assembleDriver(square1, square2, triangle, noise)
     resetNSF()
-    console.log("song length: " + audio.songLength)
     exportAudio(nsfDriver)
 }
 

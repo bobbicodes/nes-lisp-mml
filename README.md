@@ -19,23 +19,19 @@ Note lengths are expressed in ticks (1/60 of a second).
 The note data can be produced however you like, as long as it ends up a sequence of maps with the right keys. So you could use a literal sequence of maps:
 
 ```clojure
-[{:volume 0xe9 :length 0x90 :pitch 60} {:length 0x89 :pitch 67} 
-   {:length 0x90 :pitch 65} {:pitch 67}
- {:length 0x90 :pitch 68} {:length 0x89 :pitch 67} 
-   {:length 0x90 :pitch 65} {:length 0x89 :pitch 67}]
+[{:volume 9 :length 20 :pitch 60} {:pitch 67} 
+ {:length 50 :pitch 65} {:length 20 :pitch 67}
+ {:length 10 :pitch 68} {:pitch 67} {:pitch 65} 
+ {:pitch 67} {:length 20 :pitch 60}]
 ```
 
-This is rather verbose however, and does not take advantage of the fact that we have a complete programming language at our disposal. We could be more concise by writing a function which takes a sequence of length/pitch pairs and outputs the appropriate maps:
+This is rather verbose however, and does not take advantage of the fact that we have a complete programming language at our disposal. It's often more convenient to encode the music as a sequence of length/pitch pairs. We could accomplish this by writing a function which takes these pairs and outputs the appropriate maps:
 
 ```clojure
-(def data
-  [[100 70] [20 65] [2 127] [18 65] [20 70] [10 68] 
-   [10 66] [140 68] [100 70] [20 66] [2 127] [20 66]
-   [20 70] [10 69] [10 67] [140 69]])
-
-(square1 
-  (for [[length pitch] data]
-  {:length length :pitch pitch}))
+(for [[length pitch]
+      [[20 60] [20 67] [50 65] [20 67] [10 68]
+       [10 67] [10 65] [10 67] [20 60]]]
+  {:length length :pitch pitch})
 ```
 
 ### Volume/duty cycle changes
