@@ -135,6 +135,7 @@ function el(id) {
 let currentSong = 1;
 
 export function loadRom(rom) {
+  framesPlayed = 0
   audio.stop();
   audio.start();
   if (loadNsf(rom)) {
@@ -152,7 +153,6 @@ export function exportAudio(rom) {
     currentSong = startSong;
     let audioBuffer = new Float32Array()
     let cycleCount = 0;
-    console.log("song length: " + songLength)
     while (cycleCount < songLength) {
       runFrameSilent()
       const newBuffer = new Float32Array(
@@ -306,9 +306,7 @@ function playSong(songNum) {
   let cycleCount = 0;
   let finished = false;
   while (cycleCount < 297800) {
-    //console.log("cycling cpu")
     cpu.cycle();
-    //console.log("cycling apu")
     apu.cycle();
     if (cpu.br[0] === 0x3ff5) {
       // we are in the nops after the init-routine, it finished
@@ -322,8 +320,14 @@ function playSong(songNum) {
   }
 }
 
+let framesPlayed = 0
+
 function update() {
+  if (framesPlayed === songLength) {
+    audio.stop()
+  }
   runFrame();
+  framesPlayed++
   loopId = requestAnimationFrame(update);
 }
 
