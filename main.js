@@ -87,6 +87,15 @@ let view = new EditorView({
   parent: document.querySelector('#app')
 })
 
+let topLevelText = "Shift+Enter = Eval top-level form"
+let keyBindings = "<strong>Key bindings:</strong>,Alt/Cmd+Enter = Eval all," +
+  topLevelText + ",Ctrl+Enter = Eval at cursor";
+keyBindings = keyBindings.split(',');
+for (let i = 0; i < keyBindings.length; i++)
+  keyBindings[i] = "" + keyBindings[i] + "<br>";
+keyBindings = keyBindings.join('');
+document.getElementById("keymap").innerHTML = keyBindings;
+
 document.querySelector('#app').onclick = (e) => updateDocBar(view)
 
 let audio = new AudioHandler();
