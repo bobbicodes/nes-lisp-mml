@@ -49,7 +49,7 @@ The `play-nsf` takes 4 arguments which are the 4 sequences for sq1, sq2, triangl
 
 ## NSF/audio export
 
-To save an audio file, pass a filename along with your note sequences `export-wav`:
+To save an audio file, pass a filename along with your note sequences to `export-wav`:
 
 ```clojure
 (export-wav
