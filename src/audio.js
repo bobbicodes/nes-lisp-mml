@@ -47,8 +47,12 @@ export function assembleStream(notes) {
     let totalLength = 0
     for (let i = 0; i < notes.length; i++) {
         if (notes[i].has("ʞlength")) {
-          stream.push(notes[i].get("ʞlength") + 0x80)
-          currentLength = notes[i].get("ʞlength")
+          const l = notes[i].get("ʞlength")
+          // lengths > 95 need to be handled differently, since
+          // the driver expects them to be from 0x81-0xdf. so if
+          // it's too large, we set it to 95 and handle it later.
+          stream.push(Math.min(95, l) + 0x80)
+          currentLength = l
         }
         if (notes[i].has("ʞvolume")) {
           stream.push(notes[i].get("ʞvolume"))  
@@ -60,6 +64,16 @@ export function assembleStream(notes) {
              const freq = midiToFreq(notes[i].get("ʞpitch"))
              const period = freqToPeriod(freq)
              const word = fmtWord(period)
+             // to deal with lengths > 95, we push the note as many
+             // times as needed to make the proper length.
+             // if < 95 this will simply be 0.
+             const reps = Math.floor(currentLength / 95)
+             for (let i = 0; i < reps; i++) {
+               stream.push(word[1])
+               stream.push(word[0])
+             }
+             // switch length to remainder and push the last note
+             stream.push((currentLength % 95) + 0x80)
              stream.push(word[1])
              stream.push(word[0])
              totalLength += currentLength
@@ -76,8 +90,9 @@ export function assembleNoise(notes) {
     let totalLength = 0
     for (let i = 0; i < notes.length; i++) {
         if (notes[i].has("ʞlength")) {
-          stream.push(notes[i].get("ʞlength") + 0x80)
-          currentLength = notes[i].get("ʞlength")
+          const l = notes[i].get("ʞlength")
+          stream.push(Math.min(95, l) + 0x80)
+          currentLength = l
         }
         if (notes[i].has("ʞvolume")) {
           stream.push(notes[i].get("ʞvolume"))  
@@ -86,6 +101,13 @@ export function assembleNoise(notes) {
           stream.push(notes[i].get("ʞduty"))  
         }
         if (notes[i].has("ʞpitch")) {
+             // deal with lengths > 95
+             const reps = Math.floor(currentLength / 95)
+             for (let i = 0; i < reps; i++) {
+                stream.push(notes[i].get("ʞpitch"))
+             }
+             // switch length to remainder
+             stream.push((currentLength % 95) + 0x80)
              stream.push(notes[i].get("ʞpitch"))
              totalLength += currentLength
         }
