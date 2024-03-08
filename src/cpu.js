@@ -1,6 +1,6 @@
 import * as apu from "./apu";
 import * as mapper from "./nsfmapper";
-import { ram, callArea, setRamCdl, setRomCdl } from "../main";
+import { ram, callArea } from "../main";
 import { sq1Stream, sq2Stream, triStream, noiseStream } from "./audio";
 
 let streamNum = 0
@@ -158,12 +158,6 @@ export function cycle() {
         }
         // get the effective address, and execute the instruction
         let eff = getAdr(mode);
-        // adr < $8000: set ram cdl, else set rom cdl
-        if (eff < 0x8000) {
-            setRamCdl(eff, 1)
-        } else {
-            setRomCdl(eff, 1)
-        }
         //log(instr + " " + eff)
         functions[instr].call(null, eff, instr);
     }

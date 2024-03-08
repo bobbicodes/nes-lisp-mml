@@ -19,6 +19,10 @@ const actx = new AudioContext()
 export const samplesPerFrame = actx.sampleRate / 60;
 export let sampleBuffer = new Float32Array(samplesPerFrame);
 
+export function clearSampleBuffer() {
+  sampleBuffer = new Float32Array(samplesPerFrame);
+}
+
 export function resume() {
     actx.resume();
 }

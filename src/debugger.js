@@ -1,7 +1,7 @@
 import * as cpu from "./cpu";
 import * as apu from "./apu";
 import * as mapper from "./nsfmapper";
-import { ram, ramCdl, romCdl } from "../main";
+import { ram } from "../main";
 
 function el(id) {
     return document.getElementById(id);

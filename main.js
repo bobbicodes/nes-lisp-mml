@@ -105,6 +105,7 @@ export function getByteRep(val) {
 }
 
 export let ram = new Uint8Array(0x800);
+
 export let callArea = new Uint8Array(0x10);
 let totalSongs = 0;
 let startSong = 0;
@@ -133,26 +134,13 @@ function el(id) {
 
 let currentSong = 1;
 
-export let ramCdl = new Uint8Array(0x8000); // addresses $0-$7fff
-export let romCdl = new Uint8Array(0x4000);
-
-export function setRamCdl(adr, val) {
-  ramCdl[adr] = val
-}
-
-export function setRomCdl(adr, val) {
-  romCdl[adr] = val
-}
-
 export function loadRom(rom) {
+  audio.stop();
+  audio.start();
   if (loadNsf(rom)) {
     if (!loaded && !paused) {
       loopId = requestAnimationFrame(update);
-      audio.start();
     }
-    // clear ram cdl, rom cdl
-    ramCdl = new Uint8Array(0x8000)
-    romCdl = new Uint8Array(0x4000)
     loaded = true;
     currentSong = startSong;
   }
