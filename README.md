@@ -40,14 +40,12 @@ This is rather verbose however, and does not take advantage of the fact that we 
 
 ### Volume/duty cycle changes
 
-To facilitate volume envelopes and duty changes, a note can also be given `volume` and `duty` keys. Volume is in 16 steps, from 0xE0 tto 0xEF. Duty is from 0xF0-0xF3:
+To facilitate volume envelopes and duty changes, a note can also be given `volume` and `duty` keys. Volume is in 16 steps, from 0 to 15. Duty is from 0-3:
 
-- 0xF0 = 12.5%
-- 0xF1 = 25%
-- 0xF2 = 50%
-- 0xF3 = 75%
-
-TODO: Volume should be an integer 0-15, and duty should be 0-3.
+- 0 = 12.5%
+- 1 = 25%
+- 2 = 50%
+- 3 = 75%
 
 A volume or duty change is persistent, i.e. it will affect all subsequent notes until there is another change.
 
@@ -57,7 +55,7 @@ The `play-nsf` takes 4 arguments which are the 4 sequences for sq1, sq2, triangl
 
 ## NSF/audio export
 
-Call `spit-nsf` with a filename to download the most recently played tune. To render an audio file, pass the same sequences to `export-wav`. TODO: Make this more consistent 
+Call `spit-nsf` with a filename to download the most recently played tune. To render an audio file, pass the same sequences to `export-wav`. TODO: Make this more consistent
 
 ## Building from source
 

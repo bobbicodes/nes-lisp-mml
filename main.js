@@ -14,15 +14,15 @@ let editorState = EditorState.create({
   doc: `(defn drum [pitch]
   (concat [{:length 1}]
     (map #(hash-map :volume % :pitch pitch)
-      (reverse (range 0xE4 0xEF)))))
+      (reverse (range 4 16)))))
 
 (def drums
   (concat 
-    (drum 0x0D) {:length 53 :volume 0xE0 :pitch 0}
-    (drum 0x07) {:length 53 :volume 0xE0 :pitch 0}
-    (drum 0x0D) {:length 53 :volume 0xE0 :pitch 0}
-    (drum 0x07) {:length 53 :volume 0xE0 :pitch 0}
-    (drum 0x0D) {:length 53 :volume 0xE0 :pitch 0}))
+    (drum 0x0D) {:length 53 :volume 0 :pitch 0}
+    (drum 0x07) {:length 53 :volume 0 :pitch 0}
+    (drum 0x0D) {:length 53 :volume 0 :pitch 0}
+    (drum 0x07) {:length 53 :volume 0 :pitch 0}
+    (drum 0x0D) {:length 53 :volume 0 :pitch 0}))
 
 (defn vibrato [pitch length speed width]
   (concat [{:length 1}]

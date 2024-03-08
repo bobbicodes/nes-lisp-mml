@@ -55,10 +55,13 @@ export function assembleStream(notes) {
           currentLength = l
         }
         if (notes[i].has("ʞvolume")) {
-          stream.push(notes[i].get("ʞvolume"))  
+          // adjust volume to 0xe0-0xef, which is
+          // what the driver expects
+          stream.push(notes[i].get("ʞvolume") + 0xe0)
         }
         if (notes[i].has("ʞduty")) {
-          stream.push(notes[i].get("ʞduty"))  
+          // adjust duty to 0xf0-0xf3
+          stream.push(notes[i].get("ʞduty") + 0xf0)
         }
         if (notes[i].has("ʞpitch")) {
              const freq = midiToFreq(notes[i].get("ʞpitch"))
@@ -95,10 +98,10 @@ export function assembleNoise(notes) {
           currentLength = l
         }
         if (notes[i].has("ʞvolume")) {
-          stream.push(notes[i].get("ʞvolume"))  
+          stream.push(notes[i].get("ʞvolume") + 0xe0)
         }
         if (notes[i].has("ʞduty")) {
-          stream.push(notes[i].get("ʞduty"))  
+          stream.push(notes[i].get("ʞduty") + 0xf0)
         }
         if (notes[i].has("ʞpitch")) {
              // deal with lengths > 95
