@@ -12,9 +12,7 @@ The *Eval at cursor* command is particularly powerful - it evaluates the express
 
 ## API
 
-A part is represented by a sequence of commands, each of which is a hashmap with various keys representing `length` (expressed in ticks), `pitch` (MIDI numbers, including decimal values for vibrato/microtones), `volume` and `duty`. These sequences are passed to their respective channels.
-
-Note lengths are expressed in ticks (1/60 of a second).
+A part is represented by a sequence of commands, each of which is a hashmap with various keys representing `length` (expressed in 1/60 of a second ticks), `pitch` (MIDI numbers, including decimal values for vibrato/microtones), `volume` and `duty`. These sequences are passed to their respective channels.
 
 The note data can be produced however you like, as long as it ends up a sequence of maps with the right keys. So you could use a literal sequence of maps:
 
