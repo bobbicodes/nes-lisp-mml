@@ -47,8 +47,8 @@ export function assembleStream(notes) {
     let totalLength = 0
     for (let i = 0; i < notes.length; i++) {
         if (notes[i].has("ʞlength")) {
-          stream.push(notes[i].get("ʞlength"))
-          currentLength = notes[i].get("ʞlength") - 0x80
+          stream.push(notes[i].get("ʞlength") + 0x80)
+          currentLength = notes[i].get("ʞlength")
         }
         if (notes[i].has("ʞvolume")) {
           stream.push(notes[i].get("ʞvolume"))  
@@ -76,8 +76,8 @@ export function assembleNoise(notes) {
     let totalLength = 0
     for (let i = 0; i < notes.length; i++) {
         if (notes[i].has("ʞlength")) {
-          stream.push(notes[i].get("ʞlength"))
-          currentLength = notes[i].get("ʞlength") - 0x80
+          stream.push(notes[i].get("ʞlength") + 0x80)
+          currentLength = notes[i].get("ʞlength")
         }
         if (notes[i].has("ʞvolume")) {
           stream.push(notes[i].get("ʞvolume"))  

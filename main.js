@@ -12,20 +12,22 @@ import { AudioHandler, samplesPerFrame, sampleBuffer, resume, nextBuffer } from 
 
 let editorState = EditorState.create({
   doc: `(defn drum [pitch]
-  (concat [{:length 0x81}]
+  (concat [{:length 1}]
     (map #(hash-map :volume % :pitch pitch)
       (reverse (range 0xE4 0xEF)))))
 
 (def drums
   (concat 
-    (drum 0x0D) {:length 0xb5 :volume 0xE0 :pitch 0}
-    (drum 0x07) {:length 0xb5 :volume 0xE0 :pitch 0}
-    (drum 0x0D) {:length 0xb5 :volume 0xE0 :pitch 0}
-    (drum 0x07) {:length 0xb5 :volume 0xE0 :pitch 0}
-    (drum 0x0D) {:length 0xb5 :volume 0xE0 :pitch 0}))
+    (drum 0x0D) {:length 53 :volume 0xE0 :pitch 0}
+    (drum 0x07) {:length 53 :volume 0xE0 :pitch 0}
+    (drum 0x0D) {:length 53 :volume 0xE0 :pitch 0}
+    (drum 0x07) {:length 53 :volume 0xE0 :pitch 0}
+    (drum 0x0D) {:length 53 :volume 0xE0 :pitch 0}))
+
+drums
 
 (defn vibrato [pitch length speed width]
-  (concat [{:length 0x81}]
+  (concat [{:length 1}]
     (for [x (range length)]
       {:pitch (+ pitch (* width (sin (* speed x))))})))
 
@@ -43,18 +45,11 @@ let editorState = EditorState.create({
   (apply concat (for [[pitch length] notes]
             (lead-inst pitch length 0.5 0.25))))
 
-(play-nsf
-  (lead (map (fn [[pitch length]] [(+ pitch 7) length])
-  [[50 2.5] [53 2.5] [52 1.25] [50 1.25] [48 2.5] [50 2.5]
-       [53 2.5] [55 1.25] [53 1.25] [52 1.25] [50 5]]))
-  (lead [[50 2.5] [53 2.5] [52 1.25] [50 1.25] [48 2.5] [50 2.5]
-       [53 2.5] [55 1.25] [53 1.25] [52 1.25] [50 5]])
-  (lead [[50 2.5] [53 2.5] [52 1.25] [50 1.25] [48 2.5] [50 2.5]
-       [53 2.5] [55 1.25] [53 1.25] [52 1.25] [50 5]])
+(play-nsf [] [] []
   drums)
 
 (def tri-kick
-  (concat [{:length 0x81}]
+  (concat [{:length 1}]
     (for [x (reverse (range 55 69 3))]
       {:pitch x})))
 
@@ -70,8 +65,8 @@ let editorState = EditorState.create({
 
 (defn bass [pitch]
   (bass-kick 
-      [[(+ pitch 60) 0x8c] [(+ pitch 60) 0x8c] [(+ pitch 63) 0x8c] [(+ pitch 63) 0x8c] 
-       [(+ pitch 65) 0x8c] [(+ pitch 65) 0x8c] [(+ pitch 66) 0x8c] [(+ pitch 65) 0x8c]]))
+      [[(+ pitch 60) 12] [(+ pitch 60) 12] [(+ pitch 63) 12] [(+ pitch 63) 12] 
+       [(+ pitch 65) 12] [(+ pitch 65) 12] [(+ pitch 66) 12] [(+ pitch 65) 12]]))
 
 (defn walking-bass [intervals]
   (apply concat (for [pitch intervals]
