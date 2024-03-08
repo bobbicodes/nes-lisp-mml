@@ -147,7 +147,7 @@ export function loadRom(rom) {
   }
 }
 
-export function exportAudio(rom) {
+export function exportAudio(filename, rom) {
   if (loadNsf(rom)) {
     loaded = true;
     currentSong = startSong;
@@ -163,7 +163,7 @@ export function exportAudio(rom) {
       audioBuffer = newBuffer;
       cycleCount++;
     }
-    make_download("test.wav", audioBuffer)
+    make_download(filename, audioBuffer)
   }
 }
 

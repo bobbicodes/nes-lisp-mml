@@ -51,12 +51,31 @@ The `play-nsf` takes 4 arguments which are the 4 sequences for sq1, sq2, triangl
 
 ## NSF/audio export
 
-Call `spit-nsf` with a filename to download the most recently played tune. To render an audio file, pass the same sequences to `export-wav`. TODO: Make this more consistent
+To save an audio file, pass a filename along with your note sequences `export-wav`:
+
+```clojure
+(export-wav
+  (for [[length pitch]
+        [[20 60] [20 67] [50 65] [20 67] [10 68]
+         [10 67] [10 65] [10 67] [20 60]]]
+    {:length length :pitch pitch})
+[] [] [])
+```
+
+Saving an NSF file works the same way by calling `spit-nsf`:
+
+```clojure
+(spit-nsf "mytune.nsf"
+  (for [[length pitch]
+        [[20 60] [20 67] [50 65] [20 67] [10 68]
+         [10 67] [10 65] [10 67] [20 60]]]
+    {:length length :pitch pitch})
+[] [] [])
+```
 
 ## Building from source
 
 Requires [Node.js](https://nodejs.org/en/) version 14.18+, 16+.
-
 
 ```
 npm install

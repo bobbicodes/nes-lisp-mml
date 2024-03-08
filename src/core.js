@@ -1112,7 +1112,7 @@ function scalePCM(vals) {
     return scaled
 }
 
-function playNSF(square1, square2, triangle, noise) {
+function saveWav(filename, square1, square2, triangle, noise) {
     audio.resetSongLength()
     square1 = audio.assembleStream(square1)
     square2 = audio.assembleStream(square2)
@@ -1120,20 +1120,7 @@ function playNSF(square1, square2, triangle, noise) {
     noise = audio.assembleNoise(noise)
     assembleDriver(square1, square2, triangle, noise)
     resetNSF()
-    loadRom(nsfDriver)
-    console.log("song length: " + audio.songLength + " frames")
-    return "Playing..."
-}
-
-function saveWav(square1, square2, triangle, noise) {
-    audio.resetSongLength()
-    square1 = audio.assembleStream(square1)
-    square2 = audio.assembleStream(square2)
-    triangle = audio.assembleStream(triangle)
-    noise = audio.assembleNoise(noise)
-    assembleDriver(square1, square2, triangle, noise)
-    resetNSF()
-    exportAudio(nsfDriver)
+    exportAudio(filename, nsfDriver)
 }
 
 function sq1Stream(notes) {
@@ -1160,7 +1147,26 @@ function hex(n) {
     return (n).toString(16);
 }
 
-function spitNSF(name) {
+function playNSF(square1, square2, triangle, noise) {
+    audio.resetSongLength()
+    square1 = audio.assembleStream(square1)
+    square2 = audio.assembleStream(square2)
+    triangle = audio.assembleStream(triangle)
+    noise = audio.assembleNoise(noise)
+    assembleDriver(square1, square2, triangle, noise)
+    resetNSF()
+    loadRom(nsfDriver)
+    console.log("song length: " + audio.songLength + " frames")
+    return "Playing..."
+}
+
+function spitNSF(name, square1, square2, triangle, noise) {
+    audio.resetSongLength()
+    square1 = audio.assembleStream(square1)
+    square2 = audio.assembleStream(square2)
+    triangle = audio.assembleStream(triangle)
+    noise = audio.assembleNoise(noise)
+    assembleDriver(square1, square2, triangle, noise)
     let buffer = new ArrayBuffer(nsfDriver.length);
     let view = new DataView(buffer)
     for (let i = 0; i < nsfDriver.length; i++) {
