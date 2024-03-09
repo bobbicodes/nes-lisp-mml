@@ -103,6 +103,16 @@ This function will produce a note of a given pitch and length with the pitch mod
       {:pitch (+ pitch (* width (sin (* speed x))))})))
 ```
 
+### Transposition
+
+Take an existing sequence and map a function over it to adjust the pitch:
+
+```clojure
+(map (fn [[pitch length]] [(+ pitch 7) length])
+  [[50 2.5] [53 2.5] [52 1.25] [50 1.25] [48 2.5] [50 2.5]
+       [53 2.5] [55 1.25] [53 1.25] [52 1.25] [50 5]])
+```
+
 ### Instruments
 
 Let's say we want a lead instrument where the vibrato increases in width after the attack:
