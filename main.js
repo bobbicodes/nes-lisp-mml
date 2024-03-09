@@ -20,24 +20,31 @@ let editorState = EditorState.create({
       (map #(hash-map :volume % :pitch pitch) envelope)
       {:length (- length (count envelope)) :volume 0 :pitch 0})))
 
-(def kick (drum 13 17 15 8 1))
-(def snare (drum 7 17 15 8 1))
+(def kick (drum 13 17 12 5 2))
+(def snare (drum 7 17 8 3 1))
 (def hat (drum 3 17 6 1 2))
 (def hat2 (drum 3 8 6 1 2))
 (def drum-pat (concat kick hat2 hat2 hat hat snare hat hat hat))
 
-(def bass (for [[length pitch] [[66 57] [33 64] [17 57] [17 59]
-     [33 60] [33 67] [17 55] [17 57] [33 59] [51 57] [17 57]
-     [17 60] [17 57] [17 55] [17 57] [17 55] [17 60] [17 64]
-     [17 67] [17 62] [17 66] [17 69] [17 66] [66 64]]]
-  {:length length :pitch pitch}))
+(defn k [[l p]] [[1 (+ 12 p)] [1 (+ 7 p)] 
+   [1 (+ 5 p)] [1 (+ 3 p)] [(- l 4) p]])
+
+(defn s [[l p]] [[1 75] [1 72] [(- l 2) p]])
+
+(def bass (for [[length pitch] (concat 
+   (k [66 57]) (s [33 64]) [[17 57] [17 59]]
+   (k [33 60]) [[33 67]] (s [17 55]) [[17 57] [33 59]] 
+   (k [51 57]) [[17 57]] (s [17 60]) [[17 57] [17 55] [17 57]] 
+   (k [17 55]) [[17 60] [17 64] [17 67]] 
+   (s [17 62]) [[17 66] [17 69] [17 66]] (k [66 64]))]
+    {:length length :pitch pitch}))
 
 (defn vibrato [pitch length speed width]
   (concat [{:length 1}]
     (for [x (range length)]
       {:pitch (+ pitch (* width (sin (* speed x))))})))
 
-(def sq1 (concat [{:volume 5}]
+(def sq1 (concat [{:volume 4}]
     (mapcat (fn [[length pitch]] (vibrato pitch length 0.5 0.1)) 
           [[51 69] [17 67] [34 64] [34 62] [17 60]
           [17 64] [34 67] [17 55] [17 57] [34 59] [66 57] [34 60]
@@ -47,11 +54,11 @@ let editorState = EditorState.create({
             {:length 8 :pitch 64 :volume 2}
             {:length 8 :pitch 64 :volume 1}]))
 
-(def sq2 (concat [{:length 99 :volume 0 :pitch 0} {:volume 5}]
+(def sq2 (concat [{:length 99 :volume 0 :pitch 0} {:volume 4}]
     (for [[length pitch] [[17 60] [17 62] [51 64] [17 62]
            [17 59] [17 60] [34 62] [66 60]]]
   {:length length :pitch pitch})
-           [{:length 99 :volume 0 :pitch 0} {:volume 5}]
+           [{:length 99 :volume 0 :pitch 0} {:volume 4}]
            (for [[length pitch] [[17 60] [17 62] [51 64] [17 62]
            [66 59]]]
   {:length length :pitch pitch}))))
