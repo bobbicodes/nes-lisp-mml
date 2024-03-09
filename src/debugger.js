@@ -28,7 +28,7 @@ function drawRam() {
     ev.textContent = "";
     let ramBasePos = 0x1000
     let reg = 0
-    for (let r = ramBasePos; r < ramBasePos + 0x5; r++) {
+    for (let r = ramBasePos; r < ramBasePos + 0x4; r++) {
         let str = `${getWordRep(r * 4)}: `;
         for (let c = 0; c < 4; c++) {
             str += `${getByteRep(apu.registers[reg])} `;
