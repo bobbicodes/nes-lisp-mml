@@ -43,6 +43,10 @@ To facilitate volume envelopes and duty changes, a note can also be given `volum
 
 A volume or duty change is persistent, i.e. it will affect all subsequent notes until there is another change.
 
+### Noise pitches
+
+The noise channel plays at 16 possible pitches from 0 (high) to 15 (low).
+
 ## Playing audio
 
 The `play-nsf` function takes 4 arguments which are the 4 sequences for sq1, sq2, triangle and noise. To mute a channel just pass an empty vector.
