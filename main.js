@@ -20,10 +20,10 @@ let editorState = EditorState.create({
       (map #(hash-map :volume % :pitch pitch) envelope)
       {:length (- length (count envelope)) :volume 0 :pitch 0})))
 
-(def drum-pat (concat
-    (drum 13 17.5 15 8 1) (drum 5 17.5 5 1 3) (drum 5 17.5 5 1 3)
-    (drum 5 17.5 5 1 3) (drum 7 17.5 15 8 1) (drum 5 17.5 5 1 3)
-    (drum 5 17.5 5 1 3) (drum 5 17.5 5 1 3)))
+(def kick (drum 13 17 15 8 1))
+(def snare (drum 7 17 15 8 1))
+(def hat (drum 5 17 5 1 3))
+(def drum-pat (concat kick hat hat hat snare hat hat hat))
 
 (def bass (for [[length pitch] [[66 57] [33 64] [17 57] [17 59]
               [33 60] [33 67] [17 55] [17 57] [33 59] [66 57]]]
