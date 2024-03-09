@@ -20,13 +20,6 @@ let editorState = EditorState.create({
       (map #(hash-map :volume % :pitch pitch) envelope)
       {:length (- length (count envelope)) :volume 0 :pitch 0})))
 
-(count (concat
-   (k [66 57]) (s [33 64]) [[17 57] [17 59]]
-   (k [33 60]) [[33 67]] (s [17 55]) [[17 57] [33 59]] 
-   (k [51 57]) [[17 57]] (s [17 60]) [[17 57] [17 55] [17 57]] 
-   (k [17 55]) [[17 60] [17 64] [17 67]] 
-   (s [17 62]) [[17 66] [17 69] [17 66]] (k [66 64])))
-
 (def kick (drum 13 17 12 5 2))
 (def snare (drum 7 17 8 3 1))
 (def hat (drum 3 17 6 1 2))
