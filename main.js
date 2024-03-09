@@ -24,6 +24,32 @@ let editorState = EditorState.create({
     (drum 0x07) {:length 53 :volume 0 :pitch 0}
     (drum 0x0D) {:length 53 :volume 0 :pitch 0}))
 
+(def bass
+  (for [[length pitch]
+      [[66 57] [33 64] [17 57] [17 59]
+       [33 60] [33 67] [17 55] [17 57] [33 59] [66 57]]]
+  {:length length :pitch pitch}))
+
+(def sq1
+  (concat [{:volume 6}]
+    (for [[length pitch]
+          [[51 69] [17 67] [34 64] [34 62] [17 60] [17 64] [34 67]
+           [17 55] [17 57] [34 59] [66 57]]]
+  {:length length :pitch pitch})))
+
+(def sq2
+  (concat [{:length 99 :volume 0 :pitch 0} {:volume 6}]
+    (for [[length pitch]
+          [[17 60] [17 62] [51 64] [17 62]
+           [17 59] [17 60] [34 62] [66 60]]]
+  {:length length :pitch pitch}))))
+
+(play-nsf
+  sq1
+  sq2
+  bass
+  drums)
+
 (defn vibrato [pitch length speed width]
   (concat [{:length 1}]
     (for [x (range length)]
