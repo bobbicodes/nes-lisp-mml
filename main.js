@@ -27,21 +27,28 @@ let editorState = EditorState.create({
 (def drum-pat (concat kick hat2 hat2 hat hat snare hat hat hat))
 
 (def bass (for [[length pitch] [[66 57] [33 64] [17 57] [17 59]
-              [33 60] [33 67] [17 55] [17 57] [33 59] [66 57]]]
+     [33 60] [33 67] [17 55] [17 57] [33 59] [51 57] [17 57]
+     [17 60] [17 57] [17 55] [17 57] [17 55] [17 60] [17 64]
+     [17 67] [17 62] [17 66] [17 69] [17 66] [66 64]]]
   {:length length :pitch pitch}))
 
 (def sq1 (concat [{:volume 6}]
     (for [[length pitch] [[51 69] [17 67] [34 64] [34 62] [17 60]
-          [17 64] [34 67] [17 55] [17 57] [34 59] [66 57]]]
+          [17 64] [34 67] [17 55] [17 57] [34 59] [66 57] [34 60]
+          [33 62] [51 64] [17 67] [17 66] [17 64] [33 62] [66 64]]]
   {:length length :pitch pitch})))
 
 (def sq2 (concat [{:length 99 :volume 0 :pitch 0} {:volume 6}]
     (for [[length pitch] [[17 60] [17 62] [51 64] [17 62]
            [17 59] [17 60] [34 62] [66 60]]]
+  {:length length :pitch pitch})
+           [{:length 99 :volume 0 :pitch 0} {:volume 6}]
+           (for [[length pitch] [[17 60] [17 62] [51 64] [17 62]
+           [66 59]]]
   {:length length :pitch pitch}))))
 
 (play-nsf sq1 sq2 bass
-  (concat drum-pat drum-pat (drum 13 18 15 8 1)))`,
+  (concat drum-pat drum-pat drum-pat drum-pat (drum 13 18 15 8 1)))`,
   extensions: [basicSetup, clojure()]
 })
 
