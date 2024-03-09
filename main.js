@@ -40,28 +40,23 @@ let editorState = EditorState.create({
     {:length length :pitch pitch}))
 
 (defn vibrato [pitch length speed width]
-  (concat [{:length 1}]
-    (for [x (range length)]
+  (concat [{:length 1}] (for [x (range length)]
       {:pitch (+ pitch (* width (sin (* speed x))))})))
 
 (def sq1 (concat [{:volume 4}]
     (mapcat (fn [[length pitch]] (vibrato pitch length 0.5 0.1)) 
-          [[51 69] [17 67] [34 64] [34 62] [17 60]
-          [17 64] [34 67] [17 55] [17 57] [34 59] [66 57] [34 60]
-          [33 62] [51 64] [17 67] [17 66] [17 64] [33 62] [33 64]])
-           [{:length 8 :pitch 64 :volume 4}
-            {:length 8 :pitch 64 :volume 3}
-            {:length 8 :pitch 64 :volume 2}
-            {:length 8 :pitch 64 :volume 1}]))
+      [[51 69] [17 67] [34 64] [34 62] [17 60]
+       [17 64] [34 67] [17 55] [17 57] [34 59] [66 57] [34 60]
+       [33 62] [51 64] [17 67] [17 66] [17 64] [33 62] [33 64]])
+       [{:length 8 :pitch 64 :volume 4} {:length 8 :pitch 64 :volume 3}
+        {:length 8 :pitch 64 :volume 2} {:length 8 :pitch 64 :volume 1}]))
 
 (def sq2 (concat [{:length 99 :volume 0 :pitch 0} {:volume 4}]
     (for [[length pitch] [[17 60] [17 62] [51 64] [17 62]
-           [17 59] [17 60] [34 62] [66 60]]]
-  {:length length :pitch pitch})
-           [{:length 99 :volume 0 :pitch 0} {:volume 4}]
-           (for [[length pitch] [[17 60] [17 62] [51 64] [17 62]
-           [66 59]]]
-  {:length length :pitch pitch}))))
+       [17 59] [17 60] [34 62] [66 60]]] {:length length :pitch pitch})
+       [{:length 99 :volume 0 :pitch 0} {:volume 4}]
+           (for [[length pitch] [[17 60] [17 62] [51 64] [17 62] [66 59]]]
+             {:length length :pitch pitch}))))
 
 (play-nsf sq1 sq2 bass
   (concat drum-pat drum-pat drum-pat drum-pat (drum 13 18 15 8 1)))`,
