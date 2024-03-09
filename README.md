@@ -73,6 +73,14 @@ Saving an NSF file works the same way by calling `spit-nsf`:
 
 ## Example usage
 
+### Rests
+
+A rest is simply a note played at volume 0. To include a rest, just put in in the sequence:
+
+```clojure
+[{:length 99 :volume 0 :pitch 0} {:volume 6 :pitch 60}]
+```
+
 ### Volume envelopes
 
 This function will play noise of a given pitch with the volume linearly decreasing from 16 to 4, making a drum sound:
