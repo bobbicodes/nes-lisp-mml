@@ -1,0 +1,19 @@
+- Who actually has a sound engine that's written in their *own language*? It's pretty impressive, actually...
+- Huh... I should actually re-think my language from the ground up, and like... get rid of codemirror!
+- I can look at the thing umbrella editor.
+- Which project was that? It might be parse playground https://github.com/thi-ng/umbrella/tree/develop/examples/parse-playground
+- I can't understand Karsten's code, lol... where's that one by ra
+- Damn... how do I actually find it... oh, it's in the [issue](https://codeberg.org/bobbicodes/bobbi-lisp/issues/29)!
+- Even Ramsey's code is more complicated than necessary, lol
+- All I need is a fucking `pre` element with contentEditable = true
+- thinking of e.g. formatting... well, I'm already pretty printing the output, lol
+- I should legit start over, like I always thought about doing, following the MAL ES6 implementation. Then when I have the basic CLI repl working, have it work also in the browser with the contentEditable thingy.
+- Let's call it toffee!
+- I'll start a fresh Vite project and create a repo. Done
+- Now to do MAL
+- I just slept a *lot*. Now to start this for real.
+- I've got the code editor thingy on the page. I disabled spell check. Now I need to figure out things like syntax highlighting and formatting.
+- Now... it would be nice if we only had to parse the code once. So how would that work?
+- I can see the actual html that gets sent to the browser for the codemirror editor, so it's easy to see what it actually is.
+- Each differently highlighted piece of code is an individual `<span>`.
+-
