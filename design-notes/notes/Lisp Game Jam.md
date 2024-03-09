@@ -5,12 +5,12 @@
 - So it's time to try to do this.
 - Cool, looks like I can play SimCity 2000: https://playclassic.games/games/city-building-dos-games-online/play-simcity-2000-online/play/
 - It launches in in DosBox...
-- ![image.png](./assets/image_1697842461631_0.png)
+- ![image.png](../assets/image_1697842461631_0.png)
 - Cool... so this is a pretty good thing to aim for.
 - Phil Hagelberg left me a really nice comment on the community page in response to my intro post:
 - > Seeing people submit games in lisps they made themselves is always one of the highlights of the jam! Love to see this particular type of creativity. Even if the game itself isn’t finished it’s still very cool to see the process. Good luck!
 - Zoomed all the way out:
-- ![image.png](./assets/image_1697842723481_0.png)
+- ![image.png](../assets/image_1697842723481_0.png)
 - I won't have any terrain, it will just be a boring, flat plain (which when I played the game, always wanted anyway).
 - See [Isometric Tiles Math](./Isometric%20Tiles%20Math.md)
 - The SimLispy repo seems to still have the old project setup, where I was trying to load bobbi-lisp-core, so I need to update it.
@@ -43,7 +43,7 @@
   (let [_ (clear-svg)]
     (append-path (make-path points)))
   ```
-- ![image.png](./assets/image_1697848202108_0.png)
+- ![image.png](../assets/image_1697848202108_0.png)
 - It's drawing extra lines because it's never lifting the point, so it's like one of those brain teaser puzzles or something.
 - What I should do is modify the `make-path` function to do something more specific. But we're slowly getting somewhere... though I didn't sleep much so I'm starting to get eepy
 - Damn, I still haven't gone to bed yet. I haven't done any more of this, but I did realize that I definitely want to implement the APU wave visualizers, the oscilloscopes. That's what is made possible by actually implementing the music engine... without it, there's no reason for it not to just be a file except that I want to feel accomplished.
@@ -59,7 +59,7 @@
 - ```clojure
   (append-path "M10 10 50 10 50 50 10 50 10 10 M50 10 90 10")
   ```
-- ![image.png](./assets/image_1697911792485_0.png)
+- ![image.png](../assets/image_1697911792485_0.png)
 - Nice!
 - ```clojure
   (defn make-path [points]
@@ -77,7 +77,7 @@
   (let [_ (clear-svg)] 
     (append-path points))
   ```
-- ![image.png](./assets/image_1697912025326_0.png)
+- ![image.png](../assets/image_1697912025326_0.png)
 - That was easy! Now, let's try applying the isometric function:
 - ```clojure
   (def tile-width-half (/ 1 2))
@@ -119,11 +119,11 @@
   (let [_ (clear-svg)]
     (append-path points))
   ```
-- ![image.png](./assets/image_1697914771194_0.png)
+- ![image.png](../assets/image_1697914771194_0.png)
 - So next... well, I suppose I want to expand it to the full screen, whatever that ends up being.
-- ![image.png](./assets/image_1697923802660_0.png)
+- ![image.png](../assets/image_1697923802660_0.png)
 - This comes out to 22 rows. I think I'll take it and run with it. Now I'm going to want to add like a floating "crust" beneath it, and color the surface green or something
-- ![image.png](./assets/image_1697924530190_0.png)
+- ![image.png](../assets/image_1697924530190_0.png)
 - Alright, now to put something under it so it's not entirely flat...
 - I suppose I could do this by creating tiles with a pattern, and just repeat them in rows underneath
 - Or rather, just a single row would work, like they can be vertical "strips"
@@ -153,26 +153,26 @@
     (apply tile-2 (isometric->screen x 1330)))
   ```
 - I have a map! I also got to take advantage of another application I have called mecca-pix​, which I used to create the floor tiles (I guess that would be considered the ​crust​?). It's a thing I made that takes a bitmap image and converts it to SVG, and lets you quantize the colors so that it can be expressed in a small number of paths.
-- ![image.png](./assets/image_1697938576512_0.png)
+- ![image.png](../assets/image_1697938576512_0.png)
 - So now we need some kind of​ toolbox, and I'll start by making a button for placing roads. But before I get too far, I have to implement the interactivity.
 - The way I've done this before is to add a second layer of SVG squares that is *invisible* and just acts as click/hover targets.
 - I'm going to follow SimCity BuildIt's way of dealing with infrastructure, which is much simpler than SimCity 2000. Basically, the roads also carry power and water, making it so you don't have to mess with pipes or power lines. All you need to do is put your buildings along a road.
 - Now, if this were my ideal city, it wouldn't have any roads... only bike paths.
 - SC2k toolbox
-- ![image.png](./assets/image_1697947550922_0.png)
-- ![image.png](./assets/image_1697947690208_0.png)
+- ![image.png](../assets/image_1697947550922_0.png)
+- ![image.png](../assets/image_1697947690208_0.png)
 - The way it's done here, you can either add roads one square at a time, or click and drag to make a stretch of road. While you are holding the mouse button down, it calculates the shortest path from the anchor point to the cursor:
-- ![roads.gif](./assets/roads_1697948173261_0.gif)
+- ![roads.gif](../assets/roads_1697948173261_0.gif)
 - Here's what the road tiles look up close
-- ![image.png](./assets/image_1697948494390_0.png)
+- ![image.png](../assets/image_1697948494390_0.png)
 - So I guess I need road tiles for each possible configuration - let me see what they are
 - I guess just making a circle should be sufficient
 - It only puts the black line on the *near* edge of the road. The far edge is brown, I guess to give an appearance of depth
-- ![image.png](./assets/image_1697950631181_0.png)
+- ![image.png](../assets/image_1697950631181_0.png)
 - So, I guess I should make the road button.
 - Actually... I'm going to skip roads! Because it doesn't matter for the gameplay.
 - Here is the factory button:
-- ![image.png](./assets/image_1697953824802_0.png)
+- ![image.png](../assets/image_1697953824802_0.png)
 - I made it into an SVG, but I think I need to make a scale parameter because I want it to be bigger - the icon is just 33 pixels
 - Something very weird happens in the editor... something prevents the eval-cell command from working sometimes, but I can't figure out why, or even when it fails... could it be a function of how many lines there are? That's the only thing I can see... it works with 31 lines, but not 32
 - wait... it just worked with 32... but not 33
@@ -243,7 +243,7 @@
   }
   ```
 - I have it working now, but the note parameter doesn't do anything. I need to figure that out, but possibly more important is the ability to add an envelope. The confuzion snare is a rather linear taper:
-- ![image.png](./assets/image_1698023611015_0.png)
+- ![image.png](../assets/image_1698023611015_0.png)
 - I suppose I should make the envelope its own function. But actually... a preset will be fine. I'll make a function called `fade`.
 - We'll loop through the channel data, and if we want the last sample to be 0, that means we would divide it by itself and subtract 1.
 - Sample 1 does exactly what we want, it doesn't change the level. But sample 2 - we want to divide it by the most miniscule amount less than 1.
@@ -494,13 +494,13 @@
   }
   ```
 - Oh... it's because the entire noise buffer is negative... lol
-- ![image.png](./assets/image_1698136653402_0.png)
+- ![image.png](../assets/image_1698136653402_0.png)
 - Fixed it! Drums are done!
 - OMG I've got 2 of the pulse channels working (which are all I want for now, 12.5% and 50%)
 - Now to mix a file, I need to write a function that will take multiple buffers and sum them
 - I'm listening to the 4 buffers play together, and I'm hearing what seems like clicks in the drum track
 - yeah, they are there. I should be able to fix it by doing what I did with the bass, putting a micro-envelope on each note... see:
-- ![image.png](./assets/image_1698138405089_0.png)
+- ![image.png](../assets/image_1698138405089_0.png)
 - Actually that seems to mean the fade is not quite right...
 - oh... it's just because it's offset, I should just not subtract it and leave it up higher
 - yep, sounds perfect!
@@ -548,14 +548,14 @@
   ```
 - Wow! So much progress! I'm actually rendering audio!
 - I kind of want to fix the offset drums:
-- ![image.png](./assets/image_1698168312588_0.png)
+- ![image.png](../assets/image_1698168312588_0.png)
 - Uh, that's the whole mix, let me render just a drum hit
-- ![image.png](./assets/image_1698168692598_0.png)
+- ![image.png](../assets/image_1698168692598_0.png)
 - So first let me disable the fade and see if that's what's causing it
-- ![image.png](./assets/image_1698168820454_0.png)
+- ![image.png](../assets/image_1698168820454_0.png)
 - nope... which means.... ah, I suppose I could... yeah.
 - The problem is the multiplier, which causes the *negative* values to also be lowered when they need to be raised:
-- ![image.png](./assets/image_1698169430144_0.png)
+- ![image.png](../assets/image_1698169430144_0.png)
 - So how do we make it so it truncates all values toward zero? I'm thinking absolute value, but where?
 - If the sample amplitude is, say `-1`, and say we have a 1 second sample so (this seems silly but I actually need a concrete example to play around with...)
 - the current multiplier:
@@ -569,7 +569,7 @@
   ```
 - wow. huh, I suppose that makes sense....
 - Now my mixed output is perfect:
-- ![image.png](./assets/image_1698172073970_0.png)
+- ![image.png](../assets/image_1698172073970_0.png)
 - I want to make another song, I'm thinking of doing something simple like the megaman 2 boss theme.
 - I checked out the noise channel and it looks like it's actually just snares and hats like I once thought!
 - I think I'll implement the other 2 pulse waves, and... vibrato. We *really* need vibrato. I just did a deep dive to determine whether I want it to go above and below the note or just below, and settled on above and below. It took awhile to get to the bottom of it, but this is the best evidence I found: http://libres.uncg.edu/ir/uncg/f/R_MacLeod_Perceived_2009.pdf

@@ -176,7 +176,7 @@
   (graph (channel-data (tri 50 0.04) 0))
   ```
 - This renders *something*:
-- ![image.png](./assets/image_1697594798274_0.png)
+- ![image.png](../assets/image_1697594798274_0.png)
 - So what is this function doing? I forgot what I was thinking.
 - `parts` here is 16, because there are 4800 samples and we're dividing it by 300... does that mean we're only taking the first of every 300 samples... I'm going to play around with that, actually.
 - But anyhoo... yes, that'ss exactly what it's doing, only taking 1 sample out of every 300... wait no, every 16. derp. Must be because we want that many points total... got it.
@@ -190,7 +190,7 @@
 - Ah, in the comments there is a link to the software used to make the SID oscilloscope videos: https://github.com/maxim-zhao/SidWizPlus
 - Apparently there's a simpler way to do it than the way the article describes.
 - I kind of want to make mine look like Zeta's program: https://rusticnes.reploid.cafe/wasm/?tab=jam&cartridge=bhop-2a03.nes
-- ![image.png](./assets/image_1697764442871_0.png)
+- ![image.png](../assets/image_1697764442871_0.png)
 - This is the project, but it looks like it's in WASM: https://github.com/zeta0134/rusticnes-wasm
 - It's actually plain javascript. But I can't find the code that renders the waves... seems like it might be part of the piano roll app which gets embedded somehow. I think it's this code here: https://github.com/zeta0134/rusticnes-ui-common/blob/master/src/piano_roll_window.rs
 - Yep, bingo. But the code is absolutely ridiculous. I mean, it's really well written... but it's nearly 1700 lines of Rust. Ouch. To be fair, it's the visualizer for an entire emulator supporting multiple chips and stuff. But I bet I could do it in like... 500 lines of JavaScript?
