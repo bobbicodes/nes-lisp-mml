@@ -22,8 +22,9 @@ let editorState = EditorState.create({
 
 (def kick (drum 13 17 15 8 1))
 (def snare (drum 7 17 15 8 1))
-(def hat (drum 5 17 5 1 3))
-(def drum-pat (concat kick hat hat hat snare hat hat hat))
+(def hat (drum 3 17 6 1 2))
+(def hat2 (drum 3 8 6 1 2))
+(def drum-pat (concat kick hat2 hat2 hat hat snare hat hat hat))
 
 (def bass (for [[length pitch] [[66 57] [33 64] [17 57] [17 59]
               [33 60] [33 67] [17 55] [17 57] [33 59] [66 57]]]
