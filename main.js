@@ -20,44 +20,27 @@ let editorState = EditorState.create({
       (map #(hash-map :volume % :pitch pitch) envelope)
       {:length (- length (count envelope)) :volume 0 :pitch 0})))
 
-(def drum-pat
-  (concat
-    (drum 0x0D 17.5 15 8 1) (drum 0x05 17.5 5 1 3)
-    (drum 0x05 17.5 5 1 3) (drum 0x05 17.5 5 1 3)
-    (drum 0x07 17.5 15 8 1) (drum 0x05 17.5 5 1 3)
-    (drum 0x05 17.5 5 1 3) (drum 0x05 17.5 5 1 3)))
+(def drum-pat (concat
+    (drum 13 17.5 15 8 1) (drum 5 17.5 5 1 3) (drum 5 17.5 5 1 3)
+    (drum 5 17.5 5 1 3) (drum 7 17.5 15 8 1) (drum 5 17.5 5 1 3)
+    (drum 5 17.5 5 1 3) (drum 5 17.5 5 1 3)))
 
-(def drums
-  (concat 
-    drum-pat
-    drum-pat
-    (drum 0x0D 18 15 8 1)))
-
-(def bass
-  (for [[length pitch]
-      [[66 57] [33 64] [17 57] [17 59]
-       [33 60] [33 67] [17 55] [17 57] [33 59] [66 57]]]
+(def bass (for [[length pitch] [[66 57] [33 64] [17 57] [17 59]
+              [33 60] [33 67] [17 55] [17 57] [33 59] [66 57]]]
   {:length length :pitch pitch}))
 
-(def sq1
-  (concat [{:volume 6}]
-    (for [[length pitch]
-          [[51 69] [17 67] [34 64] [34 62] [17 60] [17 64] [34 67]
-           [17 55] [17 57] [34 59] [66 57]]]
+(def sq1 (concat [{:volume 6}]
+    (for [[length pitch] [[51 69] [17 67] [34 64] [34 62] [17 60]
+          [17 64] [34 67] [17 55] [17 57] [34 59] [66 57]]]
   {:length length :pitch pitch})))
 
-(def sq2
-  (concat [{:length 99 :volume 0 :pitch 0} {:volume 6}]
-    (for [[length pitch]
-          [[17 60] [17 62] [51 64] [17 62]
+(def sq2 (concat [{:length 99 :volume 0 :pitch 0} {:volume 6}]
+    (for [[length pitch] [[17 60] [17 62] [51 64] [17 62]
            [17 59] [17 60] [34 62] [66 60]]]
   {:length length :pitch pitch}))))
 
-(play-nsf
-  sq1
-  sq2
-  bass
-  drums)`,
+(play-nsf sq1 sq2 bass
+  (concat drum-pat drum-pat (drum 13 18 15 8 1)))`,
   extensions: [basicSetup, clojure()]
 })
 
