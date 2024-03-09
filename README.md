@@ -8,7 +8,7 @@ This is a tool for programmatically composing NES music. Songs are built using a
 - Alt/Cmd+Enter = Eval all
 - Ctrl+Enter = Eval at cursor
 
-The *Eval at cursor* command is particularly powerful - it evaluates the expression that *ends* just to the left of the cursor position, allowing you to quickly test the result at each level of nesting.
+The *Eval at cursor* command is particularly powerful - it evaluates the expression that *ends* just to the left of the cursor position, allowing you to quickly test the result at each level of nesting. The evaluation results are printed right in line, and cleared by pressing any key.
 
 ## API
 
