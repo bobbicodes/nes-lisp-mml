@@ -45,7 +45,7 @@ A volume or duty change is persistent, i.e. it will affect all subsequent notes 
 
 ## Playing audio
 
-The `play-nsf` takes 4 arguments which are the 4 sequences for sq1, sq2, triangle and noise. To mute a channel just pass an empty vector.
+The `play-nsf` function takes 4 arguments which are the 4 sequences for sq1, sq2, triangle and noise. To mute a channel just pass an empty vector.
 
 ## NSF/audio export
 
