@@ -2,7 +2,9 @@
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   color-scheme: light dark;
   color: rgba(0, 0, 0, 0.87);
-  background-color: #b5d8e6;
+ background: rgb(247,185,249);
+background: rgb(247,185,249);
+background: linear-gradient(266deg, rgba(247,185,249,0.8248763721137797) 0%, rgba(144,226,238,0.8871909121731268) 62%);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
