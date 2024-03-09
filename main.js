@@ -49,62 +49,7 @@ let editorState = EditorState.create({
   sq2
   bass
   drums)
-
-(defn vibrato [pitch length speed width]
-  (concat [{:length 1}]
-    (for [x (range length)]
-      {:pitch (+ pitch (* width (sin (* speed x))))})))
-
-(defn lead-inst
-  "Creates a note of a given pitch/length, applies linearly 
-   increasing vibrato at given rate up to the given depth."
-  [pitch length depth rate]
-  (apply concat (for [x (range length)]
-      (vibrato pitch 10 0.5 (min depth (+ (* x rate)))))))
-
-(defn lead
-  "Takes vector pairs of pitch/length,
-   outputs a part using lead-inst."
-  [notes]
-  (apply concat (for [[pitch length] notes]
-            (lead-inst pitch length 0.5 0.25))))
-
-(play-nsf
-  (lead (map (fn [[pitch length]] [(+ pitch 7) length])
-  [[50 2.5] [53 2.5] [52 1.25] [50 1.25] [48 2.5] [50 2.5]
-       [53 2.5] [55 1.25] [53 1.25] [52 1.25] [50 5]]))
-  (lead [[50 2.5] [53 2.5] [52 1.25] [50 1.25] [48 2.5] [50 2.5]
-       [53 2.5] [55 1.25] [53 1.25] [52 1.25] [50 5]])
-  (lead [[50 2.5] [53 2.5] [52 1.25] [50 1.25] [48 2.5] [50 2.5]
-       [53 2.5] [55 1.25] [53 1.25] [52 1.25] [50 5]])
-  drums)
-
-(def tri-kick
-  (concat [{:length 1}]
-    (for [x (reverse (range 55 69 3))]
-      {:pitch x})))
-
-(defn bass-kick-inst
-  "Precedes a note with a fixed 5-note descending arpeggio.
-   First 5 frames are replaced to maintain length."
-  [{:keys [pitch length]}]
-  (conj (vec tri-kick) {:pitch pitch :length (- length 5)}))
-
-(defn bass-kick [notes]
-  (apply concat (for [[pitch length] notes]
-            (bass-kick-inst {:pitch pitch :length length}))))
-
-(defn bass [pitch]
-  (bass-kick 
-      [[(+ pitch 60) 12] [(+ pitch 60) 12] [(+ pitch 63) 12] [(+ pitch 63) 12] 
-       [(+ pitch 65) 12] [(+ pitch 65) 12] [(+ pitch 66) 12] [(+ pitch 65) 12]]))
-
-(defn walking-bass [intervals]
-  (apply concat (for [pitch intervals]
-    (bass pitch))))
-
-(play-nsf [] []
-  (walking-bass [0 0 0 0 5 5 0 0 7 5 0 0]) [])`,
+`,
   extensions: [basicSetup, clojure()]
 })
 
