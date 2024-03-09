@@ -11,18 +11,27 @@ import * as mapper from "./src/nsfmapper";
 import { AudioHandler, samplesPerFrame, sampleBuffer, resume, nextBuffer } from "./src/audiohandler";
 
 let editorState = EditorState.create({
-  doc: `(defn drum [pitch]
-  (concat [{:length 1}]
-    (map #(hash-map :volume % :pitch pitch)
-      (reverse (range 4 16)))))
+  doc: `(defn drum
+  "Creates a drum with linear volume decay.
+   Calculates a rest to make up target length."
+  [pitch length high low decay]
+  (let [envelope (reverse (range low high decay))]
+    (concat [{:length 1}]
+      (map #(hash-map :volume % :pitch pitch) envelope)
+      {:length (- length (count envelope)) :volume 0 :pitch 0})))
+
+(def drum-pat
+  (concat
+    (drum 0x0D 17.5 15 8 1) (drum 0x05 17.5 5 1 3)
+    (drum 0x05 17.5 5 1 3) (drum 0x05 17.5 5 1 3)
+    (drum 0x07 17.5 15 8 1) (drum 0x05 17.5 5 1 3)
+    (drum 0x05 17.5 5 1 3) (drum 0x05 17.5 5 1 3)))
 
 (def drums
   (concat 
-    (drum 0x0D) {:length 53 :volume 0 :pitch 0}
-    (drum 0x07) {:length 53 :volume 0 :pitch 0}
-    (drum 0x0D) {:length 53 :volume 0 :pitch 0}
-    (drum 0x07) {:length 53 :volume 0 :pitch 0}
-    (drum 0x0D) {:length 53 :volume 0 :pitch 0}))
+    drum-pat
+    drum-pat
+    (drum 0x0D 18 15 8 1)))
 
 (def bass
   (for [[length pitch]
@@ -48,8 +57,7 @@ let editorState = EditorState.create({
   sq1
   sq2
   bass
-  drums)
-`,
+  drums)`,
   extensions: [basicSetup, clojure()]
 })
 
