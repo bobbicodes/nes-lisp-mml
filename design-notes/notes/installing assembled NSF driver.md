@@ -32,7 +32,7 @@
   lda	($00), y
   ```
 - Cool, so now that's no mystery.
-- I guess we're done here? The next task will be [[generating music data.md]], but... well, I guess we still need to figure out the deal with the channel data streams, since that's where we will need to adjust the addresses. Let's continue stepping through until we find it, and then we can isolate the addresses.
+- I guess we're done here? The next task will be [[generating%20music%20data.md]], but... well, I guess we still need to figure out the deal with the channel data streams, since that's where we will need to adjust the addresses. Let's continue stepping through until we find it, and then we can isolate the addresses.
 - ## Locating data streams
 - So it's the song header that has the pointers in it. We know that already.
 - Where it gets set in `stream_ptr_lo` and `stream_ptr_hi` is actually right here.
@@ -88,7 +88,7 @@
   "8347" 
   ```
 - Square2 is 65 bytes, which puts stream 3 at $8388. This stuff is not difficult.
-- So we're basically done here, as far as I can tell. When we are done at [[generating music data.md]] we will then create a function which will update the streams and the header, and redefine the driver itself
+- So we're basically done here, as far as I can tell. When we are done at [[generating%20music%20data.md]] we will then create a function which will update the streams and the header, and redefine the driver itself
 - I can motivate the process by actually building the driver at runtime based on stream data passed to my new function.
 - Oh shit, I need to convert a length into a 2 byte little endian word.
 - `$8300` + 71 = 33607
