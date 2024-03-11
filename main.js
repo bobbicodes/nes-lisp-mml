@@ -104,6 +104,21 @@ let loaded = false;
 let pausedInBg = false;
 let loopId = 0;
 
+document.onvisibilitychange = function(e) {
+  if(document.hidden) {
+    pausedInBg = false;
+    if(!paused && loaded) {
+      audio.stop();
+      pausedInBg = true;
+    }
+  } else {
+    if(pausedInBg && loaded) {
+      audio.start();
+      pausedInBg = false;
+    }
+  }
+}
+
 function log(text) {
   el("log").innerHTML += text + "<br>";
   el("log").scrollTop = el("log").scrollHeight;
