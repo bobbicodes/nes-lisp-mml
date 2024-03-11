@@ -1,56 +1,25 @@
-export let inputBuffer = new Float32Array(4096);
-
 class MyAudioProcessor extends AudioWorkletProcessor {
-
-    _bytesWritten = 0
-    inputBuffer = new Float32Array(4096)
-
     constructor() {
         super();
-        this.initBuffer()
-    }
-
-    initBuffer() {
-        this._bytesWritten = 0
-    }
-
-    isBufferEmpty() {
-        return this._bytesWritten === 0
-    }
-
-    isBufferFull() {
-        return this._bytesWritten === 4096
-    }
-
-    process(inputList, outputList, parameters) {
-        this.append(inputList[0][0])
-        return true;
-    }
-
-    append(channelData) {
-        if (this.isBufferFull()) {
-          this.flush()
+        this.sampleBuffer = new Float32Array(0);
+        this.port.onmessage = (e) => {
+          let mergedBuffer = new Float32Array(this.sampleBuffer.length + e.data.samples.length);
+          mergedBuffer.set(this.sampleBuffer);
+          mergedBuffer.set(e.data.samples, this.sampleBuffer.length);
+          this.sampleBuffer = mergedBuffer;
         }
-    
-        if (!channelData) return
-    
-        for (let i = 0; i < channelData.length; i++) {
-          this._buffer[this._bytesWritten++] = channelData[i]
-        }
-      }
-
-
-    flush() {
-        // trim the buffer if ended prematurely
-        this.port.postMessage(
-          this._bytesWritten < 4096
-            ? this._buffer.slice(0, this._bytesWritten)
-            : this._buffer
-        )
-        this.initBuffer()
-      }
-
-
+    }
+    process (inputs, outputs, parameters) {
+       const output = outputs[0]
+       const desired_length = output[0].length;
+       output.forEach(channel => {
+         for (let i = 0; i < channel.length; i++) {
+           channel[i] = this.sampleBuffer[i];
+         }
+       })
+       this.sampleBuffer = this.sampleBuffer.slice(desired_length);
+       return true
+    }
 }
 
 registerProcessor("audioworklet", MyAudioProcessor);

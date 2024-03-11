@@ -1,37 +1,13 @@
-let inputReadPos = 0;
-let inputBufferPos = 0;
-let inputBuffer = new Float32Array(4096);
-
-function process(e) {
-    if (inputReadPos + 2048 > inputBufferPos) {
-        inputReadPos = inputBufferPos - 2048;
-    }
-    if (inputReadPos + 4096 < inputBufferPos) {
-        inputReadPos += 2048;
-    }
-    let output = e.outputBuffer.getChannelData(0);
-    for (let i = 0; i < 2048; i++) {
-        output[i] = inputBuffer[(inputReadPos++) & 0xfff];
-    }
-}
-
 const actx = new AudioContext()
 export const samplesPerFrame = actx.sampleRate / 60;
 export let sampleBuffer = new Float32Array(samplesPerFrame);
 
-export function clearSampleBuffer() {
-  sampleBuffer = new Float32Array(samplesPerFrame);
-}
+await actx.audioWorklet.addModule("./src/audioworklet.js");
+
+export const processor = new AudioWorkletNode(actx, "audioworklet")
 
 export function resume() {
     actx.resume();
-}
-
-export function nextBuffer() {
-    for (let i = 0; i < samplesPerFrame; i++) {
-        let val = sampleBuffer[i];
-        inputBuffer[(inputBufferPos++) & 0xfff] = val;
-    }
 }
 
 export function AudioHandler() {
@@ -39,18 +15,8 @@ export function AudioHandler() {
     this.start = function () {
         this.sourceNode = actx.createBufferSource();
         this.sourceNode.buffer = actx.createBuffer(1, actx.sampleRate, actx.sampleRate);
-
-        this.scriptNode = actx.createScriptProcessor(2048, 1, 1);
-        this.scriptNode.onaudioprocess = function (e) {
-            process(e);
-        }
-
-        this.biquadFilter = actx.createBiquadFilter();
-        this.biquadFilter.type = "highpass";
-        this.biquadFilter.frequency.setValueAtTime(37, actx.currentTime);
-        this.sourceNode.connect(this.scriptNode);
-        this.scriptNode.connect(this.biquadFilter);
-        this.biquadFilter.connect(actx.destination);
+        this.sourceNode.connect(processor);
+        processor.connect(actx.destination);
         this.sourceNode.start();
     }
 
@@ -59,10 +25,7 @@ export function AudioHandler() {
             this.sourceNode.stop();
             this.sourceNode.disconnect();
         }
-        if (this.scriptNode) {
-            this.scriptNode.disconnect();
-        }
-        inputBufferPos = 0;
-        inputReadPos = 0;
+
+       processor.disconnect();
     }
 }

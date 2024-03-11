@@ -8,7 +8,7 @@ import * as cpu from "./src/cpu";
 import * as apu from "./src/apu";
 import {songLength, make_download} from "./src/audio";
 import * as mapper from "./src/nsfmapper";
-import { AudioHandler, samplesPerFrame, sampleBuffer, resume, nextBuffer } from "./src/audiohandler";
+import { AudioHandler, resume, processor, sampleBuffer, samplesPerFrame } from "./src/audiohandler";
 
 let editorState = EditorState.create({
   doc: `(defn drum
@@ -332,13 +332,13 @@ function runFrame() {
     cycleCount++;
   }
   getSamples(sampleBuffer, samplesPerFrame);
-  nextBuffer();
   updateDebugView()
 }
 
 function getSamples(data, count) {
   // apu returns 29780 or 29781 samples (0 - 1) for a frame
   // we need count values (0 - 1)
+  let audio_buffer = data
   let samples = apu.getOutput();
   let runAdd = (29780 / count);
   let total = 0;
@@ -351,10 +351,11 @@ function getSamples(data, count) {
     for (let j = inputPos; j < inputPos + avgCount; j++) {
       total += samples[1][j];
     }
-    data[i] = total / avgCount;
+    audio_buffer[i] = total / avgCount;
     inputPos += avgCount;
     running -= avgCount;
   }
+  processor.port.postMessage({"type": "samples", "samples": audio_buffer});
 }
 
 export function read(adr) {
