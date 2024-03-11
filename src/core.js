@@ -1156,7 +1156,6 @@ function playNSF(square1, square2, triangle, noise) {
     assembleDriver(square1, square2, triangle, noise)
     resetNSF()
     loadRom(nsfDriver)
-    console.log("song length: " + audio.songLength + " frames")
     return "Playing..."
 }
 

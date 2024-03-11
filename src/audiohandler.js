@@ -25,7 +25,6 @@ export function AudioHandler() {
             this.sourceNode.stop();
             this.sourceNode.disconnect();
         }
-
-       processor.disconnect();
+        processor.disconnect();
     }
 }
