@@ -2,7 +2,7 @@ const actx = new AudioContext()
 export const samplesPerFrame = actx.sampleRate / 60;
 export let sampleBuffer = new Float32Array(samplesPerFrame);
 
-await actx.audioWorklet.addModule("./src/audioworklet.js");
+await actx.audioWorklet.addModule("audioworklet.js");
 
 export const processor = new AudioWorkletNode(actx, "audioworklet")
 
