@@ -1,4 +1,4 @@
-const actx = new AudioContext()
+export const actx = new AudioContext()
 export const samplesPerFrame = actx.sampleRate / 60;
 export let sampleBuffer = new Float32Array(samplesPerFrame);
 
@@ -14,9 +14,11 @@ export function AudioHandler() {
 
     this.start = function () {
         this.sourceNode = actx.createBufferSource();
-        this.sourceNode.buffer = actx.createBuffer(1, actx.sampleRate, actx.sampleRate);
-        this.sourceNode.connect(processor);
-        processor.connect(actx.destination);
+        this.biquadFilter = actx.createBiquadFilter();
+        this.biquadFilter.type = "highpass";
+        this.biquadFilter.frequency.setValueAtTime(37, actx.currentTime);
+        processor.connect(this.biquadFilter);
+        this.biquadFilter.connect(actx.destination);
         this.sourceNode.start();
     }
 

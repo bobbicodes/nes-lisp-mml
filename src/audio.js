@@ -1,23 +1,8 @@
-export let sq1Stream = []
-export let sq2Stream = []
-export let triStream = []
-export let noiseStream = []
-
-export function setSq1Stream(notes) {
-    sq1Stream = notes
-}
-
-export function setSq2Stream(notes) {
-    sq2Stream = notes
-}
-
-export function setTriStream(notes) {
-    triStream = notes
-}
-
-export function setNoiseStream(notes) {
-    noiseStream = notes
-}
+import { loadNsf, setLoaded, startSong, playReturned, setPlayReturned,
+  dmcIrqWanted, frameIrqWanted } from "../main";
+import { actx, processor, sampleBuffer, samplesPerFrame } from "./audiohandler";
+import * as cpu from "./cpu";
+import * as apu from "./apu";
 
 function freqToPeriod(freq) {
     const c = 1789773;
@@ -120,19 +105,8 @@ export function assembleNoise(notes) {
     return stream
 }
 
-export function make_download(name, abuffer) {
-    var new_file = URL.createObjectURL(bufferToWave(abuffer, abuffer.length));
-    var downloadAnchorNode = document.createElement('a');
-    downloadAnchorNode.setAttribute("href", new_file);
-    downloadAnchorNode.setAttribute("download", name);
-    document.body.appendChild(downloadAnchorNode); // required for firefox
-    downloadAnchorNode.click();
-    downloadAnchorNode.remove();
-}
-
-// Convert an AudioBuffer to a Blob using WAVE representation
 function bufferToWave(abuffer, len) {
-    var numOfChan = 1,
+    var numOfChan = abuffer.numberOfChannels,
         length = len * numOfChan * 2 + 44,
         buffer = new ArrayBuffer(length),
         view = new DataView(buffer),
@@ -148,8 +122,8 @@ function bufferToWave(abuffer, len) {
     setUint32(16);                                 // length = 16
     setUint16(1);                                  // PCM (uncompressed)
     setUint16(numOfChan);
-    setUint32(48000);
-    setUint32(48000 * 2 * numOfChan); // avg. bytes/sec
+    setUint32(abuffer.sampleRate);
+    setUint32(abuffer.sampleRate * 2 * numOfChan); // avg. bytes/sec
     setUint16(numOfChan * 2);                      // block-align
     setUint16(16);                                 // 16-bit (hardcoded in this demo)
 
@@ -157,13 +131,12 @@ function bufferToWave(abuffer, len) {
     setUint32(length - pos - 4);                   // chunk length
 
     // write interleaved data
-    for (i = 0; i < 1; i++)
-        channels.push(abuffer);
+    for (i = 0; i < abuffer.numberOfChannels; i++)
+        channels.push(abuffer.getChannelData(i));
 
     while (pos < length) {
         for (i = 0; i < numOfChan; i++) {             // interleave channels
             sample = Math.max(-1, Math.min(1, channels[i][offset])); // clamp
-            sample += 0.5
             sample = (0.5 + sample < 0 ? sample * 32768 : sample * 32767) | 0; // scale to 16-bit signed int
             view.setInt16(pos, sample, true);          // write 16-bit sample
             pos += 2;
@@ -184,47 +157,89 @@ function bufferToWave(abuffer, len) {
     }
 }
 
-export function dpcm_seq(notes) {
-    const lastNote = notes.reduce(
-        (prev, current) => {
-            return prev.get("ʞtime") > current.get("ʞtime") ? prev : current
-        }
-    );
-    const lastNoteLength = lastNote.get("ʞbuffer").getChannelData(0).length
-    const bufferLength = Math.ceil(ctx.sampleRate * lastNote.get("ʞtime") + lastNoteLength)
-    // initialize buffer of proper length filled with zeros
-    let buf = Array(bufferLength).fill(0)
-    // loop through notes
-    for (let i = 0; i < notes.length; i++) {
-        const start = Math.floor(notes[i].get("ʞtime") * ctx.sampleRate)
-        // set duration to sample length by default
-        let duration = notes[i].get("ʞbuffer").getChannelData(0).length
-        // change duration if note length is given
-        if (notes[i].get("ʞlength")) {
-            duration = notes[i].get("ʞlength") * ctx.sampleRate
-        }
-        // loop through the appropriate samples for that note
-        for (let j = 0; j < duration; j++) {
-            buf[start + j] = notes[i].get("ʞbuffer").getChannelData(0)[j]
-        }
-    }
-    return audioBuffer(buf)
+function buf_download(name, abuffer) {
+    var new_file = URL.createObjectURL(bufferToWave(abuffer, abuffer.length));
+    var downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href", new_file);
+    downloadAnchorNode.setAttribute("download", name);
+    document.body.appendChild(downloadAnchorNode); // required for firefox
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
 }
 
-export function mix(buffers) {
-    // make new buffer the length of longest buffer
-    const len = Math.max(...buffers.map(buf => buf.length))
-    const data = [...buffers.map(buf => buf.getChannelData(0))]
-    let buf = []
-    for (let i = 0; i < len; i++) {
-        // loop through index of each buffer and add them up
-        let amplitude = 0
-        for (let j = 0; j < data.length; j++) {
-            if (data[j].length >= i) {
-                amplitude += data[j][i]
-            }
-        }
-        buf.push(amplitude)
+export function exportAudio(filename, rom) {
+  if (loadNsf(rom)) {
+    setLoaded()
+    let audioBuffer = new Float32Array()
+    let cycleCount = 0;
+    while (cycleCount < songLength) {
+      runFrameSilent()
+      const newBuffer = new Float32Array(audioBuffer.length + sampleBuffer.length);
+      newBuffer.set(audioBuffer, 0);
+      newBuffer.set(sampleBuffer, audioBuffer.length);
+      audioBuffer = newBuffer;
+      cycleCount++;
     }
-    return audioBuffer(buf)
+    const offlineCtx = new OfflineAudioContext(1, audioBuffer.length, actx.sampleRate)
+    const abuf = offlineCtx.createBuffer(1, audioBuffer.length, offlineCtx.sampleRate);
+    const nowBuffering = abuf.getChannelData(0);
+    for (let i = 0; i < abuf.length; i++) {
+      nowBuffering[i] = audioBuffer[i]
+    }
+    const source = new AudioBufferSourceNode(offlineCtx, {buffer: abuf});
+    const biquadFilter = offlineCtx.createBiquadFilter();
+    biquadFilter.type = "highpass";
+    biquadFilter.frequency.setValueAtTime(37, offlineCtx.currentTime);
+    source.connect(biquadFilter);
+    biquadFilter.connect(offlineCtx.destination);
+    source.start();
+    offlineCtx.startRendering()
+    offlineCtx.oncomplete = (e) => buf_download(filename, e.renderedBuffer);
+  }
 }
+
+export function getSamples(data, count) {
+  // apu returns 29780 or 29781 samples (0 - 1) for a frame
+  // we need count values (0 - 1)
+  let audio_buffer = data
+  let samples = apu.getOutput();
+  let runAdd = (29780 / count);
+  let total = 0;
+  let inputPos = 0;
+  let running = 0;
+  for (let i = 0; i < count; i++) {
+    running += runAdd;
+    let total = 0;
+    let avgCount = running & 0xffff;
+    for (let j = inputPos; j < inputPos + avgCount; j++) {
+      total += samples[1][j];
+    }
+    audio_buffer[i] = total / avgCount;
+    inputPos += avgCount;
+    running -= avgCount;
+  }
+  processor.port.postMessage({"type": "samples", "samples": audio_buffer});
+}
+
+function runFrameSilent() {
+  // version of runFrame that doesn't call updateDebugView()
+  if (playReturned) {
+    cpu.set_pc(0x3ff8)
+  }
+  setPlayReturned(false);
+  let cycleCount = 0;
+  while (cycleCount < 29780) {
+    cpu.setIrqWanted(dmcIrqWanted || frameIrqWanted)
+    if (!playReturned) {
+      cpu.cycle();
+    }
+    apu.cycle();
+    if (cpu.br[0] === 0x3ffd) {
+      // we are in the nops after the play-routine, it finished
+      setPlayReturned(true);
+    }
+    cycleCount++;
+  }
+  getSamples(sampleBuffer, samplesPerFrame);
+}
+

@@ -6,9 +6,10 @@ import { updateDocBar } from "./src/eval-region";
 import { updateDebugView } from "./src/debugger";
 import * as cpu from "./src/cpu";
 import * as apu from "./src/apu";
-import {songLength, make_download} from "./src/audio";
+import { songLength, getSamples } from "./src/audio";
 import * as mapper from "./src/nsfmapper";
-import { AudioHandler, resume, processor, sampleBuffer, samplesPerFrame } from "./src/audiohandler";
+import { actx, AudioHandler, resume, processor, sampleBuffer,
+  samplesPerFrame } from "./src/audiohandler";
 
 let editorState = EditorState.create({
   doc: `(defn drum
@@ -58,7 +59,7 @@ let editorState = EditorState.create({
            (for [[length pitch] [[17 60] [17 62] [51 64] [17 62] [66 59]]]
              {:length length :pitch pitch}))))
 
-(play-nsf sq1 sq2 bass
+(play sq1 sq2 bass
   (concat drum-pat drum-pat drum-pat drum-pat (drum 13 18 15 8 1)))`,
   extensions: [basicSetup, clojure()]
 })
@@ -89,20 +90,29 @@ export let ram = new Uint8Array(0x800);
 
 export let callArea = new Uint8Array(0x10);
 let totalSongs = 0;
-let startSong = 0;
+export let startSong = 0;
 let tags = {
   name: "",
   artist: "",
   copyright: ""
 }
-let playReturned = true;
-let frameIrqWanted = false;
-let dmcIrqWanted = false;
+export let playReturned = true;
+
+export function setPlayReturned(bool) {
+  playReturned = bool
+}
+
+export let frameIrqWanted = false;
+export let dmcIrqWanted = false;
 
 let paused = false;
 let loaded = false;
 let pausedInBg = false;
 let loopId = 0;
+
+export function setLoaded() {
+  loaded = true
+}
 
 document.onvisibilitychange = function(e) {
   if(document.hidden) {
@@ -143,52 +153,6 @@ export function loadRom(rom) {
   }
 }
 
-export function exportAudio(filename, rom) {
-  if (loadNsf(rom)) {
-    loaded = true;
-    currentSong = startSong;
-    let audioBuffer = new Float32Array()
-    let cycleCount = 0;
-    while (cycleCount < songLength) {
-      runFrameSilent()
-      const newBuffer = new Float32Array(
-         audioBuffer.length + sampleBuffer.length
-      );
-      newBuffer.set(audioBuffer, 0);
-      newBuffer.set(sampleBuffer, audioBuffer.length);
-      audioBuffer = newBuffer;
-      cycleCount++;
-    }
-    make_download(filename, audioBuffer)
-  }
-}
-
-function runFrameSilent() {
-  // version of runFrame that doesn't call `nextBuffer()`
-  if (playReturned) {
-    cpu.set_pc(0x3ff8)
-  }
-  playReturned = false;
-  let cycleCount = 0;
-  while (cycleCount < 29780) {
-    cpu.setIrqWanted(dmcIrqWanted || frameIrqWanted)
-    if (!playReturned) {
-      cpu.cycle();
-    }
-    apu.cycle();
-    if (cpu.br[0] === 0x3ffd) {
-      // we are in the nops after the play-routine, it finished
-      playReturned = true;
-    }
-    cycleCount++;
-  }
-  getSamples(sampleBuffer, samplesPerFrame);
-}
-
-function getWordRep(val) {
-  return ("000" + val.toString(16)).slice(-4).toUpperCase();
-}
-
 export function loadNsf(nsf) {
   if (nsf.length < 0x80) {
     log("Invalid NSF loaded");
@@ -206,19 +170,14 @@ export function loadNsf(nsf) {
     return false;
   }
   totalSongs = nsf[6];
-  //log(totalSongs + " total songs");
   startSong = nsf[7];
-  //log("Start song: " + startSong);
   let loadAdr = nsf[8] | (nsf[9] << 8);
-  //log("Load address: $" + getWordRep(loadAdr))
   if (loadAdr < 0x8000) {
     log("Load address less than 0x8000 is not supported");
     return false;
   }
   let initAdr = nsf[0xa] | (nsf[0xb] << 8);
-  //log("Init address: $" + getWordRep(initAdr))
   let playAdr = nsf[0xc] | (nsf[0xd] << 8);
-  //log("Play address: $" + getWordRep(playAdr))
   for (let i = 0; i < 32; i++) {
     if (nsf[0xe + i] === 0) {
       break;
@@ -243,7 +202,6 @@ export function loadNsf(nsf) {
     initBanks[i] = nsf[0x70 + i];
     total += nsf[0x70 + i];
   }
-  //log("Bankswitch init values: " + initBanks)
   let banking = total > 0;
 
   // set up the NSF mapper
@@ -272,7 +230,6 @@ export function loadNsf(nsf) {
   callArea[0xf] = 0xea // NOP
 
   playSong(startSong);
-  //log("Loaded NSF file");
   return true;
 }
 
@@ -348,29 +305,7 @@ function runFrame() {
   }
   getSamples(sampleBuffer, samplesPerFrame);
   updateDebugView()
-}
-
-function getSamples(data, count) {
-  // apu returns 29780 or 29781 samples (0 - 1) for a frame
-  // we need count values (0 - 1)
-  let audio_buffer = data
-  let samples = apu.getOutput();
-  let runAdd = (29780 / count);
-  let total = 0;
-  let inputPos = 0;
-  let running = 0;
-  for (let i = 0; i < count; i++) {
-    running += runAdd;
-    let total = 0;
-    let avgCount = running & 0xffff;
-    for (let j = inputPos; j < inputPos + avgCount; j++) {
-      total += samples[1][j];
-    }
-    audio_buffer[i] = total / avgCount;
-    inputPos += avgCount;
-    running -= avgCount;
-  }
-  processor.port.postMessage({"type": "samples", "samples": audio_buffer});
+  
 }
 
 export function read(adr) {

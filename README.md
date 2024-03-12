@@ -49,14 +49,14 @@ The noise channel plays at 16 possible pitches from 0 (high) to 15 (low).
 
 ## Playing audio
 
-The `play-nsf` function takes 4 arguments which are the 4 sequences for sq1, sq2, triangle and noise. To mute a channel just pass an empty vector.
+The `play` function takes 4 arguments which are the 4 sequences for sq1, sq2, triangle and noise. To mute a channel just pass an empty vector.
 
 ## NSF/audio export
 
-To save an audio file, pass a filename along with your note sequences to `export-wav`:
+To save an audio file, pass a filename along with your note sequences to `save-wav`:
 
 ```clojure
-(export-wav "mytune.wav"
+(save-wav "mytune.wav"
   (for [[length pitch]
         [[20 60] [20 67] [50 65] [20 67] [10 68]
          [10 67] [10 65] [10 67] [20 60]]]
@@ -64,10 +64,10 @@ To save an audio file, pass a filename along with your note sequences to `export
 [] [] [])
 ```
 
-Saving an NSF file works the same way by calling `spit-nsf`:
+Saving an NSF file works the same way by calling `save-nsf`:
 
 ```clojure
-(spit-nsf "mytune.nsf"
+(save-nsf "mytune.nsf"
   (for [[length pitch]
         [[20 60] [20 67] [50 65] [20 67] [10 68]
          [10 67] [10 65] [10 67] [20 60]]]
@@ -148,7 +148,7 @@ Putting this all together:
   (apply concat (for [[pitch length] notes]
             (lead-inst pitch length 0.5 0.25))))
 
-(play-nsf
+(play
   (lead (map (fn [[pitch length]] [(+ pitch 7) length])
   [[50 2.5] [53 2.5] [52 1.25] [50 1.25] [48 2.5] [50 2.5]
        [53 2.5] [55 1.25] [53 1.25] [52 1.25] [50 5]]))
@@ -196,7 +196,7 @@ And put this together for a punchy walking bassline (Brand New Cadillac by The C
   (apply concat (for [pitch intervals]
     (bass pitch))))
 
-(play-nsf [] []
+(play [] []
   (walking-bass [0 0 0 0 5 5 0 0 7 5 0 0]) [])
 ```
 

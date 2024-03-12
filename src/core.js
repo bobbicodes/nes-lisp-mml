@@ -5,8 +5,7 @@ import { repl_env, evalString, PRINT, EVAL } from './interpreter.js';
 import zip from './clj/zip.clj?raw'
 import * as audio from './audio.js'
 import { nsfDriver, assembleDriver } from './nsf.js';
-import { loadNsf, loadRom, exportAudio } from '../main.js';
-import { resetNSF } from './cpu.js';
+import { loadNsf, loadRom} from '../main.js';
 
 export var out_buffer = ""
 
@@ -1067,51 +1066,6 @@ function hex2bin(hex) {
     return (parseInt(hex, 16).toString(2)).padStart(8, '0');
 }
 
-// this will take a hex string, i.e. "FFFF0F00000000000000000000000000"
-// outputs a string of binary digits: "111111111111111111110000000000000000000 ..."
-
-export function hex2DPCM(hex) {
-    const bytes = hex.match(/../g);
-    const le = bytes.map(x => x.split("").reverse().join(""))
-    return le.map(x => hex2bin(x)).join("")
-}
-
-// takes a hex string, outputs an array of binary digits repeated n times
-
-function loopDPCM(s, n) {
-    return (hex2DPCM(s).repeat(n)).split('').map(x => parseInt(x, 10))
-}
-
-function dpcm2pcm(vals, rate) {
-    let newFrames = []
-    for (let i = 0; i < vals.length; i++) {
-        newFrames.push(Math.floor(i * rate))
-    }
-    let output = 32
-    let result = [32]
-    for (let i = 0; i < (vals.length * rate); i++) {
-        if (i === newFrames[0]) {
-            vals.shift()
-            newFrames.shift()
-        }
-        let v = vals[0] == 0 ? output - 1 : output + 1
-        if (v > 1 && v < 63) {
-            output = v
-        }
-        result.push(output)
-    }
-    return scalePCM(result)
-}
-
-function scalePCM(vals) {
-    let scaled = []
-    for (let i = 0; i < vals.length; i++) {
-        scaled.push(((vals[i] / 64) * 2) - 1)
-        //console.log("scaling " + vals[i] + " to " + (((vals[i]/64) * 2) - 1))
-    }
-    return scaled
-}
-
 function saveWav(filename, square1, square2, triangle, noise) {
     audio.resetSongLength()
     square1 = audio.assembleStream(square1)
@@ -1119,32 +1073,11 @@ function saveWav(filename, square1, square2, triangle, noise) {
     triangle = audio.assembleStream(triangle)
     noise = audio.assembleNoise(noise)
     assembleDriver(square1, square2, triangle, noise)
-    resetNSF()
-    exportAudio(filename, nsfDriver)
-}
-
-function sq1Stream(notes) {
-    audio.setSq1Stream(audio.assembleStream(notes))
-    return audio.sq1Stream 
-}
-
-function sq2Stream(notes) {
-    audio.setSq2Stream(audio.assembleStream(notes))
-    return audio.sq2Stream
-}
-
-function triStream(notes) {
-    audio.setTriStream(audio.assembleStream(notes))
-    return audio.triStream
-}
-
-function noiseStream(notes) {
-    audio.setNoiseStream(audio.assembleStream(notes))
-    return audio.noiseStream
+    audio.exportAudio(filename, nsfDriver)
 }
 
 function hex(n) {
-    return (n).toString(16);
+    return "$" + (n).toString(16);
 }
 
 function playNSF(square1, square2, triangle, noise) {
@@ -1154,7 +1087,6 @@ function playNSF(square1, square2, triangle, noise) {
     triangle = audio.assembleStream(triangle)
     noise = audio.assembleNoise(noise)
     assembleDriver(square1, square2, triangle, noise)
-    resetNSF()
     loadRom(nsfDriver)
     return "Playing..."
 }
@@ -1185,30 +1117,11 @@ function spitNSF(name, square1, square2, triangle, noise) {
 export var ns = {
     'env': printEnv,
     'hex': hex,
-    'spit-nsf': spitNSF,
-    'play': audio.playBuffer,
-    'play-nsf': playNSF,
-    'export-wav': saveWav,
-    'square1': sq1Stream,
-    'square2': sq2Stream,
-    'triangle': triStream,
-    'noise': noiseStream,
-    'mix': audio.mix,
-    'dpcm-seq': audio.dpcm_seq,
-    'tri-seq': audio.tri_seq,
-    'drum-seq': audio.drum_seq,
-    'pulse0-seq': audio.pulse0_seq,
+    'save-nsf': spitNSF,
+    'play': playNSF,
+    'save-wav': saveWav,
     'hex2bin': hex2bin,
     'dec2bin': dec2bin,
-    'hex2dpcm': hex2DPCM,
-    'loop-dpcm': loopDPCM,
-    'dpcm2pcm': dpcm2pcm,
-    'pulse1-seq': audio.pulse1_seq,
-    'pulse2-seq': audio.pulse2_seq,
-    'pulse3-seq': audio.pulse3_seq,
-    'channel-data': audio.channelData,
-    'midi->freq': audio.midiToFreq,
-    'spit-wav': audio.make_download,
     'append-path': appendPath,
     'clear-svg': clearSVG,
     'console-print': consolePrint,
