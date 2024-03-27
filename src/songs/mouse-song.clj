@@ -25,17 +25,9 @@
     [(- l 9) p])))
 
 (defn drum
-  "Takes a decay length and a key for a preset volume-pitch 
-   sequence. Key can be :kick, :snare, :hat, :hat2."
-  [length key]
-  (let [vol-pitch
-        (cond (= key :kick) [[10 6] [7 2] [4 1] [3 1] [2 0]]
-              (= key :snare) [[11 8] [9 6] [8 6] [7 6]
-                              [4 5] [3 5] [2 5] [1 5]]
-              (= key :hat) [[4 3] [3 2] [2 0] [1 0]]
-              (= key :hat2) [[3 3] [2 2] [1 0] [1 0]]
-                :else "Invalid sequence key")
-        frame1 {:length 1 :volume (ffirst vol-pitch)
+  "Takes a decay length and a volume-pitch sequence."
+  [length vol-pitch]
+  (let [frame1 {:length 1 :volume (ffirst vol-pitch)
                 :pitch (last (first vol-pitch))}
         midframes (for [[volume pitch] (rest vol-pitch)]
                     {:volume volume :pitch pitch})
@@ -45,16 +37,17 @@
     (concat [frame1] midframes [tail])))
 
 (defn kick [length]
-  (drum length :kick))
+  (drum length [[10 6] [7 2] [4 1] [3 1] [2 0]]))
 
 (defn snare [length]
-  (drum length :snare))
+  (drum length [[11 8] [9 6] [8 6] [7 6]
+                [4 5] [3 5] [2 5] [1 5]]))
 
 (defn hat [length]
-  (drum length :hat))
+  (drum length [[4 3] [3 2] [2 0] [1 0]]))
 
 (defn hat2 [length]
- (drum length :hat2))
+ (drum length [[3 3] [2 2] [1 0] [1 0]]))
 
 (def oh (for [[volume pitch] 
   [[6 3] [5 3] [4 3] [4 3] [4 3] [4 3]
