@@ -4,7 +4,7 @@ import * as types from './types.js'
 import { repl_env, evalString, PRINT, EVAL } from './interpreter.js';
 import zip from './clj/zip.clj?raw'
 import * as audio from './audio.js'
-import { nsfDriver, assembleDriver } from './nsf.js';
+import { nsfDriver, assembleDriver, resetEnvelopes } from './nsf.js';
 import { loadNsf, loadRom} from '../main.js';
 
 export var out_buffer = ""
@@ -1082,9 +1082,10 @@ function hex(n) {
 
 function playNSF(square1, square2, triangle, noise) {
     audio.resetSongLength()
-    square1 = audio.assembleStream(square1)
-    square2 = audio.assembleStream(square2)
-    triangle = audio.assembleStream(triangle)
+    resetEnvelopes()
+    square1 = audio.assembleStream(square1, 0)
+    square2 = audio.assembleStream(square2, 1)
+    triangle = audio.assembleStream(triangle, 2)
     noise = audio.assembleNoise(noise)
     assembleDriver(square1, square2, triangle, noise)
     loadRom(nsfDriver)
@@ -1093,9 +1094,10 @@ function playNSF(square1, square2, triangle, noise) {
 
 function spitNSF(name, square1, square2, triangle, noise) {
     audio.resetSongLength()
-    square1 = audio.assembleStream(square1)
-    square2 = audio.assembleStream(square2)
-    triangle = audio.assembleStream(triangle)
+    resetEnvelopes()
+    square1 = audio.assembleStream(square1, 0)
+    square2 = audio.assembleStream(square2, 1)
+    triangle = audio.assembleStream(triangle, 2)
     noise = audio.assembleNoise(noise)
     assembleDriver(square1, square2, triangle, noise)
     let buffer = new ArrayBuffer(nsfDriver.length);
@@ -1122,6 +1124,8 @@ export var ns = {
     'save-wav': saveWav,
     'hex2bin': hex2bin,
     'dec2bin': dec2bin,
+    'vib': audio.vib,
+    'length-pitch': audio.lengthPitch,
     'append-path': appendPath,
     'clear-svg': clearSVG,
     'console-print': consolePrint,

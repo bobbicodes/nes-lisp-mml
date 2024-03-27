@@ -23,13 +23,12 @@ The note data can be produced however you like, as long as it ends up a sequence
  {:pitch 67} {:length 20 :pitch 60}]
 ```
 
-This is rather verbose however, and does not take advantage of the fact that we have a complete programming language at our disposal. It's often more convenient to encode the music as a sequence of length/pitch pairs. We could accomplish this by writing a function which takes these pairs and outputs the appropriate maps:
+However, it's often more convenient to encode the music as a sequence of length/pitch pairs. There is a convenience function for that called `length-pitch`:
 
 ```clojure
-(for [[length pitch]
+(length-pitch
       [[20 60] [20 67] [50 65] [20 67] [10 68]
-       [10 67] [10 65] [10 67] [20 60]]]
-  {:length length :pitch pitch})
+       [10 67] [10 65] [10 67] [20 60]])
 ```
 
 ### Volume/duty cycle changes
@@ -45,7 +44,7 @@ A volume or duty change is persistent, i.e. it will affect all subsequent notes 
 
 ### Noise pitches
 
-The noise channel plays at 16 possible pitches from 0 (high) to 15 (low).
+The noise channel plays at 16 possible pitches from 0 (high) to 15 (low). Mode 1 noise (metallic sound) is from 16 to 32.
 
 ## Playing audio
 
@@ -96,16 +95,31 @@ This function will play noise of a given pitch with the volume linearly decreasi
       (reverse (range 4 16)))))
 ```
 
-### Vibrato
+### Looping
 
-This function will produce a note of a given pitch and length with the pitch modulated by a sine wave of given speed and width:
+There is a built in way of repeating sections of music without taking up additional ROM space. There is currently a 32kB limit because the driver does not do any bank switching, so songs of sufficient length will need to take advantage of this.
+
+There are 2 levels of nesting allowed. These are aliased to `loop1` and `loop2`. Each one receives 2 arguments, a number of repetitions, and a note sequence.
 
 ```clojure
-(defn vibrato [pitch length speed width]
-  (concat [{:length 1}]
-    (for [x (range length)]
-      {:pitch (+ pitch (* width (sin (* speed x))))})))
+(loop1 2
+  [{:volume 9 :length 20 :pitch 60}
+   {:length 50 :pitch 65} {:pitch 67}
+   {:length 10 :pitch 68} {:pitch 65} 
+   {:pitch 67} {:length 20 :pitch 60}])
 ```
+
+### Vibrato
+
+There is a built-in function for doing vibrato efficiently:
+
+```clojure
+(vib (length-pitch
+    [[36 74] [12 72] [12 74] [12 72] [12 69] [12 67]]) 
+  0.5 0.15)
+```
+
+Vibrato uses looping under the hood, specifically `loop2`. So any sections using vibrato can only be looped using `loop1`.
 
 ### Transposition
 

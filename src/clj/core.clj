@@ -1517,3 +1517,10 @@ expression is provided and no clause matches, an exception is thrown."
        (recur y (first more) (next more))
        (>= y (first more)))
      false)))
+
+(defn loop1 [n notes]
+  (concat [{:loop n}] notes [{:loop :end}]))
+
+(defn loop2 [n notes]
+  (concat [{:arp n}] notes [{:arp :end}]))
+
