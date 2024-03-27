@@ -49,18 +49,15 @@
 (defn hat2 [length]
  (drum length [[3 3] [2 2] [1 0] [1 0]]))
 
-(def oh (for [[volume pitch] 
-  [[6 3] [5 3] [4 3] [4 3] [4 3] [4 3]
-   [4 3] [4 3] [3 2] [2 0] [1 0] [1 0]]]
-   {:length 1 :pitch pitch :volume volume}))
+(defn oh [length]
+  (drum length [[6 3] [5 3] [4 3] [4 3] [4 3] [4 3]
+                [4 3] [4 3] [3 2] [2 0] [1 0] [1 0]]))
 
-(def tom (for [[volume pitch] 
-  [[4 12] [4 6] [3 6] [2 6] [1 6]]]
-  {:length 1 :pitch pitch :volume volume}))
+(defn tom [length]
+  (drum length [[4 12] [4 6] [3 6] [2 6] [1 6]]))
 
-(def tom2 (for [[volume pitch] 
-  [[3 12] [2 6] [2 6] [2 6] [1 6]]]
-  {:length 1 :pitch pitch :volume volume}))
+(defn tom2 [length]
+  (drum length [[3 12] [3 6] [2 6] [1 6] [1 6]]))
 
 (defn r
   "Returns a sequence consisting of a rest of length l."
@@ -71,10 +68,10 @@
   (concat (loop1 7 (concat
     (kick 12) (hat2 6) (hat2 6) (hat 12) (hat 12) 
     (snare 12) (hat2 6) (hat2 6) (hat 12) (hat 12)))
-    tom (r 2) tom2 (r 2) tom2 (r 5)
-    tom (r 2) tom2 (r 2) tom2 (r 5)
-    tom (r 2) tom2 (r 2) tom2 (r 5)
-    tom (r 2) tom2 (r 2) tom2 (r 5)))
+    (tom 7) (tom2 7) (tom2 10)
+    (tom 7) (tom2 7) (tom2 10)
+    (tom 7) (tom2 7) (tom2 10)
+    (tom 7) (tom2 7) (tom2 10)))
 
 (defn release [notes]
   (let [head (take (- (count notes) 5) notes)
@@ -286,11 +283,11 @@
 
 (def noise-part
   (concat [{:volume 0 :length 1638 :pitch 0}]
-    oh (r 36) oh (r 36)
+    (oh 12) (r 36) (oh 12) (r 36)
     (loop1 16 (concat
       (kick 12) (hat2 6) (hat2 6) (hat 12) (hat 12)
       (snare 12) (hat2 6) (hat2 6) (hat 12) (hat 12)))
-    (r 96) oh (r 36) oh (r 36)
+    (r 96) (oh 12) (r 36) (oh 12) (r 36)
     beat1 beat1 beat1 beat1 beat1 beat1))
 
 (play
