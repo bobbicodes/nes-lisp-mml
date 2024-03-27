@@ -64,14 +64,10 @@
   [l]
   [{:length l :volume 0 :pitch 0}])
 
-(def beat1
-  (concat (loop1 7 (concat
+(def beat1 (concat (loop1 7 (concat
     (kick 12) (hat2 6) (hat2 6) (hat 12) (hat 12) 
     (snare 12) (hat2 6) (hat2 6) (hat 12) (hat 12)))
-    (tom 7) (tom2 7) (tom2 10)
-    (tom 7) (tom2 7) (tom2 10)
-    (tom 7) (tom2 7) (tom2 10)
-    (tom 7) (tom2 7) (tom2 10)))
+    (loop1 4 (concat (tom 7) (tom2 7) (tom2 10)))))
 
 (defn release [notes]
   (let [head (take (- (count notes) 5) notes)
@@ -81,8 +77,7 @@
                  (assoc note :volume (- 6 index)))
           tail)) notes)))
 
-(def bass1
-  (concat (vib (length-pitch (concat
+(def bass1 (concat (vib (length-pitch (concat
       (k [48 62]) (k [24 65]) (h [24 67]) (k [96 69]))) 0.5 0.15)
       (loop1 2 (vib (length-pitch (concat         
       (k [24 62]) (h [24 69]) (s [24 66]) (h [24 62])
@@ -90,12 +85,10 @@
       (k [24 70]) (h [24 67]) (s [12 70]) (h [12 69])
       (h [12 67]) (h [108 69]))) 0.5 0.15))))
 
-(def bass2a
-  (vib (length-pitch (concat
+(def bass2a (vib (length-pitch (concat
     (k [48 50]) (k [24 53]) (h [24 55]) (k [36 50]))) 0.5 0.15))
 
-(def bass2b
-  (vib (length-pitch (concat     
+(def bass2b (vib (length-pitch (concat     
     (h [12 160]) (s [24 57]) (h [12 160]) (h [12 57])
     (k [12 50]) (h [12 57]) (k [24 50]) (s [24 57]) (h [24 50])
     (h [24 160]) (k [24 51]) (h [36 160]) (k [12 50])
@@ -109,8 +102,7 @@
     (t [7 61]) [[1 160]] (t [7 61]) [[1 160]] (t [7 56]) [[1 160]]
     (t [7 56]) [[1 160]] (t [7 56]) [[1 160]] (k [36 50]))) 0.5 0.15))
 
-(def bass3
-  (loop1 2 (vib (length-pitch
+(def bass3 (loop1 2 (vib (length-pitch
     (concat [[7 65] [1 160] [7 65] [1 160] [8 65]
       [84 70] [6 67] [6 65] [20 63] [4 160] [48 63] [24 65]
       [48 70] [36 74] [6 70] [6 74] [20 75] [4 160] [20 75] [4 160]]
@@ -119,16 +111,11 @@
 (defn slide [from to frames]
   (length-pitch (take frames 
     (if (< to from)
-      (map #(vector 1 %) 
-        (reverse (range to from 
-           (/ (abs (- from to)) frames))))
-      (map #(vector 1 %)
-        (range from to 
-           (/ (abs (- from to)) frames)))))))
+      (map #(vector 1 %) (reverse (range to from (/ (abs (- from to)) frames))))
+      (map #(vector 1 %) (range from to (/ (abs (- from to)) frames)))))))
 
-(def sq1 (concat
-    (slide 72.5 74 24) (vib (length-pitch [[24 74]]) 0.9 0.4)
-    (slide 68 69 24) 
+(def sq1 (concat (slide 72.5 74 24) (vib (length-pitch [[24 74]]) 0.9 0.4) 
+    (slide 68 69 24)
     (vib (length-pitch [[98 69] [6 74] [6 69] [6 74]]) 0.9 0.15)
     (slide 74 75 24) (vib (length-pitch [[24 75]]) 0.9 0.4)
     (slide 68 70 24) 
@@ -140,8 +127,7 @@
 
 (defn detune [notes]
   (map (fn [note] (if (:pitch note)
-           (update note :pitch #(- % 0.1))
-           note)) notes))
+           (update note :pitch #(- % 0.1)) note)) notes))
 
 (def lead2sq1 (vib (release (length-pitch 
       [[12 74] [12 73] [10 74] [2 160] [12 74]
@@ -167,8 +153,7 @@
         [48 45] [72 42] [48 160] [8 45] [8 42] [8 45]
        [48 46] [72 43] [24 46] [24 45] [24 43]])) 0.5 0.15))
 
-(def lead1
-  (vib (release (length-pitch 
+(def lead1 (vib (release (length-pitch 
       [[36 74] [12 72] [12 74] [12 72] [12 69] [12 67]
        [24 66] [24 67] [24 69] [24 72] [96 70] [24 160] [24 74]
        [24 72] [24 70] [12 69] [12 67] [90 66] [4 160] [20 66]
@@ -179,8 +164,7 @@
        [6 63] [2 160] [6 66] [2 160] [6 66] [2 160] [6 66]
        [2 160]])) 0.5 0.15))
 
-(def lead2
-  (vib (release (length-pitch 
+(def lead2 (vib (release (length-pitch 
       [[12 66] [12 67] [12 66] [12 67] [12 69] [12 160] [12 69]
        [12 160] [4 66] [4 67] [4 66] [4 67] [4 66] [4 67]
        [12 66] [62 160] [12 67] [12 69] [12 67] [12 69]
@@ -194,8 +178,7 @@
        [6 63] [2 160] [6 63] [2 160] [6 63] [2 160]
       [48 160]])) 0.7 0.3))
 
-(def sq2-intro
-  (vib (release (length-pitch 
+(def sq2-intro (vib (release (length-pitch 
       [[12 62] [12 63] [12 65] [12 70] [12 65] 
        [12 67] [48 65] [48 63] [120 62] [96 160]
        [12 62] [12 63] [12 65] [12 70] [48 67] 
@@ -231,11 +214,9 @@
    [6 66] [2 160] [6 66] [2 160] [6 66] [2 160]
    [6 63] [2 160] [6 63] [2 160] [6 63] [2 160] [48 160]])
 
-(def sq1-part
-  (concat [{:volume 1 :length 1748 :pitch 160}]
-    (detune (vib (release (length-pitch 
-       (take 53 sq1a))) 0.5 0.15))
-    [{:volume 4}]
+(def sq1-part (concat [{:volume 1 :length 1748 :pitch 160}]
+    (detune (vib (release (length-pitch (take 53 sq1a)))
+              0.5 0.15)) [{:volume 4}]
     (vib (release (length-pitch sq1a)) 0.5 0.15)
     [{:duty 0 :volume 2 :length 160 :pitch 160}]
     (detune (concat (vib (release (length-pitch 
@@ -246,9 +227,7 @@
 
 (def sq2-part
   (concat [{:duty 1 :volume 4 :length 72 :pitch 160}]
-    sq2-intro
-    [{:volume 5 :length 96 :pitch 160}]
-    lead1
+    sq2-intro [{:volume 5 :length 96 :pitch 160}] lead1
     (vib (release (length-pitch [[96 62]])) 0.5 0.15)
     [{:volume 1}]
     (vib (release (length-pitch 
@@ -261,18 +240,14 @@
        [2 160] [6 62] [2 160] [6 63] [2 160] [6 63] [2 160]
        [6 63] [2 160] [6 66] [2 160] [6 66] [2 160] [6 66]
        [2 160]])) 0.5 0.15)
-    [{:volume 5 :length 218 :pitch 160}]
-    (loop1 3 lead2)
-    (vib (release (length-pitch 
-      (take 70 sq1b))) 0.7 0.3)
-    lead2sq2 lead2sq2
-    (vib [{:length 96 :pitch 42}] 0.7 0.3)))
+    [{:volume 5 :length 218 :pitch 160}] (loop1 3 lead2)
+    (vib (release (length-pitch (take 70 sq1b))) 0.7 0.3)
+    lead2sq2 lead2sq2 (vib [{:length 96 :pitch 42}] 0.7 0.3)))
 
 (def tri-part
   (concat bass3 bass3
       (vib (length-pitch (concat 
-          [[7 65] [1 160] [7 65] [1 160] [8 65]
-           [72 70]])) 0.5 0.15)
+          [[7 65] [1 160] [7 65] [1 160] [8 65] [72 70]])) 0.5 0.15)
       [{:volume 4}] bass1
       (loop1 2 (vib (length-pitch (concat         
       (k [24 62]) (h [24 69]) (s [24 66]) (h [24 62])
