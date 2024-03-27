@@ -6,10 +6,8 @@ import { updateDocBar } from "./src/eval-region";
 import { updateDebugView } from "./src/debugger";
 import * as cpu from "./src/cpu";
 import * as apu from "./src/apu";
-import { songLength, getSamples } from "./src/audio";
+import * as audio from "./src/audio";
 import * as mapper from "./src/nsfmapper";
-import { actx, AudioHandler, resume, processor, sampleBuffer,
-  samplesPerFrame } from "./src/audiohandler";
 
 let editorState = EditorState.create({
   doc: `(defn drum
@@ -79,8 +77,6 @@ keyBindings = keyBindings.join('');
 document.getElementById("keymap").innerHTML = keyBindings;
 
 document.querySelector('#app').onclick = (e) => updateDocBar(view)
-
-let audio = new AudioHandler();
 
 export function getByteRep(val) {
   return ("0" + val.toString(16)).slice(-2);
@@ -276,7 +272,7 @@ function playSong(songNum) {
 let framesPlayed = 0
 
 function update() {
-  if (framesPlayed === songLength) {
+  if (framesPlayed === audio.songLength) {
     audio.stop()
   }
   runFrame();
@@ -303,7 +299,7 @@ function runFrame() {
     }
     cycleCount++;
   }
-  getSamples(sampleBuffer, samplesPerFrame);
+  audio.getSamples(audio.sampleBuffer, audio.samplesPerFrame);
   updateDebugView()
   
 }
