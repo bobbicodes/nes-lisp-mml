@@ -36,33 +36,37 @@ let editorState = EditorState.create({
   (take l (conj (mapv #(vector 1 (+ p %)) (reverse (range 10)))
     [(- l 9) p])))
 
-(defn kick [length]
-  (concat [{:volume 7 :length 1 :pitch 6}]
-    (for [[volume pitch] [[7 2] [4 1] [3 1] [2 0]]]
-      {:volume volume :pitch pitch})
-    {:length (- length 5) :volume 0 :pitch 0}))
-
-(defn snare [length]
-  (let [vol-pitch (->> [[11 8] [9 6] [8 6] [7 6]
-                        [4 5] [3 5] [2 5] [1 5]]
-                       (take length))
+(defn drum
+  "Takes a decay length and a key for a preset volume-pitch 
+   sequence. Key can be :kick, :snare, :hat, :hat2."
+  [length key]
+  (let [vol-pitch
+        (cond (= key :kick) [[10 6] [7 2] [4 1] [3 1] [2 0]]
+              (= key :snare) [[11 8] [9 6] [8 6] [7 6]
+                              [4 5] [3 5] [2 5] [1 5]]
+              (= key :hat) [[4 3] [3 2] [2 0] [1 0]]
+              (= key :hat2) [[3 3] [2 2] [1 0] [1 0]]
+                :else "Invalid sequence key")
         frame1 {:length 1 :volume (ffirst vol-pitch)
                 :pitch (last (first vol-pitch))}
         midframes (for [[volume pitch] (rest vol-pitch)]
                     {:volume volume :pitch pitch})
-        last-frame {:length (if (< length 8) 0 (- length 8))
+        tail {:length (if (< length (count vol-pitch))
+                        0 (- length (count vol-pitch)))
                     :volume 0 :pitch 0}]
-  (concat [frame1] midframes [last-frame])))
+    (concat [frame1] midframes [tail])))
 
-(defn hat [length] (concat
-  [{:volume 4 :length 1 :pitch 3} {:volume 3 :pitch 2}
-   {:volume 2 :pitch 0} {:volume 1 :pitch 0}]
-  {:length (- length 4) :volume 0 :pitch 0}))
+(defn kick [length]
+  (drum length :kick))
 
-(defn hat2 [length] (concat
-  [{:volume 3 :length 1 :pitch 3} {:volume 2 :pitch 2}
-   {:volume 1 :pitch 0} {:volume 1 :pitch 0}]
-  {:length (- length 4) :volume 0 :pitch 0}))
+(defn snare [length]
+  (drum length :snare))
+
+(defn hat [length]
+  (drum length :hat))
+
+(defn hat2 [length]
+ (drum length :hat2))
 
 (def oh (for [[volume pitch] 
   [[6 3] [5 3] [4 3] [4 3] [4 3] [4 3]
