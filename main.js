@@ -290,6 +290,18 @@ let view = new EditorView({
   parent: document.querySelector('#app')
 })
 
+let outState = EditorState.create({
+  readOnly: true,
+  extensions: [
+    //EditorView.editable.of(false),
+    basicSetup, clojure()]
+})
+
+export let outView = new EditorView({
+  state: outState,
+  parent: document.querySelector('#out')
+})
+
 let topLevelText = "Shift+Enter = Eval top-level form"
 let keyBindings = "<strong>Key bindings:</strong>,Alt/Cmd+Enter = Eval all," +
   topLevelText + ",Ctrl+Enter = Eval at cursor";
@@ -300,6 +312,17 @@ keyBindings = keyBindings.join('');
 document.getElementById("keymap").innerHTML = keyBindings;
 
 document.querySelector('#app').onclick = (e) => updateDocBar(view)
+
+el("rom").onchange = function (e) {
+  framesPlayed = -20000  // we don't know how long the nsf is
+  let freader = new FileReader();
+  freader.onload = function () {
+    let buf = freader.result;
+    let arr = new Uint8Array(buf);
+    loadRom(arr);
+  }
+  freader.readAsArrayBuffer(e.target.files[0]);
+}
 
 export function getByteRep(val) {
   return ("0" + val.toString(16)).slice(-2);
@@ -360,9 +383,10 @@ function el(id) {
 let currentSong = 1;
 
 export function loadRom(rom) {
-  framesPlayed = 0
+  framesPlayed = -600
   audio.stop();
   audio.start();
+  audio.actx.resume()
   if (loadNsf(rom)) {
     if (!loaded && !paused) {
       loopId = requestAnimationFrame(update);
@@ -415,6 +439,9 @@ export function loadNsf(nsf) {
     }
     tags.copyright += String.fromCharCode(nsf[0x4e + i]);
   }
+
+  // https://www.nesdev.org/wiki/NSF#Bank_Switching
+  // The ROM image should consist of a contiguous set of 4k banks
   let initBanks = [0, 0, 0, 0, 0, 0, 0, 0];
   let total = 0;
   for (let i = 0; i < 8; i++) {
@@ -428,6 +455,7 @@ export function loadNsf(nsf) {
   mapper.set_data(nsf)
   mapper.set_loadAdr(loadAdr)
   mapper.set_banked(banking)
+  //console.log("Banking: " + initBanks)
   mapper.set_banks(initBanks)
   mapper.reset()
 

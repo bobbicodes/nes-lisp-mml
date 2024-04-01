@@ -1068,9 +1068,10 @@ function hex2bin(hex) {
 
 function saveWav(filename, square1, square2, triangle, noise) {
     audio.resetSongLength()
-    square1 = audio.assembleStream(square1)
-    square2 = audio.assembleStream(square2)
-    triangle = audio.assembleStream(triangle)
+    resetEnvelopes()
+    square1 = audio.assembleStream(square1, 0)
+    square2 = audio.assembleStream(square2, 1)
+    triangle = audio.assembleStream(triangle, 2)
     noise = audio.assembleNoise(noise)
     assembleDriver(square1, square2, triangle, noise)
     audio.exportAudio(filename, nsfDriver)

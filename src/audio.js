@@ -41,9 +41,17 @@ function midiToFreq(n) {
 }
 
 function fmtWord(n) {
+  // need to handle edge case of note 41, which happens to
+  // return [0, 5], and the driver uses 0 as rests.
+  // But we want to return a [0, 0] for 160 because
+  // it's convenient to use for rests. So we'll use
+  // any pitch above 127, or below period 7.91.
+  if (n < 7.91) {
+    return [0, 0]
+  }
   n = Math.round(n)
   const pad = String(n.toString(16)).padStart(4, '0');
-  return [parseInt(pad.slice(2), 16),
+  return [Math.max(1, parseInt(pad.slice(2), 16)),
           parseInt(pad.slice(0, 2), 16)];
 }
 

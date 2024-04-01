@@ -36,9 +36,20 @@ button {
   background-color: rgb(104, 13, 116);
 }
 
+h4 {
+  padding: 0px;
+  margin: 8px;
+}
+
 textarea {
   background-color: #ff86eb;
   color: rgb(0, 0, 0);
+}
+
+.cm-editor { max-height: 600px; }
+
+#out > div:nth-child(1) {
+  max-height: 160px;
 }
 
 .cm-tooltip-autocomplete.cm-tooltip.cm-tooltip-below {
@@ -80,5 +91,13 @@ textarea {
   flex-direction: column;
   flex-basis: 100%;
   flex: 1;
+}
+
+#results {
+  min-height: 20px;
+}
+
+#doc {
+  min-height: 20px;
 }
 

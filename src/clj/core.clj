@@ -1021,7 +1021,17 @@ and when that result is not nil, through the next etc"
   [x]
   (js-eval (str "Math.floor(" x ")")))
 
+(defn floor
+  "Rounds down and returns the largest integer less than or equal to a given number."
+  [x]
+  (js-eval (str "Math.floor(" x ")")))
+
 (defn Math/ceil
+  "Rounds up and returns the smallest integer greater than or equal to a given number."
+  [x]
+  (js-eval (str "Math.ceil(" x ")")))
+
+(defn ceil
   "Rounds up and returns the smallest integer greater than or equal to a given number."
   [x]
   (js-eval (str "Math.ceil(" x ")")))
@@ -1227,15 +1237,23 @@ If any levels do not exist, hash-maps will be created."
                              (if (keyword? mk)
                                (let* [mkns (namespace mk)
                                       mkn (name mk)]
-                                     (cond (= mkn "keys") (assoc transforms mk (fn* [k] (keyword (or mkns (namespace k)) (name k))))
-                                           (= mkn "syms") (assoc transforms mk (fn* [k] (list `quote (symbol (or mkns (namespace k)) (name k)))))
+                                     (cond (= mkn "keys")
+                                        (assoc transforms mk
+                                          (fn* [k]
+                                            (keyword (or mkns (namespace k)) (name k))))
+                                           (= mkn "syms")
+                                        (assoc transforms mk
+                                           (fn* [k]
+                                             (list `quote (symbol (or mkns (namespace k)) (name k)))))
                                            (= mkn "strs") (assoc transforms mk str)
                                            :else transforms))
                                transforms))
                            {}
                            (keys b))]
                          (reduce
-                          (fn* [bes entry] (reduce (fn* [a b] (assoc a b ((val entry) b))) (dissoc bes (key entry)) (get bes (key entry))))
+                          (fn* [bes entry] 
+                            (reduce (fn* [a b] (assoc a b ((val entry) b))) 
+                                        (dissoc bes (key entry)) (get bes (key entry))))
                           (dissoc b :as :or)
                           transforms))]
           bes
