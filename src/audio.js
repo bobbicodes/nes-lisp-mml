@@ -260,12 +260,24 @@ function vibrato(length, pitch, speed, width) {
 }
 
 // apply vibrato function to note sequence
+// affects only note tails 
 export function vib(notes, speed, width) {
   let noteSeq = []
   for (let i = 0; i < notes.length; i++) {
     let pitch = notes[i].get("ʞpitch")
     let length = notes[i].get("ʞlength")
     noteSeq = noteSeq.concat(vibTail(length, pitch, speed, width))
+  }
+  return noteSeq
+}
+
+// affects entire notee
+export function vib_all(notes, speed, width) {
+  let noteSeq = []
+  for (let i = 0; i < notes.length; i++) {
+    let pitch = notes[i].get("ʞpitch")
+    let length = notes[i].get("ʞlength")
+    noteSeq = noteSeq.concat(vibAll(length, pitch, speed, width))
   }
   return noteSeq
 }

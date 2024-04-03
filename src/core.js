@@ -1126,6 +1126,7 @@ export var ns = {
     'hex2bin': hex2bin,
     'dec2bin': dec2bin,
     'vib': audio.vib,
+    'vib-all': audio.vib_all,
     'length-pitch': audio.lengthPitch,
     'append-path': appendPath,
     'clear-svg': clearSVG,
