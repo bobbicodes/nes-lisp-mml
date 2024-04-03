@@ -32,13 +32,6 @@ let editorState = EditorState.create({
 (defn hat [length]
   (drum length [[4 3] [3 2] [2 0] [1 0]]))
 
-(defn hat2 [length]
- (drum length [[3 3] [2 2] [1 0] [1 0]]))
-
-(defn oh [length]
-  (drum length [[6 3] [5 3] [4 3] [4 3] [4 3] [4 3]
-                [4 3] [4 3] [3 2] [2 0] [1 0] [1 0]]))
-
 (defn crash
   ([length attenuation]
    (drum length (map (fn [[volume pitch]] [(max 1 (- volume attenuation 2)) pitch])
@@ -54,30 +47,10 @@ let editorState = EditorState.create({
                 [6 3] [6 3] [5 3] [5 3] [5 3] [4 3] [4 3] [4 3] [4 3]
                 [3 3] [3 3] [3 3] [3 3] [2 3] [2 3] [2 3] [2 3] [1 3]])))
 
-(defn tom [length]
-  (drum length [[4 12] [4 6] [3 6] [2 6] [1 6]]))
-
-(defn tom2 [length]
-  (drum length [[3 12] [3 6] [2 6] [1 6] [1 6]]))
-
 (defn r
   "Returns a sequence consisting of a rest of length l."
   [l]
   [{:length l :volume 0 :pitch 0}])
-
-(defn release [notes]
-  (let [head (take (- (count notes) 5) notes)
-        tail (drop (- (count notes) 5) notes)]
-    (if (= (count tail) 5)
-      (concat head (map-indexed (fn [index note] 
-                 (assoc note :volume (- 6 index)))
-          tail)) notes)))
-
-(defn slide [from to frames]
-  (length-pitch (take frames 
-    (if (< to from)
-      (map #(vector 1 %) (reverse (range to from (/ (abs (- from to)) frames))))
-      (map #(vector 1 %) (range from to (/ (abs (- from to)) frames)))))))
 
 (def sq1a
   (concat 
@@ -93,18 +66,16 @@ let editorState = EditorState.create({
      {:length 1 :volume 4 :pitch 38} {:length 1 :volume 3 :pitch 38}
      {:length 1 :volume 2 :pitch 38} {:pitch 160 :length 10}
      {:pitch 57 :volume 6 :length 5} {:pitch 58} {:pitch 57} {:pitch 50}
-     {:pitch 53} {:pitch 55} {:pitch 53} {:pitch 45} {:pitch 52} 
-     {:pitch 53} {:pitch 52} {:pitch 49}
-     {:length 20 :pitch 45} 
-     {:length 2 :pitch 57} {:pitch 64} {:pitch 57} {:pitch 69} {:pitch 160}
-     {:pitch 57} {:pitch 64} {:pitch 57} {:pitch 69} {:pitch 57}
-     {:length 20 :pitch 45}
-     {:length 2 :pitch 57} {:pitch 64} {:pitch 57} {:pitch 69} {:pitch 57} {:length 10 :pitch 160}
-     {:length 20 :pitch 50} 
-     {:length 2 :pitch 62} {:pitch 69} {:pitch 62} {:pitch 74} {:pitch 160}
-     {:pitch 62} {:pitch 69} {:pitch 62} {:pitch 74} {:pitch 62}
-     {:length 20 :pitch 50}
-     {:length 2 :pitch 62} {:pitch 69} {:pitch 62} {:pitch 74} {:pitch 62} {:length 10 :pitch 160}]))
+     {:pitch 53} {:pitch 55} {:pitch 53} {:pitch 45} {:pitch 52} {:pitch 53}
+     {:pitch 52} {:pitch 49} {:length 20 :pitch 45} {:length 2 :pitch 57} 
+     {:pitch 64} {:pitch 57} {:pitch 69} {:pitch 160} {:pitch 57} {:pitch 64}
+     {:pitch 57} {:pitch 69} {:pitch 57} {:length 20 :pitch 45} 
+     {:length 2 :pitch 57} {:pitch 64} {:pitch 57} {:pitch 69} {:pitch 57} 
+     {:length 10 :pitch 160} {:length 20 :pitch 50} {:length 2 :pitch 62} 
+     {:pitch 69} {:pitch 62} {:pitch 74} {:pitch 160} {:pitch 62} {:pitch 69}
+     {:pitch 62} {:pitch 74} {:pitch 62} {:length 20 :pitch 50} 
+     {:length 2 :pitch 62} {:pitch 69} {:pitch 62} {:pitch 74} {:pitch 62} 
+     {:length 10 :pitch 160}]))
 
 (def sq1b
   (concat 
@@ -144,33 +115,22 @@ let editorState = EditorState.create({
            {:length 10 :volume 5 :duty 0 :pitch 38}
            {:length 10 :volume 4 :pitch 65} {:length 10 :pitch 38}]))
 
+(def tri-kick [{:length 1 :pitch 62} {:pitch 58} {:pitch 54} {:pitch 52}])
 
-(def tri-kick
-  [{:length 1 :pitch 62}
-   {:pitch 58} {:pitch 54} 
-   {:pitch 52}])
-
-(def tri-snare
-  [{:length 1 :pitch 70}
-   {:pitch 67} {:pitch 64}
-   {:pitch 54}])
+(def tri-snare [{:length 1 :pitch 70} {:pitch 67} {:pitch 64} {:pitch 54}])
 
 (def tri1
   (concat [{:length 160 :pitch 160}]
     tri-kick [{:length 16 :pitch 45}]
-    tri-snare [{:length 4 :pitch 57}
-               {:length 2 :pitch 160}]
+    tri-snare [{:length 4 :pitch 57} {:length 2 :pitch 160}]
     tri-snare [{:length 6 :pitch 57}]
     tri-kick [{:length 16 :pitch 45}]
-    tri-snare [{:length 6 :pitch 57} 
-               {:length 10 :pitch 160}]
+    tri-snare [{:length 6 :pitch 57} {:length 10 :pitch 160}]
     tri-kick [{:length 16 :pitch 50}]
-    tri-snare [{:length 4 :pitch 62} 
-               {:length 2 :pitch 160}]
+    tri-snare [{:length 4 :pitch 62}  {:length 2 :pitch 160}]
     tri-snare [{:length 6 :pitch 62}]
     tri-kick [{:length 16 :pitch 50}]
-    tri-snare [{:length 6 :pitch 62} 
-               {:length 10 :pitch 160}]))
+    tri-snare [{:length 6 :pitch 62} {:length 10 :pitch 160}]))
 
 (def tri2
   (concat tri-kick [{:length 6 :pitch 50} {:length 30 :pitch 160}]
@@ -216,18 +176,16 @@ let editorState = EditorState.create({
 
 (def sq1c
   (concat 
-    [{:length 20 :volume 6 :duty 0 :pitch 45} 
-     {:length 2 :pitch 57} {:pitch 64} {:pitch 57} {:pitch 69} {:pitch 160}
-     {:pitch 57} {:pitch 64} {:pitch 57} {:pitch 69} {:pitch 57}
-     {:length 20 :pitch 45}
-     {:length 2 :pitch 57} {:pitch 64} {:pitch 57} {:pitch 69} {:pitch 57} {:length 10 :pitch 160}
-     {:length 20 :pitch 50} 
-     {:length 2 :pitch 62} {:pitch 69} {:pitch 62} {:pitch 74} {:pitch 160}
-     {:pitch 62} {:pitch 69} {:pitch 62} {:pitch 74} {:pitch 62}
-     {:length 10 :pitch 160}
-     {:length 10 :pitch 50}
-     {:length 2 :pitch 62} {:pitch 69} {:pitch 62} {:pitch 74} {:pitch 62} 
-     {:length 10 :pitch 50}]))
+    [{:length 20 :volume 6 :duty 0 :pitch 45} {:length 2 :pitch 57} 
+     {:pitch 64} {:pitch 57} {:pitch 69} {:pitch 160} {:pitch 57}
+     {:pitch 64} {:pitch 57} {:pitch 69} {:pitch 57} 
+     {:length 20 :pitch 45} {:length 2 :pitch 57} {:pitch 64}
+     {:pitch 57} {:pitch 69} {:pitch 57} {:length 10 :pitch 160}
+     {:length 20 :pitch 50} {:length 2 :pitch 62} {:pitch 69} 
+     {:pitch 62} {:pitch 74} {:pitch 160} {:pitch 62} {:pitch 69}
+     {:pitch 62} {:pitch 74} {:pitch 62} {:length 10 :pitch 160}
+     {:length 10 :pitch 50} {:length 2 :pitch 62} {:pitch 69} 
+     {:pitch 62} {:pitch 74} {:pitch 62} {:length 10 :pitch 50}]))
 
 (def sq1
   (concat (loop1 3 sq1a) (take 56 sq1a) sq1b (loop1 3 sq1c) (take 18 sq1c) sq1b))
@@ -238,15 +196,15 @@ let editorState = EditorState.create({
     [{:length 10 :volume 4 :duty 0 :pitch 57} 
      {:pitch 61} {:pitch 64} {:pitch 69} {:pitch 64} {:pitch 61} {:pitch 64}
      {:pitch 160} {:pitch 62} {:pitch 65} {:pitch 69}] {:duty 1 :volume 3}
-    (vib-all [{:length 10 :pitch 86} {:length 10 :pitch 81} {:length 10 :pitch 77} {:length 20 :pitch 81}] 0.7 0.4)))))
+    (vib-all [{:length 10 :pitch 86} {:length 10 :pitch 81} 
+              {:length 10 :pitch 77} {:length 20 :pitch 81}] 0.7 0.4)))))
 
 (def sq2c
   (vib (concat [{:length 80 :duty 0 :pitch 33}
            {:length 80 :pitch 38}]) 0.5 0.12))
 
 (def tri4
-  (concat [{:length 80 :pitch 45}
-           {:length 80 :pitch 50} ]))
+  (concat [{:length 80 :pitch 45} {:length 80 :pitch 50} ]))
 
 (def drums4
   (loop1 8 (concat (crash 20 5) (crash 20 7) (crash 20 9) (crash 20 10))))
