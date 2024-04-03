@@ -1536,9 +1536,13 @@ expression is provided and no clause matches, an exception is thrown."
        (>= y (first more)))
      false)))
 
-(defn loop1 [n notes]
+(defn loop1
+  "Takes a sequence of music and loops it n times. Can be nested inside a loop2 but not another loop1."
+  [n notes]
   (concat [{:loop n}] notes [{:loop :end}]))
 
-(defn loop2 [n notes]
+(defn loop2
+ "Takes a sequence of music and loops it n times. Can be nested inside a loop1 but not another loop2."
+  [n notes]
   (concat [{:arp n}] notes [{:arp :end}]))
 
