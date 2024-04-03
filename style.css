@@ -15,7 +15,6 @@ background: linear-gradient(266deg, rgba(247,185,249,0.8248763721137797) 0%, rgb
 
 #app {
   margin: 0 auto;
-  font-size: large;
 }
 
 label {
@@ -46,7 +45,7 @@ textarea {
   color: rgb(0, 0, 0);
 }
 
-.cm-editor { max-height: 600px; }
+.cm-editor { max-height: 740px; }
 
 #out > div:nth-child(1) {
   max-height: 160px;
