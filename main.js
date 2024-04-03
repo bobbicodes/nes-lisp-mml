@@ -10,33 +10,7 @@ import * as audio from "./src/audio";
 import * as mapper from "./src/nsfmapper";
 
 let editorState = EditorState.create({
-  doc: `(defn k
-  "Kick wrapper. Precedes note with fixed arpeggio,
-   subtracting length as needed. Takes and returns
-   sequences of length-pitch pairs."
-  [[l p]]
-  (let [arp (vec (take l [[1 62] [1 58] [1 54] [1 52]]))]
-    (if (< 4 l) (conj arp [(- l 4) p]) arp)))
-
-(defn h
-  "Hihat arpeggio wrapper."
-  [[l p]]
-  (let [arp (vec (take l [[1 72]]))]
-    (if (< 4 l) (conj arp [(dec l) p]) arp)))
-
-(defn s
-  "Snare arpeggio wrapper."
-  [[l p]]
-  (let [arp (vec (take l [[1 70] [1 67] [1 64] [1 54]]))]
-    (if (< 4 l) (conj arp [(- l 4) p]) arp)))
-
-(defn t
-  "Tom arpeggio wrapper."
-  [[l p]]
-  (take l (conj (mapv #(vector 1 (+ p %)) (reverse (range 10)))
-    [(- l 9) p])))
-
-(defn drum
+  doc: `(defn drum
   "Takes a decay length and a volume-pitch sequence."
   [length vol-pitch]
   (let [frame1 {:length 1 :volume (ffirst vol-pitch)
@@ -67,7 +41,7 @@ let editorState = EditorState.create({
 
 (defn crash
   ([length attenuation]
-   (drum length (map (fn [[volume pitch]] [(max 1 (- volume attenuation)) pitch])
+   (drum length (map (fn [[volume pitch]] [(max 1 (- volume attenuation 2)) pitch])
                [[15 8] [15 2] [15 3] [15 3] [15 3] [15 3]
                 [14 3] [14 3] [13 3] [12 3] [12 3] [11 3] [11 3]
                 [10 3] [9 3] [9 3] [9 3] [8 3] [8 3] [7 3] [7 3]
@@ -91,11 +65,6 @@ let editorState = EditorState.create({
   [l]
   [{:length l :volume 0 :pitch 0}])
 
-(def beat1 (concat (loop1 7 (concat
-    (kick 12) (hat2 6) (hat2 6) (hat 12) (hat 12) 
-    (snare 12) (hat2 6) (hat2 6) (hat 12) (hat 12)))
-    (loop1 4 (concat (tom 7) (tom2 7) (tom2 10)))))
-
 (defn release [notes]
   (let [head (take (- (count notes) 5) notes)
         tail (drop (- (count notes) 5) notes)]
@@ -112,18 +81,18 @@ let editorState = EditorState.create({
 
 (def sq1a
   (concat 
-    [{:length 6 :volume 7 :duty 0 :pitch 38} {:length 1 :volume 6 :pitch 38}
-     {:length 1 :volume 5 :pitch 38} {:length 1 :volume 4 :pitch 38}
+    [{:length 6 :volume 9 :duty 0 :pitch 38} {:length 1 :volume 8 :pitch 38}
+     {:length 1 :volume 7 :pitch 38} {:length 1 :volume 6 :pitch 38}
+     {:length 1 :volume 5 :pitch 38} {:pitch 160 :length 10}
+     {:pitch 60 :volume 6 :length 5} {:pitch 62} {:pitch 60} {:pitch 50}
+     {:length 6 :volume 8 :pitch 38} {:length 1 :volume 7 :pitch 38}
+     {:length 1 :volume 6 :pitch 38} {:length 1 :volume 5 :pitch 38}
+     {:length 1 :volume 4 :pitch 38} {:pitch 160 :length 10}
+     {:pitch 58 :volume 6 :length 5} {:pitch 60} {:pitch 58} {:pitch 50}
+     {:length 6 :volume 6 :pitch 38} {:length 1 :volume 5 :pitch 38}
+     {:length 1 :volume 4 :pitch 38} {:length 1 :volume 3 :pitch 38}
      {:length 1 :volume 2 :pitch 38} {:pitch 160 :length 10}
-     {:pitch 60 :volume 7 :length 5} {:pitch 62} {:pitch 60} {:pitch 50}
-     {:length 6 :volume 7 :pitch 38} {:length 1 :volume 6 :pitch 38}
-     {:length 1 :volume 5 :pitch 38} {:length 1 :volume 4 :pitch 38}
-     {:length 1 :volume 2 :pitch 38} {:pitch 160 :length 10}
-     {:pitch 58 :volume 7 :length 5} {:pitch 60} {:pitch 58} {:pitch 50}
-     {:length 6 :volume 7 :pitch 38} {:length 1 :volume 6 :pitch 38}
-     {:length 1 :volume 5 :pitch 38} {:length 1 :volume 4 :pitch 38}
-     {:length 1 :volume 2 :pitch 38} {:pitch 160 :length 10}
-     {:pitch 57 :volume 7 :length 5} {:pitch 58} {:pitch 57} {:pitch 50}
+     {:pitch 57 :volume 6 :length 5} {:pitch 58} {:pitch 57} {:pitch 50}
      {:pitch 53} {:pitch 55} {:pitch 53} {:pitch 45} {:pitch 52} 
      {:pitch 53} {:pitch 52} {:pitch 49}
      {:length 20 :pitch 45} 
@@ -139,8 +108,8 @@ let editorState = EditorState.create({
 
 (def sq1b
   (concat 
-    [{:length 10 :volume 7 :duty 0 :pitch 50} 
-     {:length 9 :volume 6 :pitch 160}
+    [{:length 10 :volume 6 :duty 0 :pitch 50} 
+     {:length 9 :volume 5 :pitch 160}
      {:length 1 :pitch 50} {:pitch 57} {:pitch 65}
      {:pitch 69} {:length 2 :pitch 74} 
      {:length 7 :pitch 160} {:length 3 :pitch 74}
@@ -155,25 +124,25 @@ let editorState = EditorState.create({
 
 (def sq2a
   (concat [{:length 160 :volume 0 :pitch 160}
-           {:length 20 :volume 7 :duty 0 :pitch 33}
-           {:length 8 :volume 5 :pitch 61} {:length 2 :pitch 160} {:length 10 :pitch 61}
-           {:length 20 :volume 7 :duty 0 :pitch 33}
-           {:length 10 :volume 5 :pitch 61} {:length 10 :pitch 160}
-           {:length 20 :volume 7 :duty 0 :pitch 38}
-           {:length 8 :volume 5 :pitch 65} {:length 2 :pitch 160} {:length 10 :pitch 65}
-           {:length 20 :volume 7 :duty 0 :pitch 38}
-           {:length 10 :volume 5 :pitch 65} {:length 10 :pitch 160}]))
+           {:length 20 :volume 5 :duty 0 :pitch 33}
+           {:length 8 :volume 4 :pitch 61} {:length 2 :pitch 160} {:length 10 :pitch 61}
+           {:length 20 :volume 5 :duty 0 :pitch 33}
+           {:length 10 :volume 4 :pitch 61} {:length 10 :pitch 160}
+           {:length 20 :volume 5 :duty 0 :pitch 38}
+           {:length 8 :volume 4 :pitch 65} {:length 2 :pitch 160} {:length 10 :pitch 65}
+           {:length 20 :volume 5 :duty 0 :pitch 38}
+           {:length 10 :volume 4 :pitch 65} {:length 10 :pitch 160}]))
 
 (def sq2b
-  (concat [{:length 20 :volume 7 :duty 0 :pitch 33}
-           {:length 8 :volume 5 :pitch 61} {:length 2 :pitch 160} {:length 10 :pitch 61}
-           {:length 20 :volume 7 :duty 0 :pitch 33}
-           {:length 10 :volume 5 :pitch 61} {:length 10 :pitch 160}
-           {:length 20 :volume 7 :duty 0 :pitch 38}
-           {:length 8 :volume 5 :pitch 65} {:length 2 :pitch 160} {:length 10 :pitch 65}
+  (concat [{:length 20 :volume 5 :duty 0 :pitch 33}
+           {:length 8 :volume 4 :pitch 61} {:length 2 :pitch 160} {:length 10 :pitch 61}
+           {:length 20 :volume 5 :duty 0 :pitch 33}
+           {:length 10 :volume 4 :pitch 61} {:length 10 :pitch 160}
+           {:length 20 :volume 5 :duty 0 :pitch 38}
+           {:length 8 :volume 4 :pitch 65} {:length 2 :pitch 160} {:length 10 :pitch 65}
            {:length 10 :pitch 160}
-           {:length 10 :volume 7 :duty 0 :pitch 38}
-           {:length 10 :volume 5 :pitch 65} {:length 10 :pitch 38}]))
+           {:length 10 :volume 5 :duty 0 :pitch 38}
+           {:length 10 :volume 4 :pitch 65} {:length 10 :pitch 38}]))
 
 
 (def tri-kick
@@ -226,8 +195,8 @@ let editorState = EditorState.create({
           tri-snare [{:length 6 :pitch 57} {:length 10 :pitch 160}]
           tri-kick [{:length 16 :pitch 50}]
           tri-snare [{:length 4 :pitch 62} {:length 2 :pitch 160}]
-          tri-snare [{:length 6 :pitch 62}]
-          tri-kick [{:length 16 :pitch 50}]
+          tri-snare [{:length 6 :pitch 62} {:length 10 :pitch 160}]
+          tri-kick [{:length 6 :pitch 50}]
           tri-snare [{:length 6 :pitch 62}]
           tri-kick [{:length 6 :pitch 50}]))
 
@@ -243,11 +212,11 @@ let editorState = EditorState.create({
 
 (def drums3
   (concat (crash 20 3) (snare 10) (snare 30) (snare 20)
-    (crash 20 3) (snare 10) (snare 10) (crash 15 5) (r 5) (snare 20)))
+    (crash 20 3) (snare 10) (snare 10) (crash 15 6) (r 5) (snare 20)))
 
 (def sq1c
   (concat 
-    [{:length 20 :volume 7 :duty 0 :pitch 45} 
+    [{:length 20 :volume 6 :duty 0 :pitch 45} 
      {:length 2 :pitch 57} {:pitch 64} {:pitch 57} {:pitch 69} {:pitch 160}
      {:pitch 57} {:pitch 64} {:pitch 57} {:pitch 69} {:pitch 57}
      {:length 20 :pitch 45}
@@ -266,9 +235,9 @@ let editorState = EditorState.create({
 (def sq1d
   (concat [{:length 10 :pitch 160}]
   (loop1 4 (concat 
-    [{:length 10 :volume 5 :duty 0 :pitch 57} 
+    [{:length 10 :volume 4 :duty 0 :pitch 57} 
      {:pitch 61} {:pitch 64} {:pitch 69} {:pitch 64} {:pitch 61} {:pitch 64}
-     {:pitch 160} {:pitch 62} {:pitch 65} {:pitch 69}] {:duty 1}
+     {:pitch 160} {:pitch 62} {:pitch 65} {:pitch 69}] {:duty 1 :volume 3}
     (vib-all [{:length 10 :pitch 86} {:length 10 :pitch 81} {:length 10 :pitch 77} {:length 20 :pitch 81}] 0.7 0.4)))))
 
 (def sq2c
@@ -286,7 +255,7 @@ let editorState = EditorState.create({
   (concat sq1 [{:length 5 :pitch 160}] sq1d)
   (concat (loop1 3 sq2a) (take 9 sq2a)
     [{:length 60 :pitch 160}] (loop1 3 sq2b) (take 8 sq2b)
-    [{:length 60 :pitch 160 :volume 4}] (loop1 4 sq2c))
+    [{:length 60 :pitch 160 :volume 2}] (loop1 4 sq2c))
   (concat (loop1 2 tri1) tri2 (take 50 tri2)
    [{:length 60 :pitch 160}] (loop1 3 tri3) (take 32 tri3)
     [{:length 60 :pitch 160}] (loop1 4 tri4))
