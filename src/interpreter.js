@@ -430,6 +430,6 @@ addDoc('set/union', '([] [s1] [s1 s2] [s1 s2 & sets])', 'Return a set that is th
 addDoc('set/intersection', '([s1] [s1 s2] [s1 s2 & sets])', 'Return a set that is the intersection of the input sets')
 addDoc('set/difference', '([s1] [s1 s2] [s1 s2 & sets])', 'Return a set that is the first set without elements of the remaining sets')
 addDoc('set/symmetric-difference', '[s1 s2]', "Returns a set that is the symmetric difference of the input sets.")
-addDoc('vib', '[notes speed width]', "Takes a sequence of notes and applies sine wave vibrato to only the tails of the notes. Speed and width are multipliers for the frequency and amplitude of the sine wave. Cannot be used inside loops made using loop1.")
-addDoc('vib-all', '[notes speed width]', "Takes a sequence of notes and applies sine wave vibrato to them. Speed and width are multipliers for the frequency and amplitude of the sine wave. Cannot be used inside loops made using loop1.")
+addDoc('vib', '[notes speed width]', "Takes a sequence of notes and applies sine wave vibrato to only the tails of the notes. Speed and width are multipliers for the frequency and amplitude of the sine wave. Uses loop2 internally, so cannot be used inside loops made using loop2.")
+addDoc('vib-all', '[notes speed width]', "Takes a sequence of notes and applies sine wave vibrato to them. Speed and width are multipliers for the frequency and amplitude of the sine wave. Uses loop2 internally, so cannot be used inside loops made using loop2.")
 
