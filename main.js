@@ -315,7 +315,6 @@ let currentSong = 1;
 
 export function loadRom(rom) {
   framesPlayed = -600
-  audio.stop();
   audio.start();
   audio.actx.resume()
   if (loadNsf(rom)) {

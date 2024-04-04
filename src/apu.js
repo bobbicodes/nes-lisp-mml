@@ -535,7 +535,7 @@ function mix() {
                                (noiseOutput / 12241) + 
                                (dmcOutput / 22638))) + 100)
     let pulse = 95.88 / ((8128 / (p1Output + p2Output)) + 100)
-    return ((tnd + pulse) * 2) - 1
+    return ((tnd + pulse) * 2) - 0.3
 }
 
 function handleFrameCounter() {
