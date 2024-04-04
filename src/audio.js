@@ -82,6 +82,8 @@ export function assembleStream(notes, streamNum) {
     let arpPoint = s1
     let s2
     let s3
+    let loopCounter
+    let loopTotal = 0
     //console.log("s1 is at " + fmt(s1))
     if (streamNum === 1) {
       loopPoint = s1 + streams[0].length
@@ -96,16 +98,19 @@ export function assembleStream(notes, streamNum) {
     for (let i = 0; i < notes.length; i++) {
         if (notes[i].has("ʞloop")) {
           if (notes[i].get("ʞloop") === "ʞend") {
-            //console.log("[assemble] End loop")
             // loop opcode $A5 followed by the address to loop to
-            //console.log("[assemble] loop back to " + fmt(loopPoint))
             stream = stream.concat([0xA5], fmtWord(loopPoint))
+            // To update totalLength, we multiply it by the value of the
+            // loop counter minus 1 (because it's already been counted once)
+            totalLength += loopTotal * (loopCounter - 1)
           } else {
             // set loop point variable and loop counter
           loopPoint = (stream.length + [s1, s2, s3][streamNum]) + 2
-          //console.log("[assemble] setting loop point to " + fmt(loopPoint))
-          //console.log("[assemble] set loop counter to " + notes[i].get("ʞloop"))
           stream.push(0xA4, notes[i].get("ʞloop"))
+          // update loopCounter variable for calculating song length above,
+          // and reset the loopTotal
+          loopCounter = notes[i].get("ʞloop")
+          loopTotal = 0
           }
         }
         if (notes[i].has("ʞarp")) {
@@ -161,6 +166,7 @@ export function assembleStream(notes, streamNum) {
              stream.push(word[1])
              stream.push(word[0])
              totalLength += currentLength
+             loopTotal += currentLength
         }
     }
     // $A0 = opcode to end stream
@@ -198,15 +204,20 @@ export function assembleNoise(notes) {
     let totalLength = 0
     let loopPoint = s1 + streams[0].length + streams[1].length + streams[2].length
     let s4 = s1 + streams[0].length + streams[1].length + streams[2].length
+    let loopCounter
+    let loopTotal = 0
     for (let i = 0; i < notes.length; i++) {
         if (notes[i].has("ʞloop")) {
           if (notes[i].get("ʞloop") === "ʞend") {
             // loop opcode $A5 followed by the address to loop to
             stream = stream.concat([0xA5], fmtWord(loopPoint))
+            totalLength += loopTotal * (loopCounter - 1)
           } else {
             // set loop point variable and loop counter
           loopPoint = (stream.length + s4) + 2
           stream.push(0xA4, notes[i].get("ʞloop"))
+          loopCounter = notes[i].get("ʞloop")
+          loopTotal = 0
           }
         }
         if (notes[i].has("ʞlength")) {
@@ -230,6 +241,7 @@ export function assembleNoise(notes) {
              stream.push((noiseLen % 25) + 0x80)
              stream.push(notes[i].get("ʞpitch"))
              totalLength += noiseLen
+             loopTotal += noiseLen
         }
     }
     stream.push(0xa0)
@@ -419,7 +431,7 @@ export function exportAudio(filename, rom) {
     setLoaded()
     let audioBuffer = new Float32Array()
     let cycleCount = 0;
-    while (cycleCount < (songLength * 4)) {
+    while (cycleCount < songLength) {
       runFrameSilent()
       const newBuffer = new Float32Array(audioBuffer.length + sampleBuffer.length);
       newBuffer.set(audioBuffer, 0);

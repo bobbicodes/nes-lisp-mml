@@ -22,15 +22,9 @@ let editorState = EditorState.create({
                     :volume 0 :pitch 0}]
     (concat [frame1] midframes [tail])))
 
-(defn kick [length]
-  (drum length [[10 6] [7 2] [4 1] [3 1] [2 0]]))
-
 (defn snare [length]
   (drum length [[11 8] [9 6] [8 6] [7 6]
                 [4 5] [3 5] [2 5] [1 5]]))
-
-(defn hat [length]
-  (drum length [[4 3] [3 2] [2 0] [1 0]]))
 
 (defn crash
   ([length attenuation]
