@@ -276,7 +276,7 @@ const NOISE = 3;
 // 5. Volume envelope
 // 6. Pointer to stream (2 bytes)
 
-let streams = [];
+export let streams = [];
 let songHeader = []
 let square1 = [];
 let square2 = [];

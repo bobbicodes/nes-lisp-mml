@@ -1066,7 +1066,7 @@ function hex2bin(hex) {
     return (parseInt(hex, 16).toString(2)).padStart(8, '0');
 }
 
-export function saveWav(filename, square1, square2, triangle, noise) {
+function saveWav(filename, square1, square2, triangle, noise) {
     audio.resetSongLength()
     resetEnvelopes()
     square1 = audio.assembleStream(square1, 0)
@@ -1081,8 +1081,7 @@ function hex(n) {
     return "$" + (n).toString(16);
 }
 
-export function playNSF(square1, square2, triangle, noise) {
-    const startTime = new Date().getTime()
+function playNSF(square1, square2, triangle, noise) {
     audio.resetSongLength()
     resetEnvelopes()
     square1 = audio.assembleStream(square1, 0)
@@ -1091,11 +1090,10 @@ export function playNSF(square1, square2, triangle, noise) {
     noise = audio.assembleNoise(noise)
     assembleDriver(square1, square2, triangle, noise)
     loadRom(nsfDriver)
-    const endTime = new Date().getTime()
-    return "Assembled in " + (endTime - startTime) + " ms"
+    return "Playing..."
 }
 
-export function spitNSF(name, square1, square2, triangle, noise) {
+function spitNSF(name, square1, square2, triangle, noise) {
     audio.resetSongLength()
     resetEnvelopes()
     square1 = audio.assembleStream(square1, 0)
@@ -1118,17 +1116,6 @@ export function spitNSF(name, square1, square2, triangle, noise) {
     downloadAnchorNode.remove();
 }
 
-function lengthPitch(pairs) {
-  let notes = []
-  for (let i = 0; i < pairs.length; i++) {
-    let m = new Map()
-    m.set("ʞlength", pairs[i][0])
-    m.set("ʞpitch", pairs[i][1])
-    notes.push(m)
-  }
-  return notes
-}
-
 // types.ns is namespace of type functions
 export var ns = {
     'env': printEnv,
@@ -1138,9 +1125,9 @@ export var ns = {
     'save-wav': saveWav,
     'hex2bin': hex2bin,
     'dec2bin': dec2bin,
-    'length-pitch': lengthPitch,
     'vib': audio.vib,
     'vib-all': audio.vib_all,
+    'length-pitch': audio.lengthPitch,
     'append-path': appendPath,
     'clear-svg': clearSVG,
     'console-print': consolePrint,

@@ -73,8 +73,7 @@ function fmt(n) {
 
 let streams = []
 
-export function assembleStream(noteSequence, streamNum) {
-    let notes = expandNotes(noteSequence)
+export function assembleStream(notes, streamNum) {
     //console.log("Assembling stream " + streamNum)
     let stream = []
     let currentLength = 0
@@ -172,7 +171,6 @@ export function assembleStream(noteSequence, streamNum) {
     }
     // $A0 = opcode to end stream
     stream.push(0xa0)
-    console.log("Stream " + streamNum + " length " + totalLength + " frames")
     if (totalLength > songLength) {songLength = totalLength}
     streams[streamNum] = stream
     //console.log("Assembled " + stream.length + " bytes")
@@ -247,7 +245,6 @@ export function assembleNoise(notes) {
         }
     }
     stream.push(0xa0)
-    console.log("Noise length " + totalLength + " frames")
     if (totalLength > songLength) {songLength = totalLength}
     return stream
 }
@@ -261,21 +258,6 @@ export function lengthPitch(pairs) {
     notes.push(m)
   }
   return notes
-}
-
-function expandNotes(notes) {
-  let expanded = []
-  for (let i = 0; i < notes.length; i++) {
-    if (Array.isArray(notes[i])) {
-      let m = new Map()
-      m.set("ʞlength", notes[i][0])
-      m.set("ʞpitch", notes[i][1])
-      expanded.push(m)
-    } else {
-      expanded.push(notes[i])
-    }
-  }
-  return expanded
 }
 
 // apply vibrato to a single note
@@ -412,9 +394,8 @@ function bufferToWave(abuffer, len) {
 
     while (pos < length) {
         for (i = 0; i < numOfChan; i++) {             // interleave channels
-            const boosted = channels[i][offset] * 1.5  // boost by 3dB
-            sample = Math.max(-1, Math.min(1, boosted)); // clamp
-            sample *= 32768; // scale to 16-bit signed int
+            sample = Math.max(-1, Math.min(1, channels[i][offset])); // clamp
+            sample = (0.5 + sample < 0 ? sample * 32768 : sample * 32767) | 0; // scale to 16-bit signed int
             view.setInt16(pos, sample, true);          // write 16-bit sample
             pos += 2;
         }
@@ -445,11 +426,12 @@ function buf_download(name, abuffer) {
 }
 
 export function exportAudio(filename, rom) {
+  resetEnvelopes()
   if (loadNsf(rom)) {
     setLoaded()
     let audioBuffer = new Float32Array()
     let cycleCount = 0;
-    while (cycleCount < (songLength + 100)) {
+    while (cycleCount < songLength) {
       runFrameSilent()
       const newBuffer = new Float32Array(audioBuffer.length + sampleBuffer.length);
       newBuffer.set(audioBuffer, 0);
