@@ -215,7 +215,7 @@
    [6 63] [2 160] [6 63] [2 160] [6 63] [2 160] [48 160]])
 
 (def sq1-part (concat [{:volume 1 :length 1748 :pitch 160}]
-    (detune (vib (release (length-pitch (take 5 sq1a)))
+    (detune (vib (release (length-pitch (take 53 sq1a)))
               0.5 0.15)) [{:volume 4}]
     (vib (release (length-pitch sq1a)) 0.5 0.15)
     [{:duty 0 :volume 2 :length 160 :pitch 160}]
