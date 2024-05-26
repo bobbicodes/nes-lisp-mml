@@ -314,11 +314,11 @@ function el(id) {
 let currentSong = 1;
 
 export function loadRom(rom) {
-  framesPlayed = -600
-  audio.start();
-  audio.actx.resume()
   if (loadNsf(rom)) {
     if (!loaded && !paused) {
+      framesPlayed = -80
+      audio.start();
+      audio.actx.resume()
       loopId = requestAnimationFrame(update);
     }
     loaded = true;
@@ -453,12 +453,15 @@ function playSong(songNum) {
 let framesPlayed = 0
 
 function update() {
-  //if (framesPlayed === audio.songLength) {
-  //  audio.stop()
-  //}
-  runFrame();
-  framesPlayed++
-  loopId = requestAnimationFrame(update);
+  if (framesPlayed === audio.songLength) {
+    audio.stop()
+    cancelAnimationFrame(loopId)
+    loaded = false
+  } else {
+    runFrame();
+    framesPlayed++
+    loopId = requestAnimationFrame(update);
+  }
 }
 
 function runFrame() {

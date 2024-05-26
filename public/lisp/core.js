@@ -1,11 +1,8 @@
 import { read_str } from './reader.js';
 import { _pr_str, _println } from './printer.js'
-import * as types from './types.js'
 import { repl_env, evalString, PRINT, EVAL } from './interpreter.js';
-import zip from './clj/zip.clj?raw'
+import * as types from './types.js'
 import * as audio from './audio.js'
-import { nsfDriver, assembleDriver, resetEnvelopes } from './nsf.js';
-import { loadNsf, loadRom} from '../main.js';
 
 export var out_buffer = ""
 
@@ -356,20 +353,15 @@ function apply(f) {
 
 // Metadata functions
 export function with_meta(obj, m) {
+    console.log("Attaching metadata", m, "to", obj)
     var new_obj = types._clone(obj);
     new_obj.__meta__ = m;
     return new_obj;
 }
 
 export function meta(obj) {
-    // TODO: support atoms
-    if ((!types._sequential_Q(obj)) &&
-        (!(types._hash_map_Q(obj))) &&
-        (!(types._function_Q(obj))) &&
-        (!(types._symbol_Q(obj)))) {
-        throw new Error("attempt to get metadata from: " + types._obj_type(obj));
-    }
-    return obj.__meta__;
+    console.log("Getting metadata from", obj)
+    return obj
 }
 
 
@@ -1066,56 +1058,23 @@ function hex2bin(hex) {
     return (parseInt(hex, 16).toString(2)).padStart(8, '0');
 }
 
-export function saveWav(filename, square1, square2, triangle, noise) {
-    audio.resetSongLength()
-    resetEnvelopes()
-    square1 = audio.assembleStream(square1, 0)
-    square2 = audio.assembleStream(square2, 1)
-    triangle = audio.assembleStream(triangle, 2)
-    noise = audio.assembleNoise(noise)
-    assembleDriver(square1, square2, triangle, noise)
-    audio.exportAudio(filename, nsfDriver)
-}
-
 function hex(n) {
     return "$" + (n).toString(16);
 }
 
-export function playNSF(square1, square2, triangle, noise) {
-    const startTime = new Date().getTime()
-    audio.resetSongLength()
-    resetEnvelopes()
-    square1 = audio.assembleStream(square1, 0)
-    square2 = audio.assembleStream(square2, 1)
-    triangle = audio.assembleStream(triangle, 2)
-    noise = audio.assembleNoise(noise)
-    assembleDriver(square1, square2, triangle, noise)
-    loadRom(nsfDriver)
-    const endTime = new Date().getTime()
-    return "Assembled in " + (endTime - startTime) + " ms"
+function saveWav(filename, square1, square2, triangle, noise) {
+    postMessage({"type": "savewav", "streams": [filename, square1, square2, triangle, noise]})
+  return "Saving " + filename
 }
 
-export function spitNSF(name, square1, square2, triangle, noise) {
-    audio.resetSongLength()
-    resetEnvelopes()
-    square1 = audio.assembleStream(square1, 0)
-    square2 = audio.assembleStream(square2, 1)
-    triangle = audio.assembleStream(triangle, 2)
-    noise = audio.assembleNoise(noise)
-    assembleDriver(square1, square2, triangle, noise)
-    let buffer = new ArrayBuffer(nsfDriver.length);
-    let view = new DataView(buffer)
-    for (let i = 0; i < nsfDriver.length; i++) {
-      view.setInt8(i, nsfDriver[i]); 
-    }
-    const blob = new Blob([view], { type: "application/octet-stream" }); 
-    var new_file = URL.createObjectURL(blob);
-    var downloadAnchorNode = document.createElement('a');
-    downloadAnchorNode.setAttribute("href", new_file);
-    downloadAnchorNode.setAttribute("download", name);
-    document.body.appendChild(downloadAnchorNode); // required for firefox
-    downloadAnchorNode.click();
-    downloadAnchorNode.remove();
+function playNSF(square1, square2, triangle, noise) {
+    postMessage({"type": "play", "streams": [square1, square2, triangle, noise]})
+    return "Playing..."
+}
+
+function spitNSF(name, square1, square2, triangle, noise) {
+  postMessage({"type": "savensf", "streams": [name, square1, square2, triangle, noise]})
+  return "Saving " + name
 }
 
 function lengthPitch(pairs) {
@@ -1129,6 +1088,50 @@ function lengthPitch(pairs) {
   return notes
 }
 
+function partSeq(part) {
+  return part.flatMap((note) => {
+    return Array(note.get("ʞlength")).fill(note.get("ʞpitch"))
+  })
+}
+
+function multiplex(p1, p2) {
+  let s1 = partSeq(p1)
+  let s2 = partSeq(p2)
+  let res = []
+  while (s1.length != 0 && s2.length != 0) {
+    let n = new Map()
+    n.set("ʞlength", 1)
+    n.set("ʞpitch", s2[0] === 160 ? s1[0] : s2[0])
+    res.push(n)
+    s1.shift()
+    s2.shift()
+  }
+  return res
+}
+
+function trill(p1, p2) {
+  let s1 = partSeq(p1)
+  let s2 = partSeq(p2)
+  let lastPitch = null
+  let res = []
+  while (s1.length != 0 && s2.length != 0) {
+    let nextPitch = null
+    if ((s2.length > 0) && (s1[0] === lastPitch || s1[0] === 160)) {
+      nextPitch = s2[0]
+    } else {
+      nextPitch = s1[0]
+    }
+    let n = new Map()
+    n.set("ʞlength", 1)
+    n.set("ʞpitch", nextPitch)
+    res.push(n)
+    s1.shift()
+    s2.shift()
+    lastPitch = nextPitch
+  }
+  return res
+}
+
 // types.ns is namespace of type functions
 export var ns = {
     'env': printEnv,
@@ -1139,6 +1142,9 @@ export var ns = {
     'hex2bin': hex2bin,
     'dec2bin': dec2bin,
     'length-pitch': lengthPitch,
+    'part-seq': partSeq,
+    'multiplex': multiplex,
+    'trill': trill,
     'vib': audio.vib,
     'vib-all': audio.vib_all,
     'append-path': appendPath,

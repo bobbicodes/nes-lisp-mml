@@ -1,5 +1,3 @@
-(ns core {:clj-kondo/ignore true})
-
 (defmacro or
   "Evaluates exprs one at a time, from left to right. If a form
     returns a logical true value, or returns that value and doesn't
