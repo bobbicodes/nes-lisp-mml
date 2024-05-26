@@ -6,8 +6,6 @@ import * as core from './core.js'
 import core_clj from './clj/core.clj?raw'
 import pprint from './clj/pprint.clj?raw'
 
-console.log("loading interpreter")
-
 // read
 export function READ(str) {
     return read_str(str);
@@ -288,7 +286,7 @@ export function EVAL(ast, env) {
 
 // print
 export function PRINT(exp) {
-    console.log("PRINT:", exp)
+    //console.log("PRINT:", exp)
     return _pr_str(exp, true);
 }
 

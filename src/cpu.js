@@ -861,7 +861,7 @@ function axs(adr) {
 
 // function table
 const functions = [
-  //x0   x1   x2   x3   x4   x5   x6   x7   x8   x9   xa   xb    xc   xd   xe   xf
+    //x0      x1        x2        x3        x4        x5        x6        x7        x8        x9        xa        xb        xc        xd        xe        xf
     brk, ora, kil, slo, nop, ora, asl, slo, php, ora, asla, anc, nop, ora, asl, slo, //0x
     bpl, ora, kil, slo, nop, ora, asl, slo, clc, ora, nop, slo, nop, ora, asl, slo, //1x
     jsr, and, kil, rla, bit, and, rol, rla, plp, and, rola, anc, bit, and, rol, rla, //2x

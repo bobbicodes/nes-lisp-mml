@@ -1,5 +1,7 @@
 import { repp, repl_env } from "./lisp/interpreter"
 
+console.log("loading lisp worker")
+
 // Process the repl env into a form that can be passed in a message
 
 function syms(env) {
@@ -13,6 +15,7 @@ function syms(env) {
 }
 
 addEventListener('message', e => {
+  console.log("sending message from lisp worker")
   postMessage({"type": "repl", "out": repp(e.data.eval), "env": syms(repl_env)})
 });
 
