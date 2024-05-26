@@ -69,7 +69,7 @@ export const updateEditor = (view, text, pos) => {
 
 // Set up Lisp interpreter web worker
 
-const lispworker = new Worker('src/lisp-worker.js', {
+const lispworker = new Worker('lisp-worker.js', {
   type: 'module'
 });
 
