@@ -1,8 +1,8 @@
 import { Prec } from '@codemirror/state'
 import { keymap } from '@codemirror/view'
 import { syntaxTree } from "@codemirror/language"
-import { evalString, repl_env, repp, PRINT } from "./interpreter"
-import { out_buffer, appendBuffer, clearBuffer } from './core'
+import { evalString, repp, PRINT, repl_env } from "./interpreter"
+import { out_buffer, appendBuffer, clearBuffer, playNSF, spitNSF, saveWav } from './core'
 import { _symbol } from './types.js'
 import {outView} from '../main'
 
@@ -67,12 +67,35 @@ export const updateEditor = (view, text, pos) => {
     })
 }
 
+// Set up Lisp interpreter web worker
+
+const lispworker = new Worker('src/lisp-worker.js', {
+  type: 'module'
+});
+
+lispworker.onmessage = function(e) {
+  if (e.data.type === 'repl') {
+    updateEditor(outView, out_buffer + e.data.out, 0)
+    //console.log(e.data.env)
+  }
+  if (e.data.type === 'play') {
+    playNSF(...e.data.streams)
+  }
+  if (e.data.type === 'savensf') {
+    spitNSF(...e.data.streams)
+  }
+  if (e.data.type === 'savewav') {
+    saveWav(...e.data.streams)
+  }
+}
+
 export function tryEval(s) {
     //console.log("Trying to eval", s)
     try {
         //console.log("evalPretty:", evalPretty(s))
         //return evalString(s)
-        return repp(s)
+        lispworker.postMessage({"type": "eval", "eval": s});
+        //return repp(s)
     } catch (err) {
         console.log(err)
         return "Error: " + err.message
@@ -106,6 +129,14 @@ export function updateDocBar(view) {
     }
 }
 
+let syms = {}
+
+for (const [key, value] of Object.entries(repl_env.data)) {
+  syms[key.toString()] = value.__meta__
+}
+
+//console.log(syms)
+
 export const clearEval = (view) => {
   updateDocBar(view)
   evalResult = ""
@@ -121,7 +152,7 @@ function clearAll(view) {
 export const evalAtCursor = (view) => {
     clearEval(view)
     evalResult = tryEval(cursorNodeString(view.state))
-    updateEditor(outView, out_buffer + evalResult, 0)
+    //updateEditor(outView, out_buffer + evalResult, 0)
     clearBuffer()
     return true
 }
@@ -129,7 +160,7 @@ export const evalAtCursor = (view) => {
 export const evalTopLevel = (view) => {
     clearEval(view)
     evalResult = tryEval(topLevelString(view.state))
-    updateEditor(outView, out_buffer + evalResult, 0)
+    //updateEditor(outView, out_buffer + evalResult, 0)
     clearBuffer()
     return true
 }
@@ -137,7 +168,7 @@ export const evalTopLevel = (view) => {
 export const evalCell = (view) => {
     clearEval(view)
     evalResult = tryEval("(do " + view.state.doc.toString() + ")")
-    updateEditor(outView, out_buffer + evalResult, 0)
+    //updateEditor(outView, out_buffer + evalResult, 0)
     clearBuffer()
     return true
 }
@@ -197,4 +228,3 @@ export const evalExtension =
         { key: "(", run: updateDocBar },
         { key: ")", run: updateDocBar },
         { key: "Space", run: updateDocBar }].concat(letterKeys)))
-

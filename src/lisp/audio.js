@@ -1,36 +1,3 @@
-import { loadNsf, setLoaded, startSong, playReturned, setPlayReturned,
-  dmcIrqWanted, frameIrqWanted } from "../main";
-import * as cpu from "./cpu";
-import * as apu from "./apu";
-import { s1, addEnvelope, resetEnvelopes, currentEnvelopes } from "./nsf"
-
-export const actx = new AudioContext()
-export const samplesPerFrame = actx.sampleRate / 60;
-export let sampleBuffer = new Float32Array(samplesPerFrame);
-
-await actx.audioWorklet.addModule("audioworklet.js");
-
-export const processor = new AudioWorkletNode(actx, "audioworklet")
-let sourceNode = null
-
-export function resume() {
-    actx.resume();
-}
-
-export function start() {
-  sourceNode = actx.createBufferSource();
-  processor.connect(actx.destination);
-  sourceNode.start();
-}
-
-export function stop() {
-  if (sourceNode) {
-    sourceNode.stop();
-    sourceNode.disconnect();
-  }
-    processor.disconnect();
-}
-
 function freqToPeriod(freq) {
     const c = 1789773;
     return c / (freq * 16) - 1
@@ -73,8 +40,7 @@ function fmt(n) {
 
 let streams = []
 
-export function assembleStream(noteSequence, streamNum) {
-    let notes = expandNotes(noteSequence)
+export function assembleStream(notes, streamNum) {
     //console.log("Assembling stream " + streamNum)
     let stream = []
     let currentLength = 0
@@ -263,21 +229,6 @@ export function lengthPitch(pairs) {
   return notes
 }
 
-function expandNotes(notes) {
-  let expanded = []
-  for (let i = 0; i < notes.length; i++) {
-    if (Array.isArray(notes[i])) {
-      let m = new Map()
-      m.set("ʞlength", notes[i][0])
-      m.set("ʞpitch", notes[i][1])
-      expanded.push(m)
-    } else {
-      expanded.push(notes[i])
-    }
-  }
-  return expanded
-}
-
 // apply vibrato to a single note
 function vibrato(length, pitch, speed, width) {
   let noteFrames = []
@@ -443,10 +394,6 @@ function buf_download(name, abuffer) {
     downloadAnchorNode.click();
     downloadAnchorNode.remove();
 }
-
-// Set up web worker for emulator
-
-const nesWorker = new Worker("src/nes-worker.js");
 
 export function exportAudio(filename, rom) {
   if (loadNsf(rom)) {
