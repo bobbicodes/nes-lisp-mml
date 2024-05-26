@@ -444,10 +444,6 @@ function buf_download(name, abuffer) {
     downloadAnchorNode.remove();
 }
 
-// Set up web worker for emulator
-
-const nesWorker = new Worker("src/nes-worker.js");
-
 export function exportAudio(filename, rom) {
   if (loadNsf(rom)) {
     setLoaded()
