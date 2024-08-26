@@ -8,13 +8,13 @@ This is a tool for programmatically composing NES music. Songs are built using a
 - Alt/Cmd+Enter = Eval all
 - Ctrl+Enter = Eval at cursor
 
-The *Eval at cursor* command is particularly powerful - it evaluates the expression that *ends* just to the left of the cursor position, allowing you to quickly test the result at each level of nesting. The evaluation results are printed right in line, and cleared by pressing any key.
+The *Eval at cursor* command is particularly powerful - it evaluates the expression that *ends* just to the left of the cursor position, allowing you to quickly test the result at each level of nesting.
 
 ## API
 
 A part is represented by a sequence of commands, each of which is a hashmap with various keys representing `length` (expressed in 1/60 of a second ticks), `pitch` (MIDI numbers, including decimal values for vibrato/microtones), `volume` and `duty`. These sequences are passed to their respective channels.
 
-The note data can be produced however you like, as long as it ends up a sequence of maps with the right keys. So you could use a literal sequence of maps:
+The note data can be produced however you like, as long as it ends up a sequence of maps with the right keys. So the most basic way would be to use a literal sequence of maps:
 
 ```clojure
 [{:volume 9 :length 20 :pitch 60} {:pitch 67} 
@@ -23,17 +23,18 @@ The note data can be produced however you like, as long as it ends up a sequence
  {:pitch 67} {:length 20 :pitch 60}]
 ```
 
-However, it's often more convenient to encode the music as a sequence of length/pitch pairs. There is a convenience function for that called `length-pitch`:
+Much of the time, it is enough to encode length/pitch pairs, which can be placed in the sequence using vectors. Thus the above example could be written like this:
 
 ```clojure
-(length-pitch
-      [[20 60] [20 67] [50 65] [20 67] [10 68]
-       [10 67] [10 65] [10 67] [20 60]])
+[{:volume 9 :length 20 :pitch 60} [20 67] [50 65] 
+[20 67] [10 68] [10 67] [10 65] [10 67] [20 60]]
 ```
+
+There is no limit to the number of ways your music can be written. Check out the examples in the [songs folder](https://codeberg.org/bobbicodes/nes-lisp-mml/src/branch/main/src/songs) for inspiration.
 
 ### Volume/duty cycle changes
 
-To facilitate volume envelopes and duty changes, a note can also be given `volume` and `duty` keys. Volume is in 16 steps, from 0 to 15. Duty is from 0-3:
+To facilitate volume and duty changes, a note can also be given `volume` and `duty` keys. Volume is in 16 steps, from 0 to 15. Duty is from 0-3 (0-7 for VRC6):
 
 - 0 = 12.5%
 - 1 = 25%
@@ -46,9 +47,40 @@ A volume or duty change is persistent, i.e. it will affect all subsequent notes 
 
 The noise channel plays at 16 possible pitches from 0 (high) to 15 (low). Mode 1 noise (metallic sound) is from 16 to 32.
 
+### Volume envelopes
+
+To create instruments using volume envelopes, you can define a sequence:
+
+```clojure
+(def saw-env
+  [30 27 23 19 15 11 8 7 7 7 7 7 6 6 6 6 6 6
+   5 5 5 5 5 5 4 4 4 4 4 3 3 3 3 3 2 2 2 2 2 1])
+```
+
+Then in the music sequence, select it with the `:envelope` key:
+
+```clojure
+  [{:envelope saw-env}
+   [12 33] [12 45] [12 33] [24 38] [12 36] [12 35] [12 36]
+   [12 33] [12 45] [12 33] [24 38] [12 36] [12 40] [12 28]]
+```
+
+### Looping
+
+Most songs contain many repeated patterns. To facilitate this without consuming additional data, 2 levels of loops are provided, `loop1` and `loop2`. You cannot nest a `loop1` or `loop2` inside another, but you can nest a `loop1` inside a `loop2` or vice versa. Just call `(loop1 <n> <notes>)` where `n` is the number of times to loop, and `notes` is a sequence of notes. 
+
 ## Playing audio
 
-The `play` function takes 4 arguments which are the 4 sequences for sq1, sq2, triangle and noise. To mute a channel just pass an empty vector.
+The `play` function takes a map containing any combination of the following keys: `square1`, `square2`, `triangle`, `noise` and `dpcm`. For example:
+
+```clojure
+(play
+  {:square1 (concat [{:volume 4 :duty 0}] arps)
+   :square2 (concat [{:volume 1 :duty 0 :length 9 :pitch 160}]
+    (detune arps))
+   :triangle (concat tri2 tri3 tri2 tri4)
+   :noise (concat (loop1 3 drums1) drums2)})
+```
 
 ## NSF/audio export
 
@@ -56,162 +88,44 @@ To save an audio file, pass a filename along with your note sequences to `save-w
 
 ```clojure
 (save-wav "mytune.wav"
-  (for [[length pitch]
-        [[20 60] [20 67] [50 65] [20 67] [10 68]
-         [10 67] [10 65] [10 67] [20 60]]]
-    {:length length :pitch pitch})
-[] [] [])
+  {:square1 [[20 60] [20 67] [50 65] [20 67] [10 68]
+             [10 67] [10 65] [10 67] [20 60]]})
 ```
 
 Saving an NSF file works the same way by calling `save-nsf`:
 
 ```clojure
 (save-nsf "mytune.nsf"
-  (for [[length pitch]
-        [[20 60] [20 67] [50 65] [20 67] [10 68]
-         [10 67] [10 65] [10 67] [20 60]]]
-    {:length length :pitch pitch})
-[] [] [])
+  {:square1 [[20 60] [20 67] [50 65] [20 67] [10 68]
+             [10 67] [10 65] [10 67] [20 60]]})
 ```
 
-## Example usage
+These are just the basics - again, check out the example songs for lots of ideas.
 
-### Rests
+## Using DPCM samples
 
-A rest is simply a note played at volume 0. To include a rest, just put in in the sequence:
-
-```clojure
-[{:length 99 :volume 0 :pitch 0} {:volume 6 :pitch 60}]
-```
-
-### Volume envelopes
-
-This function will play noise of a given pitch with the volume linearly decreasing from 16 to 4, making a drum sound:
+There is an *Import Sample* button on the bottom of the page that allows you to upload .dmc files. Once they are loaded, they can be referred to in the `:dpcm` key of the note maps passed to the above functions. The API is like this:
 
 ```clojure
-(defn drum [pitch]
-  (concat [{:length 1}]
-    (map #(hash-map :volume % :pitch pitch)
-      (reverse (range 4 16)))))
-```
-
-### Looping
-
-There is a built in way of repeating sections of music without taking up additional ROM space. There is currently a 32kB limit because the driver does not do any bank switching, so songs of sufficient length will need to take advantage of this.
-
-There are 2 levels of nesting allowed. These are aliased to `loop1` and `loop2`. Each one receives 2 arguments, a number of repetitions, and a note sequence.
-
-```clojure
-(loop1 2
-  [{:volume 9 :length 20 :pitch 60}
-   {:length 50 :pitch 65} {:pitch 67}
-   {:length 10 :pitch 68} {:pitch 65} 
-   {:pitch 67} {:length 20 :pitch 60}])
-```
-
-### Vibrato
-
-There is a built-in function for doing vibrato efficiently:
-
-```clojure
-(vib (length-pitch
-    [[36 74] [12 72] [12 74] [12 72] [12 69] [12 67]]) 
-  0.5 0.15)
-```
-
-Vibrato uses looping under the hood, specifically `loop2`. So any sections using vibrato can only be looped using `loop1`.
-
-### Transposition
-
-Take an existing sequence and map a function over it to adjust the pitch:
-
-```clojure
-(map (fn [[pitch length]] [(+ pitch 7) length])
-  [[50 2.5] [53 2.5] [52 1.25] [50 1.25] [48 2.5] [50 2.5]
-       [53 2.5] [55 1.25] [53 1.25] [52 1.25] [50 5]])
-```
-
-### Instruments
-
-Let's say we want a lead instrument where the vibrato increases in width after the attack:
-
-```clojure
-(defn lead-inst
-  "Creates a note of a given pitch/length, applies linearly 
-   increasing vibrato at given rate up to the given depth."
-  [pitch length depth rate]
-  (apply concat (for [x (range length)]
-      (vibrato pitch 10 0.5 (min depth (+ (* x rate)))))))
-```
-
-Putting this all together:
-
-```clojure
-(def drums
-  (concat 
-    (drum 0x0D) {:length 53 :volume 0 :pitch 0}
-    (drum 0x07) {:length 53 :volume 0 :pitch 0}
-    (drum 0x0D) {:length 53 :volume 0 :pitch 0}
-    (drum 0x07) {:length 53 :volume 0 :pitch 0}
-    (drum 0x0D) {:length 53 :volume 0 :pitch 0}))
-
-(defn lead
-  "Takes vector pairs of pitch/length,
-   outputs a part using lead-inst."
-  [notes]
-  (apply concat (for [[pitch length] notes]
-            (lead-inst pitch length 0.5 0.25))))
-
 (play
-  (lead (map (fn [[pitch length]] [(+ pitch 7) length])
-  [[50 2.5] [53 2.5] [52 1.25] [50 1.25] [48 2.5] [50 2.5]
-       [53 2.5] [55 1.25] [53 1.25] [52 1.25] [50 5]]))
-  (lead [[50 2.5] [53 2.5] [52 1.25] [50 1.25] [48 2.5] [50 2.5]
-       [53 2.5] [55 1.25] [53 1.25] [52 1.25] [50 5]])
-  (lead [[50 2.5] [53 2.5] [52 1.25] [50 1.25] [48 2.5] [50 2.5]
-       [53 2.5] [55 1.25] [53 1.25] [52 1.25] [50 5]])
-  drums)
+  {:dpcm
+    [{:sample "kick" :length 3}
+     {:sample "e-sus" :length 12}
+     {:sample "mute-e" :length 11}
+     {:sample "mute-e" :length 11}
+     {:sample "mute-e" :length 11}
+     {:sample "e-sus" :length 16}
+     {:rest 32}]})
 ```
 
-### Arpeggios
+The sample names must match the file names. Each note must have a `sample` key and a `length` key. Use `:rest` to insert gaps in the playback.
 
-We could make the common triangle kick by rapidly descending the pitch:
+## Panic!
 
-```clojure
-(def tri-kick
-  (concat [{:length 1}]
-    (for [x (reverse (range 55 69 3))]
-      {:pitch x})))
-```
-
-And we could create a bass instrument that places a kick at the beginning of the note:
+To stop all audio currently playing, simply play a blank sequence:
 
 ```clojure
-(defn bass-kick-inst
-  "Precedes a note with a fixed 5-note descending arpeggio.
-   First 5 frames are replaced to maintain length."
-  [{:keys [pitch length]}]
-  (conj (vec tri-kick) {:pitch pitch :length (- length 5)}))
-```
-
-And put this together for a punchy walking bassline (Brand New Cadillac by The Clash):
-
-```clojure
-(defn bass-kick [notes]
-  (apply concat (for [[pitch length] notes]
-            (bass-kick-inst {:pitch pitch :length length}))))
-
-(defn bass [pitch]
-  (bass-kick 
-      [[(+ pitch 60) 12] [(+ pitch 60) 12] [(+ pitch 63) 12] [(+ pitch 63) 12] 
-       [(+ pitch 65) 12] [(+ pitch 65) 12] [(+ pitch 66) 12] [(+ pitch 65) 12]]))
-
-(defn walking-bass [intervals]
-  (apply concat (for [pitch intervals]
-    (bass pitch))))
-
-(play [] []
-  (walking-bass [0 0 0 0 5 5 0 0 7 5 0 0]) [])
+(play {})
 ```
 
 ## Building from source

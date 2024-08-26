@@ -1,6 +1,6 @@
 - ## Goal
 - Replace `createScriptProcessor` with audio worklet https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Using_AudioWorklet
-- More detail in [[web%20audio%20worklets.md]]
+- More detail in [[web audio worklets]]
 - Which really means I need to dive into the audio buffer of the NSF player to understand how it works. So I'll walk through it and try to understand what it does... there's the original version, and my non-object version which unfortunately doesn't pause right and hopefully through this I'll understand why.
 - ## Initialization
 - In the original, fully working one, the audio handler is an object that is initialized called `AudioHandler`. Everything below is located inside this object.

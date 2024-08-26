@@ -1,0 +1,33 @@
+- loaded sounds, fetching first byte of first stream
+- It's 9A, a note length. Then we have a note, $01F1, which does play, when we get there
+- se_set_temp_ports for stream 0
+- 809A: play frame
+- 80C5: fetch byte
+- 81E8: set apu
+- up to stream 5
+- I think the streams got disabled somehow. But I'm not sure how we got here
+- So we got to the end of play frame and I heard the little noise click
+- yeah, the streams are disabled. Have to find out when that happens.
+- Set a breakpoint where the sample gets played.
+- Now we're fetching another byte, which is the A0 to end the last stream.
+- We did that, and after returning from the opcode, we would fetch another byte except the stream has just been disabled. Which is correct.
+- ok, now we're back in play frame after returning from fetching the byte for stream 4
+- wait... we're setting the stream volume and it just wrote $3E to $0217, the first stream status byte... why?
+- It's because we're trying to set the temp apu ports which are only 16 bytes. Aha! So we either need to increase those, or...
+- There's no reason to be setting them, because it's the sample channel. so let's code a conditional there.
+- I figured it out! And it works!
+- I could technically install it now, because it's now entirely up to the bytecode to switch banks.
+- However, I kind of want to get rid of the volume envelopes because we're not using them, and instead, just use the opcode to write the volume itself.
+- Idk, it works well enough the way it is.... I can always refactor it if I feel like it.
+- oh joy, I also get to make the UI for loading samples into the program
+- Alright, I've got the driver code ported, but it needs to be integrated properly, there are a few new functions, and a couple that I organized more accurately. But it builds, and even plays garbage
+- 7D 83 is I think the song header address
+- it's right between load and init
+- Ah, yeah the value changes depending on the envelopes defined:
+- `let songHeaderAdr = fmtWord(0x82f6 + volumeEnvelopes.length + vePointers.length)`
+- so I need to figure out what should replace 0x82f6
+- Looks like it's 0x8331.
+- It's already making sound, but not coherently. We still need to calculate the stream addresses
+- 83A1 is what it shows in the working version for stream 0
+- Cool! Once I got it right it *immediately* worked!
+- Now I need to implement it in the [[music bytecode compiler]]

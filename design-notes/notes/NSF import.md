@@ -1,0 +1,7 @@
+- I want to be able to analyze NES tunes and use the data to build songs algorithmically.
+- The cynical reason for this is that people might actually listen to it unlike my actual compositions.
+- But this will also help me understand it better so I'll be able to implement the DMC and stuff.
+- ## Register logs
+- So this seems like the obvious way to start. Just play the song and log the APU registers.
+- We're already polling them every frame for the debug viewer, so we'll just also like... append them to an array, I guess. If it turns out to be too slow or something we could use something like a stream, something buffered like a DataView or something.
+- `runFrame` calls `updateDebugView()` which calls `drawRam()`.

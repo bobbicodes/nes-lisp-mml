@@ -1,0 +1,22 @@
+- Checking out Ramsey Nasser's talks to get an overview
+- Mike Fikes' video is also incredibly helpful, which I've already watched like twice, so I've got a pretty good idea of what's involved already
+- There's a couple of reasons why it will be extremely easy, comparitively:
+	- I control the source language, which
+	  logseq.order-list-type:: number
+	- Only needs to be complete enough for a single purpose
+	  logseq.order-list-type:: number
+- astexplorer.net is an online analysis tool that supports JavaScript
+- Much of the machinery is already in place, because I wrote the interpreter which currently powers the system. This includes the parser, or reader.
+- One thing I'm wondering is if this can be done piecemeal. For example, the `for` expression, which is likely the most useful function for generating note sequences, which happens to be particularly slow because it has to analyze each element individually. So actually I think a good start could be to just write a function that will convert the `for` into a JavaScript loop - now, I tried this before and it confused me because it can take any number of sequences. Now that I'm thinking of it, I'm wondering if it might actually be simpler than I thought at the time, but even if not, I can simply dispatch it only if it only contains one sequence, which is basically all of the cases that I've used in practice. Couldn't it just... do it for each sequence, and then interleave them into the right order? I'm wondering what my big problem was. Maybe I can did up my notes for that.
+- Here is a discord thread I posted on it: https://discord.com/channels/1080712145622278164/1138303577752883310
+- Reading through it, it seems the problem is that it needs to evaluate each combination, not just each sequence independently. Still, this seems like it should have some elegant functional solution.
+- Now... we're still going to have macroexpansion. And `for` is a macro that generates a `let`. So eventually this will be moot. I was just thinking that it would be a way to make a "shortcut" for the most common bottlenecks.
+- ## mex
+- Wouldn't luck have it, that Ramsey is starting a compiler quite a lot like what I need: https://git.sr.ht/~nasser/mex
+- It's using escodegen, which is... an ECMAScript code generator! Since I'm desperately need a title, I will use the same format and call it... lispiler? I used it but I don't actually like it... I'm actually thinking of "trip", like a play on "lisp". Hahaha, let's do it.
+- So, I guess I want to install the codemirror thing so I have a way of testing it.
+- Great! That went well. It's using the basic-setup package for now, which provides sensible defaults.
+- Ok I installed escodegen and it compiled a tiny expression in the code window.
+- What I think I want is to implement the output window as well, so that you can compile an expression in the top and the code will appear below.
+- I guess I should have a button, it seems clearer than using hotkeys for the moment.
+- It works!

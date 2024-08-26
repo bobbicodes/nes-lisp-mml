@@ -1,0 +1,46 @@
+- alright, so... I was going to say there's that web audio article about making an oscilloscope visualizer, but... that's totally not what we want!
+- We're gonna start by just drawing a 2A03 triangle, of various frequencies, and then just control it by the current period. So simple!
+- ## Get a canvas
+- Got a canvas. It's 600x600 and all black. Hmm, actually we want it video size. 640x360, and that will be for each of the 4 channels.
+- ## Start with triangle
+- It has no volume, which will significantly simplify it compared to the other channels
+- Oh yeah, I forgot that we need to simulate the filtering by making it curved, fun
+- The trailing edge contains 31 points, including the center one.
+- To actually calculate the shape might require calculus or something. So this might be more of a maths learning project than anything else...
+- Or perhaps we will start with a straight triangle, then apply a "weight" to it that will pull the points towards the right the appropriate amount.
+- ![tri0.png](../assets/tri0_1719374421948_0.png)
+- I never actually realized how much the points get closer towards the top.
+- Oh nice, I can put it in Gimp and get the coordinates for each point.
+- This worked out great!!
+- ![tri.png](../assets/tri_1719382625857_0.png)
+- Then hopping over to the other end, we can see the problem is quite different:
+- ![tri-1.png](../assets/tri-1_1719382689557_0.png)
+- The last note has the waves so close together that you can't see the steps at all, it's just a whole bunch of lines that barely even have any space between them.
+- Ok, so here it will be faster to just calculate how many periods fit in that window, and calculate the points. The oscilloscope window is 2 frames. So the simplest case would be...
+- Well the first one we did is fairly close to 1 period per frame.
+- We need our trusty period chart...
+- A1 - B1: $07F1, $0780, $0713
+- Weird, the register values are different in FS than Nerdy Nights.
+- Famistudio:
+- `G#0: $07D1` = 2001
+- `A0: $0760` = 1888
+- alright, then we need the formula for period to frequency.
+- This is frequency to period:
+- P = C/(F*16) - 1
+      
+  P = Period
+  C = CPU speed (in Hz) = 1789773
+  F = Frequency of the note (also in Hz).
+- So period to frequency is  (c/p) / 16 + 1
+- It took me so long to figure that out that I forgot what I was trying to do.
+- Ok. So the oscilloscope window is 2 frames.
+- The first note has a period of $07D1, or 2001. We're calculating how many of those will fit in the 2-frame (1/30 second) window, and we happen to know it is 1.
+- If we multiply the frequency (56.9) by 1/30 we get roughly 1.9. I guess that makes sense.
+- So how about that super high note? that is $000C, or 12, with a freq of 9322.734375.
+- according to our formula, it has 310.75 repetitions.
+- well, if we look at the wave thingies, there are about 5 of them, and each one has 32 ridges.
+- That pretty much checks out! So then, to calculate the x positions, we can divide it by the number of pixels across, or 640.
+- So that's 2.059 pixels between them.
+- ## Scrapping that, doing real viewer
+- I actually got something going on the full mix, just rendering the APU output, following the Web Audio guide but hacking it to make it work. Funny enough it worked well enough to cut a test video and put it on youtube...
+-
