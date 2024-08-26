@@ -1519,9 +1519,28 @@ expression is provided and no clause matches, an exception is thrown."
 (defn loop1
   "Takes a sequence of music and loops it n times. Can be nested inside a loop2 but not another loop1."
   [n notes]
-  (concat [{:loop n}] notes [{:loop :end}]))
+  (concat [{:loop1 n}] notes [{:loop1 :end}]))
 
 (defn loop2
  "Takes a sequence of music and loops it n times. Can be nested inside a loop1 but not another loop2."
   [n notes]
-  (concat [{:arp n}] notes [{:arp :end}]))
+  (concat [{:loop2 n}] notes [{:loop2 :end}]))
+
+(defn slide
+  "Creates a sequence of frames of a given length
+   from one pitch to another."
+  [from to frames]
+  (take frames 
+    (if (< to from)
+      (map #(vector 1 %) 
+        (reverse (range to from 
+                   (/ (abs (- from to)) frames))))
+      (map #(vector 1 %) 
+        (range from to
+          (/ (abs (- from to)) frames))))))
+
+(defn r [l] [[l 160]])
+
+(defn arp [l seq]
+  [{:arp seq}
+    [l 60]])

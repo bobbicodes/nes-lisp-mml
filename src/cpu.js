@@ -921,7 +921,7 @@ export function write(adr, value) {
         // ppu ports, not writable in NSF
         return;
     }
-    if (adr < 0x4020) {
+    if (adr < 0x4020 || (adr > 0x8fff && adr < 0xB003)) {
         // apu/misc ports
         if (adr === 0x4014 || adr === 0x4016) {
             // not writable in NSF

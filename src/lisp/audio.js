@@ -1,6 +1,13 @@
+//import {processor} from '../audio'
+
 function freqToPeriod(freq) {
     const c = 1789773;
     return c / (freq * 16) - 1
+}
+
+function sawFreqToPeriod(freq) {
+    const c = 1789773;
+    return c / (freq * 14) - 1
 }
 
 function midiToFreq(n) {
@@ -40,110 +47,6 @@ function fmt(n) {
 
 let streams = []
 
-export function assembleStream(notes, streamNum) {
-    //console.log("Assembling stream " + streamNum)
-    let stream = []
-    let currentLength = 0
-    let totalLength = 0
-    let loopPoint = s1
-    let arpPoint = s1
-    let s2
-    let s3
-    let loopCounter
-    let loopTotal = 0
-    //console.log("s1 is at " + fmt(s1))
-    if (streamNum === 1) {
-      loopPoint = s1 + streams[0].length
-      s2 = s1 + streams[0].length
-      //console.log("stream 2 is at " + fmt(loopPoint))
-    }
-    if (streamNum === 2) {
-      loopPoint = s1 + streams[0].length + streams[1].length
-      s3 = s1 + streams[0].length + streams[1].length
-      //console.log("stream 3 is at " + fmt(loopPoint))
-    }
-    for (let i = 0; i < notes.length; i++) {
-        if (notes[i].has("ʞloop")) {
-          if (notes[i].get("ʞloop") === "ʞend") {
-            // loop opcode $A5 followed by the address to loop to
-            stream = stream.concat([0xA5], fmtWord(loopPoint))
-            // To update totalLength, we multiply it by the value of the
-            // loop counter minus 1 (because it's already been counted once)
-            totalLength += loopTotal * (loopCounter - 1)
-          } else {
-            // set loop point variable and loop counter
-          loopPoint = (stream.length + [s1, s2, s3][streamNum]) + 2
-          stream.push(0xA4, notes[i].get("ʞloop"))
-          // update loopCounter variable for calculating song length above,
-          // and reset the loopTotal
-          loopCounter = notes[i].get("ʞloop")
-          loopTotal = 0
-          }
-        }
-        if (notes[i].has("ʞarp")) {
-          if (notes[i].get("ʞarp") === "ʞend") {
-            stream = stream.concat([0xAA], fmtWord(arpPoint))
-          } else {
-            // set arp point variable and arp counter
-          arpPoint = (stream.length + [s1, s2, s3][streamNum]) + 2
-          stream.push(0xA9, notes[i].get("ʞarp"))
-          }
-        }
-        if (notes[i].has("ʞlength")) {
-          const l = notes[i].get("ʞlength")
-          // lengths > 25 need to be handled differently, since
-          // the driver expects them to be from 0x81-0x99. so if
-          // it's too large, we set it to 25 and handle it later.
-          // in case of long volume envelopes, we need to note the 
-          // position so it can create a new shorter one,
-          // and switch back afterwards. Arps too...
-          if (l > 25) {
-            stream.push(25 + 0x80)
-          }
-          currentLength = l
-        }
-        if (notes[i].has("ʞenvelope")) {
-          if (!containsEnvelope(notes[i].get("ʞenvelope"), currentEnvelopes)) {
-            console.log("not found")
-          }
-          addEnvelope(notes[i].get("ʞenvelope"))
-        }
-        if (notes[i].has("ʞvolume")) {
-          stream.push(0xa2, notes[i].get("ʞvolume"))
-        }
-        if (notes[i].has("ʞduty")) {
-          stream.push(0xA3)
-          const duties = [0x30, 0x70, 0xB0, 0xF0]
-          stream.push(duties[notes[i].get("ʞduty")])
-        }
-        if (notes[i].has("ʞpitch")) {
-             const freq = midiToFreq(notes[i].get("ʞpitch"))
-             const period = freqToPeriod(freq)
-             const word = fmtWord(period)
-             // to deal with lengths > 25, we push the note as many
-             // times as needed to make the proper length.
-             // if < 25 this will simply be 0.
-             const reps = Math.floor(currentLength / 25)
-             for (let i = 0; i < reps; i++) {
-               stream.push(word[1])
-               stream.push(word[0])
-             }
-             // switch length to remainder and push the last note
-             stream.push((currentLength % 25) + 0x80)
-             stream.push(word[1])
-             stream.push(word[0])
-             totalLength += currentLength
-             loopTotal += currentLength
-        }
-    }
-    // $A0 = opcode to end stream
-    stream.push(0xa0)
-    console.log("Stream " + streamNum + " length " + totalLength + " frames")
-    if (totalLength > songLength) {songLength = totalLength}
-    streams[streamNum] = stream
-    //console.log("Assembled " + stream.length + " bytes")
-    return stream
-}
 
 function arraysEqual(a, b) {
   if (a === b) return true;
@@ -165,58 +68,12 @@ function containsEnvelope(env, envs) {
   return false
 }
 
-let noiseLen = 0
 
-export function assembleNoise(notes) {
-    let stream = []
-    let totalLength = 0
-    let loopPoint = s1 + streams[0].length + streams[1].length + streams[2].length
-    let s4 = s1 + streams[0].length + streams[1].length + streams[2].length
-    let loopCounter
-    let loopTotal = 0
-    for (let i = 0; i < notes.length; i++) {
-        if (notes[i].has("ʞloop")) {
-          if (notes[i].get("ʞloop") === "ʞend") {
-            // loop opcode $A5 followed by the address to loop to
-            stream = stream.concat([0xA5], fmtWord(loopPoint))
-            totalLength += loopTotal * (loopCounter - 1)
-          } else {
-            // set loop point variable and loop counter
-          loopPoint = (stream.length + s4) + 2
-          stream.push(0xA4, notes[i].get("ʞloop"))
-          loopCounter = notes[i].get("ʞloop")
-          loopTotal = 0
-          }
-        }
-        if (notes[i].has("ʞlength")) {
-          const l = notes[i].get("ʞlength")
-          stream.push(Math.min(25, l) + 0x80)
-          noiseLen = l
-        }
-        if (notes[i].has("ʞvolume")) {
-          stream.push(0xa2, notes[i].get("ʞvolume"))
-        }
-        if (notes[i].has("ʞduty")) {
-          stream.push(notes[i].get("ʞduty") + 0xf0)
-        }
-        if (notes[i].has("ʞpitch") && (noiseLen != 0)) {
-             // deal with lengths > 25
-             const reps = Math.floor(noiseLen / 25)
-             for (let i = 0; i < reps; i++) {
-                stream.push(notes[i].get("ʞpitch"))
-             }
-             // switch length to remainder
-             stream.push((noiseLen % 25) + 0x80)
-             stream.push(notes[i].get("ʞpitch"))
-             totalLength += noiseLen
-             loopTotal += noiseLen
-        }
-    }
-    stream.push(0xa0)
-    console.log("Noise length " + totalLength + " frames")
-    if (totalLength > songLength) {songLength = totalLength}
-    return stream
+export function assembleDpcm(notes) {
+  postMessage({"type": "dpcmstream", "stream": notes})
+  return "sent dpcm stream"
 }
+
 
 export function lengthPitch(pairs) {
   let notes = []

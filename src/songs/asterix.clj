@@ -22,23 +22,25 @@
     (h [16 (nth (nth bass-intervals interval) 3)]))]
     {:length length :pitch pitch}))
 
-(defn kick [length]
-  (concat [{:volume 10 :length 1 :pitch 6}]
-    (for [[volume pitch] [[7 2] [4 1] [3 1] [2 0]]]
-      {:volume volume :pitch pitch})
-    {:length (- length 5) :volume 0 :pitch 0}))
-
-(defn snare [length]
-  (let [vol-pitch (->> [[11 8] [9 6] [8 6] [7 6]
-                        [4 5] [3 5] [2 5] [1 5]]
-                       (take length))
-        frame1 {:length 1 :volume (ffirst vol-pitch)
+(defn drum
+  "Takes a decay length and a volume-pitch sequence."
+  [length vol-pitch]
+  (let [frame1 {:length 1 :volume (ffirst vol-pitch)
                 :pitch (last (first vol-pitch))}
         midframes (for [[volume pitch] (rest vol-pitch)]
                     {:volume volume :pitch pitch})
-        last-frame {:length (if (< length 8) 0 (- length 8))
-                    :volume 0 :pitch 0}]
-  (concat [frame1] midframes [last-frame])))
+        tail {:length (- length (count vol-pitch))
+              :volume 0 :pitch 0}]
+    (if (<= length (count vol-pitch))
+      (concat [frame1] midframes)
+      (concat [frame1] midframes [tail]))))
+
+(defn kick [length]
+  (drum length [[12 6] [9 2] [5 1] [4 1] [2 0]]))
+
+(defn snare [length]
+  (drum length [[13 8] [11 6] [10 6] [9 6]
+                [6 5] [5 5] [4 5] [2 5]]))
 
 (defn hat [length] (concat
   [{:volume 4 :length 1 :pitch 3} {:volume 3 :pitch 2}
@@ -72,7 +74,7 @@
      (kick 16) (hat 16) (snare 16) (hat 16)
      (kick 16) (hat 16) (snare 16) (hat 16)
      (kick 16) (hat 16) (snare 16) (kick 16)
-     (kick 64) (kick 50)
+     (kick 48) (kick 39)
     (for [[volume pitch]
       [[7 3] [5 2] [4 0] [1 2] [7 3] [5 2] [4 0]
        [7 3] [5 2] [4 0] [2 2] [2 0] [1 2]]]
@@ -97,53 +99,44 @@
 (def vol-duty (decode-vol-duty
   {:volume [[1 11] [1 10] [1 9] [1 8] [1 7]
             [1 6] [5 4] [5 3] [5 2] [5 1]]
-   :duty [[1 2] [4 1] [1 3] [10 2] [10 1]]}))
+   :duty [[1 0xB0] [4 0x70] [1 0xF0] [10 0xB0] [10 0x70]]}))
 
 (def swell-vol-duty (decode-vol-duty
   {:volume [[1 11] [1 10] [1 9] [1 8] [1 7]
             [1 6] [5 4] [6 5] [6 6] [6 7] [6 8]]
-   :duty [[1 2] [4 1] [1 3] [5 2] [12 3] [12 0]]}))
+   :duty [[1 0xB0] [4 0x70] [1 0xF0] [5 0xB0] [12 0xF0] [12 0x30]]}))
 
 (def swell2 (decode-vol-duty
   {:volume [[1 12] [1 11] [1 10] [1 9] [1 8] [1 7] [1 6]
             [7 4] [8 5] [8 6] [8 7] [8 8] [8 9] [14 10]]
-   :duty [[2 2] [2 1] [2 0] [1 3] [7 2] [16 3] [16 0] [22 1]]}))
+   :duty [[2 0xB0] [2 0x70] [2 0x30] [1 0xF0] [7 0xB0] [16 0xF0] [16 0x30] [22 0x70]]}))
 
 (def chorus-arp (decode-vol-duty
   {:volume [[1 13] [1 12] [1 11] [1 10] [1 9] [1 8]
             [1 7] [4 5] [5 4] [5 3] [5 2] [8 1]]
-   :duty [[1 3] [2 2] [2 1] [2 0] [4 3] [10 2] [13 1]]}))
+   :duty [[1 0xF0] [2 0xB0] [2 0x70] [2 0x30] [4 0xF0] [10 0xB0] [13 0x70]]}))
 
 (defn arp
-    "Takes a note length in frames, and a sequence of 
-    pitches. Will loop the pitches for as many frames
-    as length allows, and rest for any frames left
-    after the vol-duty sequence has played."
-  [length arp-seq vol-duty-seq]
-  (keep
-  (let [notes (take length vol-duty-seq)
-        pitches (take length (cycle arp-seq))]
-    (concat [{:length 1}]
-      (for [frame (range (count (take length vol-duty-seq)))]
-        {:volume (first (nth notes frame))
-         :duty (last (nth notes frame))
-         :pitch (nth pitches frame)})
-    (when (< (count vol-duty-seq) length)
-      {:length (- length (count vol-duty-seq))
-       :volume 0 :pitch 160})))))
-
-(def intro-vol-duty
-  (for [n (range 64)]
-    [(inc (Math/floor (/ n 7)))
-     (nth (take 64 (cycle [1 2 3 0]))
-       (Math/floor (/ n 14)))]))
+  ([l seq]
+  [{:arp seq} [l 60]])
+  ([l seq v-d]
+  [{:arp seq} 
+   {:envelope (map first v-d)
+    :duty (map last v-d)}
+   [l 60]]))
 
 (def intro-swell
-  (let [pitches (take 64 (cycle [60 63 67]))]
-    (for [frame (range 64)]
-      {:length 1 :pitch (nth pitches frame)
-       :volume (first (nth intro-vol-duty frame))
-       :duty (last (nth intro-vol-duty frame))})))
+  (concat
+    [{:duty 1 :volume 1}] (arp 7 [60 63 67])
+    [{:volume 2}] (arp 7 [60 63 67])
+    [{:duty 2 :volume 3}] (arp 7 [60 63 67])
+    [{:volume 4}] (arp 7 [60 63 67])
+    [{:duty 3 :volume 5}] (arp 7 [60 63 67])
+    [{:volume 6}] (arp 7 [60 63 67])
+    [{:duty 0 :volume 7}] (arp 7 [60 63 67])
+    [{:volume 8}] (arp 7 [60 63 67])
+    [{:duty 1 :volume 9}] (arp 7 [60 63 67])
+    [{:volume 10}] (arp 1 [60 63 67])))
 
 (def sq2-patt (concat (arp 16 [60 63 67] vol-duty)
     (arp 32 [60 63 67] vol-duty) (arp 32 [60 63 67] vol-duty)
@@ -204,11 +197,6 @@
     (arp 16 [73 77 80 61 65 68] chorus-arp)
     (arp 16 [73 77 80 61 65 68] chorus-arp)))
 
-(defn vibrato [pitch length speed width]
-  (concat [{:length 1}]
-    (for [x (range length)]
-      {:pitch (+ pitch (* width (sin (* speed x))))})))
-
 (defn release [notes]
   (let [head (take (- (count notes) 5) notes)
         tail (drop (- (count notes) 5) notes)]
@@ -218,12 +206,13 @@
           tail)) notes)))
 
 (defn lead-inst [length pitch duty]
-  (let [attack [{:length 1 :pitch pitch :duty duty :volume 14}
+  (let [attack [{:vibrato 0
+                 :length 1 :pitch pitch :duty duty :volume 14}
                 {:length 2 :pitch (+ 12 pitch) :volume 7}]]
     (if (< length 14)
       (concat attack [{:length (- length 3) :pitch pitch}])
       (concat attack [{:length 11 :pitch pitch}]
-               (vibrato pitch (- length 14) 0.7 0.25)))))
+               {:vibrato 2 :pitch pitch :length (- length 14)}))))
 
 (def lead1 (concat (apply concat (for [[length pitch]
       [[56 72] [8 71] [24 72] [8 68] [16 67] [16 66]
@@ -269,11 +258,14 @@
 (def sq2b (concat sq2-patt sq2-patt2 sq2-patt3 sq2-patt4))
 
 (play
-  (concat sq1a sq1b (loop1 2 lead3))
-  (concat sq2a sq2b [{:length 48 :pitch 0 :volume 0}]
+  {:square1
+   (concat sq1a sq1b (loop1 2 lead3))
+   :square2
+   (concat sq2a sq2b [{:length 48 :pitch 0 :volume 0}]
     (loop1 3 sq2-patt5) sq2-patt6
     (loop2 2 (concat (loop1 3 sq2-patt7) sq2-patt8)))
-  (concat (loop1 4 (bass 0)) (loop1 2 (concat (loop2 6 (bass 0))
+   :triangle
+   (concat (loop1 4 (bass 0)) (loop1 2 (concat (loop2 6 (bass 0))
     (loop2 2 (bass 1)) (loop2 2 (bass 2)) (loop2 2 (bass 0))
     (bass 3) (bass 2) (loop2 2 (bass 0))))
     (loop1 3 (concat (bass 1) (bass 2) (bass 0) (bass 0)))
@@ -282,4 +274,5 @@
     {:pitch 54} {:pitch 52} {:length 55 :pitch 55}]
     (loop1 2 (bass 0)) (loop2 2 (concat (loop1 6 (bass 0)) 
     (loop1 2 (bass 1)))))
-  (concat beat1 (loop1 5 beat2) beat3 (loop1 2 beat4)))
+   :noise
+   (concat beat1 (loop1 5 beat2) beat3 (loop1 2 beat4))})

@@ -4,8 +4,13 @@ import * as types from './types.js'
 import { repl_env, evalString, PRINT, EVAL } from './interpreter.js';
 import zip from './clj/zip.clj?raw'
 import * as audio from './audio.js'
-import { nsfDriver, assembleDriver, resetEnvelopes } from './nsf.js';
-import { loadNsf, loadRom} from '../main.js';
+import * as apu from './apu.js'
+import {compileStream, compileDpcm, resetSongLength, streams, streamLength} from './compiler.js'
+import { nsfDriver, assembleDriver, resetVolEnvelopes, resetPitchEnvelopes, resetDutyEnvelopes, resetArps } from './nsf.js';
+import { loadNsf, loadRom, samples, renderSamples} from '../main.js';
+import {renderMp4, canvasRecorder} from './recorder'
+import {setLayout} from './oscview'
+import {songLength} from './compiler'
 
 export var out_buffer = ""
 
@@ -1066,14 +1071,36 @@ function hex2bin(hex) {
     return (parseInt(hex, 16).toString(2)).padStart(8, '0');
 }
 
-export function saveWav(filename, square1, square2, triangle, noise) {
-    audio.resetSongLength()
-    resetEnvelopes()
-    square1 = audio.assembleStream(square1, 0)
-    square2 = audio.assembleStream(square2, 1)
-    triangle = audio.assembleStream(triangle, 2)
-    noise = audio.assembleNoise(noise)
-    assembleDriver(square1, square2, triangle, noise)
+// stateful, uses and updates current values of `streamLength` array
+export function compilePattern(pattern) {
+  // compile all streams to set their lengths in `streamLength`
+  compileStream(pattern.get("ʞsquare1") || [], 0)
+  compileStream(pattern.get("ʞsquare2") || [], 1)
+  compileStream(pattern.get("ʞtriangle") || [], 2)
+  compileStream(pattern.get("ʞnoise") || [], 3)
+  compileDpcm(pattern.get("ʞdpcm") || [], 4)
+  compileStream(pattern.get("ʞp1") || [], 5)
+  compileStream(pattern.get("ʞp2") || [], 6)
+  compileStream(pattern.get("ʞsaw") || [], 7)
+  const maxLength = Math.max(...streamLength)
+  return "hhello"
+}
+
+export function saveWav(filename, square1, square2, triangle, noise, dpcm, p1, p2, saw) {
+    resetSongLength()
+    resetVolEnvelopes()
+    resetPitchEnvelopes()
+    resetDutyEnvelopes()
+    resetArps()
+    square1 = compileStream(square1, 0)
+    square2 = compileStream(square2, 1)
+    triangle = compileStream(triangle, 2)
+    noise = compileStream(noise, 3)
+    dpcm = compileDpcm(dpcm, 4)
+    p1 = compileStream(p1, 5)
+    p2 = compileStream(p2, 6)
+    saw = compileStream(saw, 7)
+    assembleDriver(square1, square2, triangle, noise, dpcm, p1, p2, saw)
     audio.exportAudio(filename, nsfDriver)
 }
 
@@ -1081,28 +1108,43 @@ function hex(n) {
     return "$" + (n).toString(16);
 }
 
-export function playNSF(square1, square2, triangle, noise) {
+export function playNSF(square1, square2, triangle, noise, dpcm, p1, p2, saw) {
+    apu.setRecording(false)
     const startTime = new Date().getTime()
-    audio.resetSongLength()
-    resetEnvelopes()
-    square1 = audio.assembleStream(square1, 0)
-    square2 = audio.assembleStream(square2, 1)
-    triangle = audio.assembleStream(triangle, 2)
-    noise = audio.assembleNoise(noise)
-    assembleDriver(square1, square2, triangle, noise)
+    resetSongLength()
+    resetVolEnvelopes()
+    resetPitchEnvelopes()
+    resetDutyEnvelopes()
+    resetArps()
+    square1 = compileStream(square1, 0)
+    square2 = compileStream(square2, 1)
+    triangle = compileStream(triangle, 2)
+    noise = compileStream(noise, 3)
+    dpcm = compileDpcm(dpcm, 4)
+    p1 = compileStream(p1, 5)
+    p2 = compileStream(p2, 6)
+    saw = compileStream(saw, 7)
+    assembleDriver(square1, square2, triangle, noise, dpcm, p1, p2, saw)
     loadRom(nsfDriver)
     const endTime = new Date().getTime()
     return "Assembled in " + (endTime - startTime) + " ms"
 }
 
-export function spitNSF(name, square1, square2, triangle, noise) {
-    audio.resetSongLength()
-    resetEnvelopes()
-    square1 = audio.assembleStream(square1, 0)
-    square2 = audio.assembleStream(square2, 1)
-    triangle = audio.assembleStream(triangle, 2)
-    noise = audio.assembleNoise(noise)
-    assembleDriver(square1, square2, triangle, noise)
+export function spitNSF(name, square1, square2, triangle, noise, dpcm, p1, p2, saw) {
+    resetSongLength()
+    resetVolEnvelopes()
+    resetPitchEnvelopes()
+    resetDutyEnvelopes()
+    resetArps()
+    square1 = compileStream(square1, 0)
+    square2 = compileStream(square2, 1)
+    triangle = compileStream(triangle, 2)
+    noise = compileStream(noise, 3)
+    dpcm = compileDpcm(dpcm, 4)
+    p1 = compileStream(p1, 5)
+    p2 = compileStream(p2, 6)
+    saw = compileStream(saw, 7)
+    assembleDriver(square1, square2, triangle, noise, dpcm, p1, p2, saw)
     let buffer = new ArrayBuffer(nsfDriver.length);
     let view = new DataView(buffer)
     for (let i = 0; i < nsfDriver.length; i++) {
@@ -1118,6 +1160,54 @@ export function spitNSF(name, square1, square2, triangle, noise) {
     downloadAnchorNode.remove();
 }
 
+function saveDMC(name, bytes) {
+    let buffer = new ArrayBuffer(bytes.length);
+    let view = new DataView(buffer)
+    for (let i = 0; i < bytes.length; i++) {
+      view.setInt8(i, bytes[i]); 
+    }
+    const blob = new Blob([view], { type: "application/octet-stream" }); 
+    var new_file = URL.createObjectURL(blob);
+    var downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href", new_file);
+    downloadAnchorNode.setAttribute("download", name);
+    document.body.appendChild(downloadAnchorNode); // required for firefox
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+}
+
+export function saveMp4(square1, square2, triangle, noise, dpcm, p1, p2, saw) {
+    if (dpcm.length === 0 && p1.length === 0 && p2.length === 0 && saw.length === 0) {
+      setLayout(4)
+    } else if (p1.length === 0 && p2.length === 0 && saw.length === 0) {
+      setLayout(5)
+    // special case for when we have specifically these 5 channels:
+    // VRC6 Pulse 1, VRC6 Pulse 2, Noise, Triangle, DPCM
+    } else if (saw.length === 0 && square1.length === 0 && square2.length === 0 && dpcm.length !== 0) {
+      setLayout(10)
+    }
+    const startTime = new Date().getTime()
+    resetSongLength()
+    resetVolEnvelopes()
+    resetPitchEnvelopes()
+    resetDutyEnvelopes()
+    resetArps()
+    square1 = compileStream(square1, 0)
+    square2 = compileStream(square2, 1)
+    triangle = compileStream(triangle, 2)
+    noise = compileStream(noise, 3)
+    dpcm = compileDpcm(dpcm, 4)
+    p1 = compileStream(p1, 5)
+    p2 = compileStream(p2, 6)
+    saw = compileStream(saw, 7)
+    assembleDriver(square1, square2, triangle, noise, dpcm, p1, p2, saw)
+    loadRom(nsfDriver)
+    const endTime = new Date().getTime()
+    apu.setRecording(true)
+    renderMp4()
+    return "Assembled in " + (endTime - startTime) + " ms"
+}
+
 function lengthPitch(pairs) {
   let notes = []
   for (let i = 0; i < pairs.length; i++) {
@@ -1129,15 +1219,24 @@ function lengthPitch(pairs) {
   return notes
 }
 
+function addDpcm(name, bytes) {
+  samples.push({name: name, bytes: bytes})
+  renderSamples()
+}
+
 // types.ns is namespace of type functions
 export var ns = {
     'env': printEnv,
     'hex': hex,
+    'add-dpcm': addDpcm,
     'save-nsf': spitNSF,
     'play': playNSF,
+    'save-dmc': saveDMC,
     'save-wav': saveWav,
+    'save-mp4': saveMp4,
     'hex2bin': hex2bin,
     'dec2bin': dec2bin,
+    'pattern': compilePattern,
     'length-pitch': lengthPitch,
     'vib': audio.vib,
     'vib-all': audio.vib_all,

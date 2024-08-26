@@ -23,14 +23,26 @@ export function updateDebugView() {
     drawRam();
 }
 
+function hex(n) {
+    return "$" + (n).toString(16);
+}
+
 function drawRam() {
     let ev = el("memory");
     ev.textContent = "";
     let ramBasePos = 0x1000
     let reg = 0
-    for (let r = ramBasePos; r < ramBasePos + 0x4; r++) {
+    for (let r = ramBasePos; r < ramBasePos + 0x5; r++) {
         let str = `${getWordRep(r * 4)}: `;
         for (let c = 0; c < 4; c++) {
+            str += `${getByteRep(apu.registers[reg])} `;
+            reg++
+        }
+        ev.textContent += str + "\n";
+    }
+    for (let r = ramBasePos; r < ramBasePos + 0x3000; r += 0x1000) {
+        let str = `${getWordRep(0x8000 + r)}: `;
+        for (let c = 0; c < 3; c++) {
             str += `${getByteRep(apu.registers[reg])} `;
             reg++
         }

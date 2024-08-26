@@ -1,4 +1,6 @@
 import * as cpu from "./cpu";
+import * as osc from "./oscview";
+import {actx} from "./audio"
 
 const dutyCycles = [
     [0, 1, 0, 0, 0, 0, 0, 0],
@@ -25,7 +27,7 @@ const dmcLoadValues = [
     428, 380, 340, 320, 286, 254, 226, 214, 190, 160, 142, 128, 106, 84, 72, 54
 ];
 
-let outputValues = new Float32Array(29781);
+export let outputValues = new Float32Array(29781);
 let outputOffset = 0;
 
 let frameCounter = 0;
@@ -86,7 +88,7 @@ let p2SweepReload = false;
 export let triTimer = 0;
 let triTimerValue = 0;
 let triStepIndex = 0;
-let triOutput = 0;
+export let triOutput = 0;
 let triCounterHalt = false;
 export let triCounter = 0;
 export let triLinearCounter = 0;
@@ -113,8 +115,8 @@ let dmcLoop = false;
 export let dmcTimer = 0;
 let dmcTimerValue = 0;
 let dmcOutput = 0;
-let dmcSampleAddress = 0xc000;
-let dmcAddress = 0xc000;
+let dmcSampleAddress = 0xc040;
+let dmcAddress = 0xc040;
 let dmcSample = 0;
 let dmcSampleLength = 0;
 let dmcSampleEmpty = true;
@@ -123,6 +125,37 @@ let dmcShifter = 0;
 let dmcBitsLeft = 8;
 let dmcSilent = true;
 
+// VRC6
+// Frequency control - write 0 to $9003 on startup, that's all
+
+// VRC6 Pulse 1
+let vrc6P1Vol = 0     // $9000 bits 0-3
+let vrc6P1Duty = 0    // $9000 bits 4-6
+let vrc6P1DutyIndex = 0
+let vrc6P1Mode = false    // $9000 bit 7
+export let vrc6P1Timer = 0   // $9001 bits 0-7, $9002 bits 0-3
+let vrc6P1TimerValue = 0
+let vrc6P1Enable = 0  // $9002 bit 7
+let vrc6P1Output = 0
+
+// VRC6 Pulse 2
+let vrc6P2Vol = 0     // $A000 bits 0-3
+let vrc6P2Duty = 0    // $A000 bits 4-6
+let vrc6P2DutyIndex = 0
+let vrc6P2Mode = false    // $A000 bit 7
+export let vrc6P2Timer = 0   // $A001 bits 0-7, $A002 bits 0-3
+let vrc6P2TimerValue = 0
+let vrc6P2Enable = 0  // $A002 bit 7
+let vrc6P2Output = 0
+
+// VRC6 Saw
+let vrc6SawAccumRate = 0   // $B000 bits 0-5
+let vrc6SawAccum = 0       // internal accumulator
+export let vrc6SawTimer = 0       // $B001 bits 0-7, $B002 bits 0-3
+let vrc6SawTimerValue = 0
+let vrc6SawEnable = 0      // $B002 bit 7
+let vrc6SawOutput = 0
+let vrc6SawStep = 0
 
 export let frameIrqWanted = false;
 export let dmcIrqWanted = false;
@@ -225,8 +258,8 @@ export function reset() {
     dmcTimer = 0;
     dmcTimerValue = 0;
     dmcOutput = 0;
-    dmcSampleAddress = 0xc000;
-    dmcAddress = 0xc000;
+    dmcSampleAddress = 0xc040;
+    dmcAddress = 0xc040;
     dmcSample = 0;
     dmcSampleLength = 0;
     dmcSampleEmpty = true;
@@ -234,6 +267,39 @@ export function reset() {
     dmcShifter = 0;
     dmcBitsLeft = 8;
     dmcSilent = true;
+
+// VRC6
+// Frequency control - write 0 to $9003 on startup, that's all
+   write(0x9003, 0)
+
+// VRC6 Pulse 1
+    vrc6P1Vol = 0     // $9000 bits 0-3
+    vrc6P1Duty = 0    // $9000 bits 4-6
+    vrc6P1DutyIndex = 0
+    vrc6P1Mode = false    // $9000 bit 7
+    vrc6P1Timer = 0   // $9001 bits 0-7, $9002 bits 0-3
+    vrc6P1TimerValue = 0
+    vrc6P1Enable = 0  // $9002 bit 7
+    vrc6P1Output = 0
+
+// VRC6 Pulse 2
+    vrc6P2Vol = 0     // $A000 bits 0-3
+    vrc6P2Duty = 0    // $A000 bits 4-6
+    vrc6P2DutyIndex = 0
+    vrc6P2Mode = false    // $A000 bit 7
+    vrc6P2Timer = 0   // $A001 bits 0-7, $A002 bits 0-3
+    vrc6P2TimerValue = 0
+    vrc6P2Enable = 0  // $A002 bit 7
+    vrc6P2Output = 0
+
+// VRC6 Saw
+    vrc6SawAccumRate = 0   // $B000 bits 0-5
+    vrc6SawTimer = 0       // $B001 bits 0-7, $B002 bits 0-3
+    vrc6SawAccum = 0       // internal accumulator
+    vrc6SawTimerValue = 0
+    vrc6SawEnable = 0      // $B002 bit 7
+    vrc6SawOutput = 0
+    vrc6SawStep = 0
 }
 
 export function cycle() {
@@ -252,6 +318,9 @@ export function cycle() {
     cyclePulse2();
     cycleNoise();
     cycleDmc();
+    cycleVrc6Pulse1()
+    cycleVrc6Pulse2()
+    cycleVrc6Saw()
 
     outputValues[outputOffset++] = mix();
     if (outputOffset === 29781) {
@@ -260,20 +329,43 @@ export function cycle() {
     }
 }
 
+function el(id) {
+  return document.getElementById(id);
+}
+
+function log(text) {
+  el("debug2").value = text
+}
+
+let isRecording = false
+
+export function setRecording(bool) {
+  isRecording = bool
+}
+
 function cyclePulse1() {
-    if (p1TimerValue !== 0) {
-        p1TimerValue--;
-    } else {
-        p1TimerValue = (p1Timer * 2) + 1;
-        p1DutyIndex++;
-        p1DutyIndex &= 0x7;
+  if (p1TimerValue !== 0) {
+      p1TimerValue--;
+  } else {
+      p1TimerValue = (p1Timer * 2) + 1;
+      p1DutyIndex++;
+      p1DutyIndex &= 0x7;
+  }
+  let output = dutyCycles[p1Duty][p1DutyIndex];
+  if (output === 0 || p1SweepMuting || p1Counter === 0) {
+      p1Output = 0;
+  } else {
+      p1Output = p1ConstantVolume ? p1Volume : p1Decay;
+  }
+  if (isRecording) {
+    osc.p1ViewBuffer.push(p1Output)
+    osc.p1ViewBuffer.shift()
+    osc.setP1ViewCounter(osc.p1ViewCounter - 1)
+    if (osc.p1ViewCounter === 0 && osc.layout !== 10) {
+      osc.drawP1()
+      osc.setP1ViewCounter(29781)
     }
-    let output = dutyCycles[p1Duty][p1DutyIndex];
-    if (output === 0 || p1SweepMuting || p1Counter === 0) {
-        p1Output = 0;
-    } else {
-        p1Output = p1ConstantVolume ? p1Volume : p1Decay;
-    }
+  }
 }
 
 function cyclePulse2() {
@@ -290,25 +382,77 @@ function cyclePulse2() {
     } else {
         p2Output = p2ConstantVolume ? p2Volume : p2Decay;
     }
+  if (isRecording) {
+    osc.p2ViewBuffer.push(p2Output)
+    osc.p2ViewBuffer.shift()
+    osc.setP2ViewCounter(osc.p2ViewCounter - 1)
+    if (osc.p2ViewCounter === 0 && osc.layout !== 10) {
+      osc.drawP2()
+      osc.setP2ViewCounter(29781)
+    }
+  }
 }
 
 function cycleTriangle() {
-    if (triTimerValue !== 0) {
-        triTimerValue--;
-    } else {
-        triTimerValue = triTimer;
-        if (triCounter !== 0 && triLinearCounter !== 0) {
-            triOutput = triangleSteps[triStepIndex++];
-            if (triTimer < 2) {
-                // ultrasonic
-                triOutput = 7.5;
-            }
-            triStepIndex &= 0x1f;
-        }
+  if (triTimerValue !== 0) {
+    triTimerValue--;
+  } else {
+    triTimerValue = triTimer;
+    if (triCounter !== 0 && triLinearCounter !== 0) {
+      triOutput = triangleSteps[triStepIndex++];
+      if (triTimer < 2) {
+        // ultrasonic
+        triOutput = 7.5;
+      }
+      triStepIndex &= 0x1f;
     }
+  }
+  if (isRecording) {
+    osc.triViewBuffer.push(triOutput)
+    osc.triViewBuffer.shift()
+    if (triOutput !== 0) {
+      osc.setTriWatch(osc.triWatch - 1)
+    } else {
+      if (!osc.triFoundZero) {
+        osc.setTriFoundZero(true)
+        osc.setTriWatch(59562)
+      }
+    }
+  if (osc.triFoundZero) {
+    if (triOutput !== 1) {
+      osc.setTriWatch(osc.triWatch - 1)
+    } else {
+      if (!osc.triRising) {
+        osc.setTriRising(osc.triWatch)
+      }
+    }
+  }
+  if (osc.triRising) {osc.setTriRising(osc.triRising - 1)}
+  if (osc.triWatch <= 0) {osc.setTriWatch(59562)}
+    osc.setTriViewCounter(osc.triViewCounter - 1)
+  if (osc.triViewCounter === 0) {
+    osc.setTriViewCounter(29781)
+    if ((osc.triRising > 14889) && (osc.triRising < 44672)) {
+      osc.drawTri(osc.triViewBuffer.slice(osc.triRising - 14890, osc.triRising + 14890))
+      osc.setTriFoundZero(false)
+      osc.setTriRising(false)
+      osc.setTriWatch(59562)
+    } else if (triOutput === 7.5){
+      osc.drawTri(new Array(29781).fill(7.5))
+    }
+    //log(triViewBuffer)
+  }
+  }
 }
 
 function cycleNoise() {
+  if (isRecording) {
+    osc.noiseViewBuffer.push(noiseOutput)
+    if (osc.noiseViewBuffer.length === 29781) {
+      osc.drawNoise(osc.noiseViewBuffer)
+      osc.setNoiseViewBuffer([])
+    }
+  }
     if (noiseTimerValue !== 0) {
         noiseTimerValue--;
     } else {
@@ -332,6 +476,13 @@ function cycleNoise() {
 }
 
 function cycleDmc() {
+  if (isRecording && (osc.layout === 5 || osc.layout === 8 || osc.layout === 10)) {
+    osc.dmcViewBuffer.push(dmcOutput)
+    if (osc.dmcViewBuffer.length === 29781) {
+      osc.drawDmc(osc.dmcViewBuffer)
+      osc.setDmcViewBuffer([])
+    }
+  }
     if (dmcTimerValue !== 0) {
         dmcTimerValue--;
     } else {
@@ -363,6 +514,8 @@ function cycleDmc() {
     if (dmcBytesLeft > 0 && dmcSampleEmpty) {
         dmcSampleEmpty = false;
         dmcSample = cpu.read(dmcAddress);
+        //console.log("dmcAddress: " + dmcAddress)
+        //console.log("dmcSample: " + dmcSample)
         dmcAddress++;
         if (dmcAddress === 0x10000) {
             dmcAddress = 0x8000;
@@ -401,6 +554,78 @@ function updateSweepP2() {
     } else {
         p2SweepMuting = false;
     }
+}
+
+function cycleVrc6Pulse1() {
+  if (vrc6P1TimerValue !== 0) {
+    vrc6P1TimerValue--
+  } else {
+    vrc6P1TimerValue = vrc6P1Timer + 1;
+    vrc6P1DutyIndex--
+    vrc6P1DutyIndex &= 0xf
+  }
+  vrc6P1Output = vrc6P1Vol
+  if ((vrc6P1DutyIndex <= vrc6P1Duty) && !vrc6P1Mode) {
+    vrc6P1Output = 0
+  }
+  if (isRecording) {
+    osc.vrc6P1ViewBuffer.push(vrc6P1Output)
+    osc.vrc6P1ViewBuffer.shift()
+    osc.setVrc6P1ViewCounter(osc.vrc6P1ViewCounter - 1)
+    if (osc.vrc6P1ViewCounter === 0 && (osc.layout === 8 || osc.layout === 10)) {
+      osc.drawVrc6P1()
+      osc.setVrc6P1ViewCounter(29781)
+    }
+  }
+}
+
+function cycleVrc6Pulse2() {
+  if (vrc6P2TimerValue !== 0) {
+    vrc6P2TimerValue--
+  } else {
+    vrc6P2TimerValue = vrc6P2Timer + 1;
+    vrc6P2DutyIndex--
+    vrc6P2DutyIndex &= 0xf
+  }
+  vrc6P2Output = vrc6P2Vol
+  //console.log("p2 vol: " + vrc6P2Output)
+  if ((vrc6P2DutyIndex <= vrc6P2Duty) && !vrc6P2Mode) {
+    vrc6P2Output = 0
+  }
+  if (isRecording) {
+    osc.vrc6P2ViewBuffer.push(vrc6P2Output)
+    osc.vrc6P2ViewBuffer.shift()
+    osc.setVrc6P2ViewCounter(osc.vrc6P2ViewCounter - 1)
+    if (osc.vrc6P2ViewCounter === 0 && (osc.layout === 8 || osc.layout === 10)) {
+      osc.drawVrc6P2()
+      osc.setVrc6P2ViewCounter(29781)
+    }
+  }
+}
+
+function cycleVrc6Saw() {
+  if (vrc6SawTimerValue !== 0) {
+    vrc6SawTimerValue--
+  } else {
+    vrc6SawStep = (vrc6SawStep + 1) % 14
+    vrc6SawTimerValue = vrc6SawTimer + 1;
+    if (vrc6SawStep === 0) {
+      vrc6SawAccum = 0
+    }
+    if ((vrc6SawStep & 0x01) == 0x0) {
+      vrc6SawAccum += vrc6SawAccumRate
+      vrc6SawOutput = vrc6SawAccum >> 3
+    }
+  }
+  if (isRecording) {
+    osc.sawViewBuffer.push(vrc6SawOutput)
+    osc.sawViewBuffer.shift()
+    osc.setSawViewCounter(osc.sawViewCounter - 1)
+    if (osc.sawViewCounter === 0 && osc.layout === 8) {
+      osc.drawSaw()
+      osc.setSawViewCounter(29781)
+    }
+  }
 }
 
 function clockQuarter() {
@@ -535,7 +760,8 @@ function mix() {
                                (noiseOutput / 12241) + 
                                (dmcOutput / 22638))) + 100)
     let pulse = 95.88 / ((8128 / (p1Output + p2Output)) + 100)
-    return ((tnd + pulse) * 2) - 0.3
+    let vrc6 = (vrc6P1Output + vrc6P2Output + vrc6SawOutput) / 61
+    return ((tnd + pulse) * 2) + vrc6 - 0.3
 }
 
 function handleFrameCounter() {
@@ -600,12 +826,19 @@ export let registers = [
     0, 0, 0, 0,
     0, 0, 0, 0,
     0, 0, 0, 0,
-    0, 0, 0, 0
+    0, 0, 0, 0,
+    0, 0, 0,
+    0, 0, 0,
+    0, 0, 0
 ]
 
 export function write(adr, value) {
     switch (adr) {
         case 0x4000: {
+            // DDlc.vvvv
+            // Pulse 1 Duty cycle, length counter halt,
+            // constant volume/envelope flag,
+            // volume/envelope divider period 
             registers[0] = value
             p1Duty = (value & 0xc0) >> 6;
             p1Volume = value & 0xf;
@@ -693,13 +926,13 @@ export function write(adr, value) {
             break;
         }
         case 0x400a: {
-            registers[9] = value
+            registers[10] = value
             triTimer &= 0x700;
             triTimer |= value;
             break;
         }
         case 0x400b: {
-            registers[10] = value
+            registers[11] = value
             triTimer &= 0xff;
             triTimer |= (value & 0x7) << 8;
             if (enableTriangle) {
@@ -709,20 +942,20 @@ export function write(adr, value) {
             break;
         }
         case 0x400c: {
-            registers[11] = value
+            registers[12] = value
             noiseCounterHalt = (value & 0x20) > 0;
             noiseConstantVolume = (value & 0x10) > 0;
             noiseVolume = value & 0xf;
             break;
         }
         case 0x400e: {
-            registers[12] = value
+            registers[14] = value
             noiseTonal = (value & 0x80) > 0;
             noiseTimer = noiseLoadValues[value & 0xf] - 1;
             break;
         }
         case 0x400f: {
-            registers[13] = value
+            registers[15] = value
             if (enableNoise) {
                 noiseCounter = lengthLoadValues[(value & 0xf8) >> 3];
             }
@@ -730,7 +963,7 @@ export function write(adr, value) {
             break;
         }
         case 0x4010: {
-            registers[14] = value
+            registers[16] = value
             dmcInterrupt = (value & 0x80) > 0;
             dmcLoop = (value & 0x40) > 0;
             dmcTimer = dmcLoadValues[value & 0xf] - 1;
@@ -740,22 +973,24 @@ export function write(adr, value) {
             break;
         }
         case 0x4011: {
-            registers[15] = value
+            registers[17] = value
             dmcOutput = value & 0x7f;
             break;
         }
         case 0x4012: {
-            registers[16] = value
-            dmcSampleAddress = 0xc000 | (value << 6);
+            registers[18] = value
+            //console.log("dmc address value " + value)
+            dmcSampleAddress = ((value << 6) + 0xc000);
+            //console.log("dmc address set to " + dmcSampleAddress)
             break;
         }
         case 0x4013: {
-            registers[17] = value
+            registers[19] = value
             dmcSampleLength = (value << 4) + 1;
             break;
         }
         case 0x4015: {
-            registers[18] = value
+            //registers[18] = value
             enableNoise = (value & 0x08) > 0;
             enableTriangle = (value & 0x04) > 0;
             enablePulse2 = (value & 0x02) > 0;
@@ -784,7 +1019,7 @@ export function write(adr, value) {
             break;
         }
         case 0x4017: {
-            registers[19] = value
+            //registers[19] = value
             step5Mode = (value & 0x80) > 0;
             interruptInhibit = (value & 0x40) > 0;
             if (interruptInhibit) {
@@ -797,8 +1032,114 @@ export function write(adr, value) {
             }
             break;
         }
+        case 0x9000: {
+            registers[20] = value
+            // VRC6 Pulse 1 control
+            // 7  bit  0
+            // ---- ----
+            // MDDD VVVV
+            // |||| ||||
+            // |||| ++++- Volume
+            // |+++------ Duty Cycle
+            // +--------- Mode (1: ignore duty)
+            vrc6P1Mode = (value & 0x80) > 0
+            vrc6P1Duty = (value & 0x70) >> 4
+            vrc6P1Vol = value & 0xf
+            break;
+        }
+        case 0x9001: {
+            registers[21] = value
+            // VRC6 Pulse 1 freq low
+            // 7  bit  0
+            // ---- ----
+            // FFFF FFFF
+            // |||| ||||
+            // ++++-++++- Low 8 bits of frequency
+            vrc6P1Timer &= 0xF00
+            vrc6P1Timer |= value
+            break;
+        }
+        case 0x9002: {
+            registers[22] = value
+            // VRC6 Pulse 1 freq high
+            // 7  bit  0
+            // ---- ----
+            // E... FFFF
+            // |    ||||
+            // |    ++++- High 4 bits of frequency
+            // +--------- Enable (0 = channel disabled)
+            vrc6P1Timer &= 0xff
+            vrc6P1Timer |= (value & 0xf) << 8; 
+            break;
+        }
+        case 0x9003: {
+            // VRC6 Frequency Control
+            // 7  bit  0
+            // ---- ----
+            // .... .ABH
+            //       |||
+            //       ||+- Halt
+            //       |+-- 16x frequency (4 octaves up)
+            //       +--- 256x frequency (8 octaves up)
+            // not normally written to, only initialized to 0
+            break;
+        }
+        case 0xA000: {
+            registers[23] = value
+            // VRC6 Pulse 2 control
+            // (see pulse 1 control)
+            vrc6P2Mode = (value & 0x80) > 0
+            vrc6P2Duty = (value & 0x70) >> 4
+            vrc6P2Vol = value & 0xf
+            break;
+        }
+        case 0xA001: {
+            registers[24] = value
+            // VRC6 Pulse 2 freq low
+            // (see pulse 1 freq low)
+            vrc6P2Timer &= 0xF00
+            vrc6P2Timer |= value
+            break;
+        }
+        case 0xA002: {
+            registers[25] = value
+            // VRC6 Pulse 2 freq high
+            // (see pulse 1 freq high)
+            vrc6P2Timer &= 0xff
+            vrc6P2Timer |= (value & 0xf) << 8; 
+            break;
+        }
+        case 0xB000: {
+            registers[26] = value
+            // VRC6 Saw Accum Rate
+            // 7  bit  0
+            // ---- ----
+            // ..AA AAAA
+            //   ++-++++- Accumulator Rate (controls volume)
+            vrc6SawAccumRate = value &= 0x3f
+            break;
+        }
+        case 0xB001: {
+            registers[27] = value
+            // VRC6 Saw freq low
+            // (see pulse 1,2 freq low)
+            vrc6SawTimer &= 0xF00
+            vrc6SawTimer |= value
+            break;
+        }
+        case 0xB002: {
+            registers[28] = value
+            // VRC6 Saw freq high
+            // (see pulse 1,2 freq high)
+            vrc6SawTimer &= 0xff
+            vrc6SawTimer |= (value & 0xf) << 8;
+            break;
+        }
         default: {
             break;
         }
     }
 }
+
+
+

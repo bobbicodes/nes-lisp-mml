@@ -305,9 +305,9 @@ repl_env.set(types._symbol('*ARGV*'), []);
 
 // load core.clj
 evalString("(do " + core_clj + ")")
-//evalString("(do " + pprint + ")")
+evalString("(do " + pprint + ")")
 
 export function repp(s) {
-   return PRINT(EVAL(READ("(do " + s + ")"), repl_env))
-  //return EVAL(READ("(pprint " + "(do " + s + "))"), repl_env)
+   //return PRINT(EVAL(READ("(do " + s + ")"), repl_env))
+  return EVAL(READ("(pprint " + "(do " + s + "))"), repl_env)
 }

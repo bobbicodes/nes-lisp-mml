@@ -432,4 +432,4 @@ addDoc('set/difference', '([s1] [s1 s2] [s1 s2 & sets])', 'Return a set that is 
 addDoc('set/symmetric-difference', '[s1 s2]', "Returns a set that is the symmetric difference of the input sets.")
 addDoc('vib', '[notes speed width]', "Takes a sequence of notes and applies sine wave vibrato to only the tails of the notes. Speed and width are multipliers for the frequency and amplitude of the sine wave. Uses loop2 internally, so cannot be used inside loops made using loop2.")
 addDoc('vib-all', '[notes speed width]', "Takes a sequence of notes and applies sine wave vibrato to them. Speed and width are multipliers for the frequency and amplitude of the sine wave. Uses loop2 internally, so cannot be used inside loops made using loop2.")
-
+addDoc('add-dpcm', '[name bytes]', "Takes a name as a string and a sequence of DPCM bytes, and loads a sample to be used in the editor.")

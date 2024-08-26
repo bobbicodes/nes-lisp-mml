@@ -3,6 +3,7 @@ import { _pr_str, _println } from './printer.js'
 import { repl_env, evalString, PRINT, EVAL } from './interpreter.js';
 import * as types from './types.js'
 import * as audio from './audio.js'
+import {compileStream, compileDpcm, streamLength} from './compiler.js'
 
 export var out_buffer = ""
 
@@ -112,7 +113,7 @@ export function get(coll, key, notfound) {
                 return value
             }
         }
-        return notfound
+        return notfound || null
     }
     if (coll != null) {
         return coll.get(key) || notfound
@@ -1062,18 +1063,66 @@ function hex(n) {
     return "$" + (n).toString(16);
 }
 
-function saveWav(filename, square1, square2, triangle, noise) {
-    postMessage({"type": "savewav", "streams": [filename, square1, square2, triangle, noise]})
+function saveWav(filename, square1, square2, triangle, noise, dpcm, p1, p2, saw) {
+    if (square1 instanceof Map) {
+      square2 = square1.get("ʞsquare2") || []
+      triangle = square1.get("ʞtriangle") || []
+      noise = square1.get("ʞnoise") || []
+      dpcm = square1.get("ʞdpcm") || []
+      p1 = square1.get("ʞp1") || []
+      p2 = square1.get("ʞp2") || []
+      saw = square1.get("ʞsaw") || []
+      square1 = square1.get("ʞsquare1") || []
+    }
+    postMessage({"type": "savewav", "streams": [filename, square1, square2, triangle, noise, dpcm, p1, p2, saw]})
   return "Saving " + filename
 }
 
-function playNSF(square1, square2, triangle, noise) {
-    postMessage({"type": "play", "streams": [square1, square2, triangle, noise]})
+function playNSF(square1, square2, triangle, noise, dpcm, p1, p2, saw) {
+    if (square1 instanceof Map) {
+      square2 = square1.get("ʞsquare2") || []
+      triangle = square1.get("ʞtriangle") || []
+      noise = square1.get("ʞnoise") || []
+      dpcm = square1.get("ʞdpcm") || []
+      p1 = square1.get("ʞp1") || []
+      p2 = square1.get("ʞp2") || []
+      saw = square1.get("ʞsaw") || []
+      square1 = square1.get("ʞsquare1") || []
+    }
+    //console.log("[playNSF]: " + dpcm)
+    postMessage({"type": "play", "streams": [square1, square2, triangle, noise, dpcm, p1, p2, saw]})
     return "Playing..."
 }
 
-function spitNSF(name, square1, square2, triangle, noise) {
-  postMessage({"type": "savensf", "streams": [name, square1, square2, triangle, noise]})
+function saveMp4(square1, square2, triangle, noise, dpcm, p1, p2, saw) {
+    if (square1 instanceof Map) {
+      square2 = square1.get("ʞsquare2") || []
+      triangle = square1.get("ʞtriangle") || []
+      noise = square1.get("ʞnoise") || []
+      dpcm = square1.get("ʞdpcm") || []
+      p1 = square1.get("ʞp1") || []
+      p2 = square1.get("ʞp2") || []
+      saw = square1.get("ʞsaw") || []
+      square1 = square1.get("ʞsquare1") || []
+    }
+    //console.log("[playNSF]: " + dpcm)
+    postMessage({"type": "mp4", "streams": [square1, square2, triangle, noise, dpcm, p1, p2, saw]})
+    return "Playing..."
+}
+
+
+function spitNSF(name, square1, square2, triangle, noise, dpcm, p1, p2, saw) {
+  if (square1 instanceof Map) {
+      square2 = square1.get("ʞsquare2") || []
+      triangle = square1.get("ʞtriangle") || []
+      noise = square1.get("ʞnoise") || []
+      dpcm = square1.get("ʞdpcm") || []
+      p1 = square1.get("ʞp1") || []
+      p2 = square1.get("ʞp2") || []
+      saw = square1.get("ʞsaw") || []
+      square1 = square1.get("ʞsquare1") || []
+    }
+  postMessage({"type": "savensf", "streams": [name, square1, square2, triangle, noise, dpcm, p1, p2, saw]})
   return "Saving " + name
 }
 
@@ -1132,11 +1181,199 @@ function trill(p1, p2) {
   return res
 }
 
+function savePCM(name, data) {
+  console.log("saving pcm data: ", data)
+  postMessage({"type": "savepcm", "name": name, "data": data})
+  return "saving pcm data"
+}
+
+function saveDMC(name, data) {
+  console.log("saving pcm data: ", data)
+  postMessage({"type": "savedmc", "name": name, "data": data})
+  return "saving dmc data"
+}
+
+function addDpcm(name, bytes) {
+  postMessage({"type": "sample", "name": name, "bytes": bytes})
+  return "DPCM sample added"
+}
+
+function sineWave(length, amplitude, freq, sampleRate) {
+  let wave = []
+  for (let i = 0; i < length; i += (1 / sampleRate)) {
+    wave.push(amplitude + (amplitude * (Math.sin((2 * Math.PI) * freq * i))))
+  }
+  return wave
+}
+
+//console.log(sineWave(1, 1, 220, 44100).map(x => x = x - 1))
+
+//savePCM("sine.wav", sineWave(1, 1, 220, 44100).map(x => x = x - 1))
+
+function drum(params) {
+  const length = params.get("ʞlength")
+  const max = params.get("ʞmax")
+  const min = params.get("ʞmin")
+  const speed = params.get("ʞspeed")
+  const decay = params.get("ʞdecay")
+  let wave = []
+  let pitch = max
+  //console.log(min)
+  let amplitude = 50
+  for (let i = 0; i < length; i += (1 / 33100)) {
+    wave.push(75 + (amplitude * (Math.sin((2 * Math.PI) * pitch * i))))
+    if (pitch > min) {
+      pitch -= i / (60 / speed)
+      //console.log(pitch)
+    }
+    if (i > 0.5) {
+      //amplitude = Math.min(0.0001, amplitude-1)
+    }
+  }
+  return wave
+}
+
+function deltaModulate(values) {
+  //console.log(values)
+  let val = 64
+  let dpcm = []
+  for (let i = 0; i < values.length; i++) {
+    let up = Math.abs(values[i] - (val + 2))
+    let down = Math.abs(values[i] - (val - 2))
+    if (up <= down) {
+      val = Math.min(127, val+2)
+      dpcm.push(1)
+    } else {
+      val = Math.max(0, val-2)
+      dpcm.push(0)
+    }
+  }
+  //console.log(dpcm)
+  return dpcmSeq(dpcm)
+}
+
+function dpcmRaw(values) {
+  //console.log(values)
+  let val = 64
+  let dpcm = []
+  for (let i = 0; i < values.length; i++) {
+    let up = Math.abs(values[i] - (val + 2))
+    let down = Math.abs(values[i] - (val - 2))
+    if (up <= down) {
+      val = Math.min(127, val+2)
+      dpcm.push(1)
+    } else {
+      val = Math.max(0, val-2)
+      dpcm.push(0)
+    }
+  }
+  //console.log(dpcm)
+  return dpcm
+}
+
+function packBits(bits) {
+  let val = 0
+  for (let i = 0; i < 8; i++) {
+    let bit = bits.pop()
+    if (bit == 1) {
+      val = val | 1 << i
+    }
+  }
+  return val
+}
+
+function dpcmSeq(values) {
+  let bytes = []
+  const chunkSize = 8;
+  for (let i = 0; i < values.length; i += chunkSize) {
+    const chunk = values.slice(i, i + chunkSize);
+    bytes = bytes.concat(packBits(chunk))
+  }
+  return bytes
+}
+
+function sqRest(length) {
+  let m = new Map()
+  m.set("ʞlength", length)
+  m.set("ʞpitch", 160)
+  return m
+}
+
+function noiseRest(length) {
+  let m = new Map()
+  m.set("ʞlength", length)
+  m.set("ʞpitch", 0)
+  m.set("ʞvolume", 0)
+  return m
+}
+
+function dpcmRest(length) {
+  let m = new Map()
+  m.set("ʞrest", length)
+  return m
+}
+
+function restPad(stream, streamNum, length) {
+  let padLength = length - streamLength[streamNum]
+  if (padLength === 0) {return stream}
+  if (streamNum === 3) {
+    stream.push(noiseRest(padLength))
+  } else if (streamNum === 4) {
+    stream.push(dpcmRest(padLength))
+  } else {
+    stream.push(sqRest(padLength))
+  }
+  return stream
+}
+
+// stateful, uses and updates current values of `streamLength` array
+export function compilePattern(pattern) {
+  let sq1 = pattern.get("ʞsquare1") || []
+  let sq2 = pattern.get("ʞsquare2") || []
+  let tri = pattern.get("ʞtriangle") || []
+  let noise = pattern.get("ʞnoise") || []
+  let dpcm = pattern.get("ʞdpcm") || []
+  let p1 = pattern.get("ʞp1") || []
+  let p2 = pattern.get("ʞp2") || []
+  let saw = pattern.get("ʞsaw") || []
+  // compile all streams to set their lengths in `streamLength`
+  compileStream(sq1, 0)
+  compileStream(sq2, 1)
+  compileStream(tri, 2)
+  compileStream(noise, 3)
+  compileDpcm(dpcm, 4)
+  compileStream(p1, 5)
+  compileStream(p2, 6)
+  compileStream(saw, 7)
+  const maxLength = Math.max(...streamLength)
+  let m = new Map()
+  m.set("ʞsquare1", restPad(sq1, 0, maxLength))
+  m.set("ʞsquare2", restPad(sq2, 1, maxLength))
+  m.set("ʞtriangle", restPad(tri, 2, maxLength))
+  m.set("ʞnoise", restPad(noise, 3, maxLength))
+  m.set("ʞdpcm", restPad(dpcm, 4, maxLength))
+  m.set("ʞp1", restPad(p1, 5, maxLength))
+  m.set("ʞp2", restPad(p2, 6, maxLength))
+  m.set("ʞsaw", restPad(saw, 7, maxLength))
+  return m
+}
+
 // types.ns is namespace of type functions
 export var ns = {
     'env': printEnv,
     'hex': hex,
+    'save-pcm': savePCM,
+    'assemble-dpcm': audio.assembleDpcm,
+    'save-mp4': saveMp4,
+    'pattern': compilePattern,
+    'save-dmc': saveDMC,
     'save-nsf': spitNSF,
+    'dpcm-raw': dpcmRaw,
+    'pack': dpcmSeq,
+    'sine-wave': sineWave,
+    'add-dpcm': addDpcm,
+    'dpcm': deltaModulate,
+    'drum': drum,
     'play': playNSF,
     'save-wav': saveWav,
     'hex2bin': hex2bin,
@@ -1192,6 +1429,7 @@ export var ns = {
     'Math/sqrt': _sqrt,
     'Math/pow': _pow,
     'Math/abs': _abs,
+    'pi': Math.PI,
     'sin': _sin,
     'abs': _abs,
     'Integer/toBinaryString': dec2bin,

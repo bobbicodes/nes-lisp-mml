@@ -15,204 +15,269 @@ let editorState = EditorState.create({
   [length vol-pitch]
   (let [frame1 {:length 1 :volume (ffirst vol-pitch)
                 :pitch (last (first vol-pitch))}
-        midframes (for [[volume pitch] (rest (take length vol-pitch))]
+        midframes (for [[volume pitch] (rest vol-pitch)]
                     {:volume volume :pitch pitch})
-        tail {:length (if (< length (count vol-pitch))
-                        0 (- length (count vol-pitch)))
-                    :volume 0 :pitch 0}]
-    (concat [frame1] midframes [tail])))
+        tail {:length (- length (count vol-pitch))
+              :volume 0 :pitch 0}]
+    (if (<= length (count vol-pitch))
+      (concat [frame1] midframes)
+      (concat [frame1] midframes [tail]))))
+
+(defn kick [length]
+  (drum length [[14 15] [12 15] [10 15] [8 15] [5 15] [2 15]]))
+
+(defn hat [length]
+  (drum length [[7 4]]))
 
 (defn snare [length]
-  (drum length [[11 8] [9 6] [8 6] [7 6]
-                [4 5] [3 5] [2 5] [1 5]]))
+  (drum length [[14 3] [12 3] [10 3] [8 0] [5 0] [2 0]]))
 
-(defn crash
-  ([length attenuation]
-   (drum length (map (fn [[volume pitch]] [(max 1 (- volume attenuation 2)) pitch])
-               [[15 8] [15 2] [15 3] [15 3] [15 3] [15 3]
-                [14 3] [14 3] [13 3] [12 3] [12 3] [11 3] [11 3]
-                [10 3] [9 3] [9 3] [9 3] [8 3] [8 3] [7 3] [7 3]
-                [6 3] [6 3] [5 3] [5 3] [5 3] [4 3] [4 3] [4 3] [4 3]
-                [3 3] [3 3] [3 3] [3 3] [2 3] [2 3] [2 3] [2 3] [1 3]])))
-  ([length]
-    (drum length [[15 8] [15 2] [15 3] [15 3] [15 3] [15 3]
-                [14 3] [14 3] [13 3] [12 3] [12 3] [11 3] [11 3]
-                [10 3] [9 3] [9 3] [9 3] [8 3] [8 3] [7 3] [7 3]
-                [6 3] [6 3] [5 3] [5 3] [5 3] [4 3] [4 3] [4 3] [4 3]
-                [3 3] [3 3] [3 3] [3 3] [2 3] [2 3] [2 3] [2 3] [1 3]])))
+(def tri-kick [{:length 1 :pitch 66} {:pitch 62} {:pitch 59} {:pitch 54}])
 
-(defn r
-  "Returns a sequence consisting of a rest of length l."
-  [l]
-  [{:length l :volume 0 :pitch 0}])
+(def tri-snare [{:length 1 :pitch 75} {:pitch 70}])
 
-(def sq1a
+(defn tri1 [pitch]
+  (concat [{:vibrato 1}]
+    [[28 pitch] [14 160] [9 pitch] 
+     [5 160] [28 pitch] [28 160]]))
+
+(defn bass-note [length pitch]
+  (vib (length-pitch [[length pitch]]) 0.5 0.15))
+
+(defn tri2 [pitch]
   (concat 
-    [{:length 6 :volume 9 :duty 0 :pitch 38} {:length 1 :volume 8 :pitch 38}
-     {:length 1 :volume 7 :pitch 38} {:length 1 :volume 6 :pitch 38}
-     {:length 1 :volume 5 :pitch 38} {:pitch 160 :length 10}
-     {:pitch 60 :volume 6 :length 5} {:pitch 62} {:pitch 60} {:pitch 50}
-     {:length 6 :volume 8 :pitch 38} {:length 1 :volume 7 :pitch 38}
-     {:length 1 :volume 6 :pitch 38} {:length 1 :volume 5 :pitch 38}
-     {:length 1 :volume 4 :pitch 38} {:pitch 160 :length 10}
-     {:pitch 58 :volume 6 :length 5} {:pitch 60} {:pitch 58} {:pitch 50}
-     {:length 6 :volume 6 :pitch 38} {:length 1 :volume 5 :pitch 38}
-     {:length 1 :volume 4 :pitch 38} {:length 1 :volume 3 :pitch 38}
-     {:length 1 :volume 2 :pitch 38} {:pitch 160 :length 10}
-     {:pitch 57 :volume 6 :length 5} {:pitch 58} {:pitch 57} {:pitch 50}
-     {:pitch 53} {:pitch 55} {:pitch 53} {:pitch 45} {:pitch 52} {:pitch 53}
-     {:pitch 52} {:pitch 49} {:length 20 :pitch 45} {:length 2 :pitch 57} 
-     {:pitch 64} {:pitch 57} {:pitch 69} {:pitch 160} {:pitch 57} {:pitch 64}
-     {:pitch 57} {:pitch 69} {:pitch 57} {:length 20 :pitch 45} 
-     {:length 2 :pitch 57} {:pitch 64} {:pitch 57} {:pitch 69} {:pitch 57} 
-     {:length 10 :pitch 160} {:length 20 :pitch 50} {:length 2 :pitch 62} 
-     {:pitch 69} {:pitch 62} {:pitch 74} {:pitch 160} {:pitch 62} {:pitch 69}
-     {:pitch 62} {:pitch 74} {:pitch 62} {:length 20 :pitch 50} 
-     {:length 2 :pitch 62} {:pitch 69} {:pitch 62} {:pitch 74} {:pitch 62} 
-     {:length 10 :pitch 160}]))
+    tri-kick (bass-note 24 pitch) tri-snare [{:length 12 :pitch 160}]
+    tri-kick (bass-note 4 pitch) [{:length 6 :pitch 160}]
+    tri-kick (bass-note 24 pitch) tri-snare [{:length 26 :pitch 160}]))
 
-(def sq1b
+(def tri2a
   (concat 
-    [{:length 10 :volume 6 :duty 0 :pitch 50} 
-     {:length 9 :volume 5 :pitch 160}
-     {:length 1 :pitch 50} {:pitch 57} {:pitch 65}
-     {:pitch 69} {:length 2 :pitch 74} 
-     {:length 7 :pitch 160} {:length 3 :pitch 74}
-     {:length 4 :pitch 160} {:length 1 :pitch 50} 
-     {:pitch 57} {:pitch 65} {:pitch 69} 
-     {:length 2 :pitch 74} {:length 7 :pitch 160}
-     {:length 3 :pitch 74} {:length 4 :pitch 160}
-     {:length 1 :pitch 50} {:pitch 57} {:pitch 65} 
-     {:pitch 69} {:length 2 :pitch 74} 
-     {:length 7 :pitch 160} {:length 3 :pitch 74} 
-     {:length 4 :pitch 160}]))
+    tri-kick (bass-note 24 60) tri-snare [{:length 12 :pitch 160}]
+    tri-kick (bass-note 4 60) 
+    [{:length 6 :pitch 160} {:length 1 :pitch 72} {:length 6 :pitch 60}
+     {:length 1 :pitch 72} {:length 6 :pitch 60}]
+      tri-kick (bass-note 4 60) (bass-note 7 160)
+      tri-snare [{:length 12 :pitch 160}] tri-kick [{:length 9 :pitch 160}]))
 
-(def sq2a
-  (concat [{:length 160 :volume 0 :pitch 160}
-           {:length 20 :volume 5 :duty 0 :pitch 33}
-           {:length 8 :volume 4 :pitch 61} {:length 2 :pitch 160} {:length 10 :pitch 61}
-           {:length 20 :volume 5 :duty 0 :pitch 33}
-           {:length 10 :volume 4 :pitch 61} {:length 10 :pitch 160}
-           {:length 20 :volume 5 :duty 0 :pitch 38}
-           {:length 8 :volume 4 :pitch 65} {:length 2 :pitch 160} {:length 10 :pitch 65}
-           {:length 20 :volume 5 :duty 0 :pitch 38}
-           {:length 10 :volume 4 :pitch 65} {:length 10 :pitch 160}]))
-
-(def sq2b
-  (concat [{:length 20 :volume 5 :duty 0 :pitch 33}
-           {:length 8 :volume 4 :pitch 61} {:length 2 :pitch 160} {:length 10 :pitch 61}
-           {:length 20 :volume 5 :duty 0 :pitch 33}
-           {:length 10 :volume 4 :pitch 61} {:length 10 :pitch 160}
-           {:length 20 :volume 5 :duty 0 :pitch 38}
-           {:length 8 :volume 4 :pitch 65} {:length 2 :pitch 160} {:length 10 :pitch 65}
-           {:length 10 :pitch 160}
-           {:length 10 :volume 5 :duty 0 :pitch 38}
-           {:length 10 :volume 4 :pitch 65} {:length 10 :pitch 38}]))
-
-(def tri-kick [{:length 1 :pitch 62} {:pitch 58} {:pitch 54} {:pitch 52}])
-
-(def tri-snare [{:length 1 :pitch 70} {:pitch 67} {:pitch 64} {:pitch 54}])
-
-(def tri1
-  (concat [{:length 160 :pitch 160}]
-    tri-kick [{:length 16 :pitch 45}]
-    tri-snare [{:length 4 :pitch 57} {:length 2 :pitch 160}]
-    tri-snare [{:length 6 :pitch 57}]
-    tri-kick [{:length 16 :pitch 45}]
-    tri-snare [{:length 6 :pitch 57} {:length 10 :pitch 160}]
-    tri-kick [{:length 16 :pitch 50}]
-    tri-snare [{:length 4 :pitch 62}  {:length 2 :pitch 160}]
-    tri-snare [{:length 6 :pitch 62}]
-    tri-kick [{:length 16 :pitch 50}]
-    tri-snare [{:length 6 :pitch 62} {:length 10 :pitch 160}]))
-
-(def tri2
-  (concat tri-kick [{:length 6 :pitch 50} {:length 30 :pitch 160}]
-          tri-kick [{:length 6 :pitch 50} {:length 30 :pitch 160}]
-          tri-kick [{:length 6 :pitch 50} {:length 70 :pitch 160}]
-          tri-kick [{:length 16 :pitch 45}]
-          tri-snare [{:length 4 :pitch 57} {:length 2 :pitch 160}]
-          tri-snare [{:length 6 :pitch 57}]
-          tri-kick [{:length 16 :pitch 45}]
-          tri-snare [{:length 6 :pitch 57} {:length 10 :pitch 160}]
-          tri-kick [{:length 16 :pitch 50}]
-          tri-snare [{:length 4 :pitch 62} {:length 2 :pitch 160}]
-          tri-snare [{:length 6 :pitch 62}]
-          tri-kick [{:length 16 :pitch 50}]
-          tri-snare [{:length 6 :pitch 62} {:length 10 :pitch 160}]))
-
-(def tri3
-  (concat tri-kick [{:length 16 :pitch 45}]
-          tri-snare [{:length 4 :pitch 57} {:length 2 :pitch 160}]
-          tri-snare [{:length 6 :pitch 57}]
-          tri-kick [{:length 16 :pitch 45}]
-          tri-snare [{:length 6 :pitch 57} {:length 10 :pitch 160}]
-          tri-kick [{:length 16 :pitch 50}]
-          tri-snare [{:length 4 :pitch 62} {:length 2 :pitch 160}]
-          tri-snare [{:length 6 :pitch 62} {:length 10 :pitch 160}]
-          tri-kick [{:length 6 :pitch 50}]
-          tri-snare [{:length 6 :pitch 62}]
-          tri-kick [{:length 6 :pitch 50}]))
+(defn slide [from to frames]
+  (length-pitch (take frames 
+    (if (< to from)
+      (map #(vector 1 %) (reverse (range to from (/ (abs (- from to)) frames))))
+      (map #(vector 1 %) (range from to (/ (abs (- from to)) frames)))))))
 
 (def drums1
-  (concat [{:length 20 :volume 0 :pitch 0}] 
-    (r 140) (crash 20 3) (snare 10) (snare 30) (snare 20)
-    (crash 20 3) (snare 10) (snare 30) (snare 20)))
+  (concat (kick 14) (hat 7) (hat 7) (snare 14) (kick 14)
+     (kick 14) (hat 14) (snare 14) (hat 14)))
+
+(def lead1
+  [[28 63] [14 160] [7 63]
+   [7 160] [14 63] [14 62] [28 60] [28 58] [14 160]
+   [14 58] [28 62] [28 63] [28 65] [14 160] [7 65] [7 160]
+   [14 65] [14 63] [28 62] [28 60] [14 160] [7 60] [7 160]
+   [28 60] [28 62] [28 63] [14 160] [7 63]
+   [7 160] [14 63] [14 62] [28 60] [28 58] [14 160] [14 58]
+   [28 55] [28 58] [14 60] [14 62] [56 60] [28 160] [12 160]])
+
+(def lead2
+  [[14 160] [14 58] [14 63] [14 58] [14 67] [14 63] [14 70] [14 67]
+   [14 160] [14 53] [14 58] [14 53] [14 62] [14 58] [14 65] [14 63]
+   [28 55] [28 160] [14 62] [14 63] [14 65] [14 67] [14 65] [14 63] [14 160]
+   [7 63] [7 160] [28 63] [28 65] [28 67] [14 160] [7 67] [7 160]
+   [14 67] [14 65] [28 63] [28 62] [14 160] [14 62] [28 65] [28 62]
+   [14 63] [14 65] [84 63]])
+
+(def drums-verse
+  (concat
+    (loop1 3 drums1)
+     (kick 14) (hat 7) (hat 7) (snare 14) (kick 14)
+     (snare 7) (snare 7) (kick 14) (snare 14) (kick 14)
+     (loop1 3 drums1)))
+
+(def tri-verse
+  (concat
+    (tri2 63) (tri2 58) (tri2 55) tri2a
+    (tri2 63) (tri2 58) (tri2 60)))
+
+(def trigwen1
+  (concat [{:vibrato 1}]
+    [[12 63] [2 160] [14 63] [12 67] [2 160] [14 67]
+    [12 70] [2 160] [14 70] [12 67] [2 160] [14 67]
+     [12 68] [2 160] [14 68] [12 65] [2 160] [14 65]
+     [42 63] [14 160]]))
+
+(def trigwen2
+  (concat [{:vibrato 1}] [[12 58] [2 160] [14 58] [12 63] [2 160] [14 63]
+                 [12 67] [2 160] [14 67] [12 63] [2 160] [14 63]
+                 [14 56] [14 68] [14 58] [14 70] [28 51] [28 160]]))
+
+(def trigwen3
+  (concat [{:vibrato 1}] [[12 58] [2 160] [14 58] [12 63] [2 160] [14 63]
+                 [12 67] [2 160] [14 67] [12 63] [2 160] [14 63]
+                 [14 56] [14 68] [14 58] [14 70] [28 58] [28 160]]))
+
+(def trigwen4
+  (concat [{:vibrato 1}] [[14 68] [14 72] [14 70] [14 68] [28 67] [14 63] [14 160]
+                      [14 56] [14 68] [14 58] [14 70] [28 62] [14 58] [14 160]]))
+
+(def trigwen5
+  (concat [{:vibrato 1}] [[28 48] [14 60] [14 55] [28 51] [28 48]]))
 
 (def drums2
-  (concat (crash 10 6) (r 30) (crash 10 6) (r 30) (crash 10 6) (r 70)
-    (crash 20 3) (snare 10) (snare 30) (snare 20)
-    (crash 20 3) (snare 10) (snare 30) (snare 20)))
+  (concat (kick 14) (hat 7) (hat 7) (snare 14) (hat 7) (hat 7)
+     (kick 14) (kick 14) (snare 14) (hat 7) (hat 7)
+    (kick 14) (hat 7) (hat 7) (snare 14) (snare 14)
+     (kick 14) (hat 14) (snare 28)))
 
-(def drums3
-  (concat (crash 20 3) (snare 10) (snare 30) (snare 20)
-    (crash 20 3) (snare 10) (snare 10) (crash 15 6) (r 5) (snare 20)))
+(def lead3
+ (concat [{:vibrato 2}] [[7 55] [7 58] [7 63] [7 67] [7 70] [7 67] [7 63] [7 58]
+                   [7 60] [7 63] [7 67] [7 70] [7 72] [7 70] [7 67] [7 63]
+                   [7 56] [7 60] [7 63] [7 68] [7 58] [7 62] [7 65] [7 68]
+                   [28 67] [7 63] [21 160]]))
 
-(def sq1c
+(def lead3-echo
+  (concat [{:vibrato 2}] [[7 55] [7 58] [7 63] [7 67] [7 70] [7 67] [7 63] [7 58]
+                   [7 60] [7 63] [7 67] [7 70] [7 72] [7 70] [7 67] [7 63]
+                   [7 56] [7 60] [7 63] [7 68] [7 58] [7 62] [7 65] [7 68]
+                   [28 67] [7 63] [9 160]]))
+
+(def lead4
+  (concat [{:vibrato 2}] [[7 55] [7 58] [7 63] [7 67] [7 70] [7 67] [7 63] [7 58]
+                   [7 60] [7 63] [7 67] [7 70] [7 72] [7 70] [7 67] [7 63]
+                   [7 60] [7 63] [7 68] [7 72] [7 62] [7 65] [7 70] [7 74]
+                   [28 70] [14 62] [14 160]]))
+
+(def lead5
+  (concat [{:vibrato 2}] [[7 60] [7 63] [7 68] [7 72] [7 75] [7 72] [7 68] [7 63]
+                   [7 58] [7 63] [7 67] [7 70] [7 75] [7 70] [7 67] [7 63]
+                   [7 60] [7 63] [7 68] [7 72] [7 62] [7 65] [7 70] [7 74] [7 77]
+                   [7 62] [7 65] [7 70] [7 74] [21 160]]))
+
+(def lead6
+  [{:duty 1 :volume 5 :length 12 :pitch 63} {:length 2 :pitch 160} {:length 14 :pitch 63}
+   {:length 12 :pitch 67} {:length 2 :pitch 160} {:length 14 :pitch 67}
+   {:length 12 :pitch 70} {:length 2 :pitch 160} {:length 14 :pitch 70}
+   {:length 12 :pitch 67} {:length 2 :pitch 160} {:length 14 :pitch 67}
+   {:length 12 :pitch 68} {:length 2 :pitch 160} {:length 14 :pitch 68}
+   {:length 12 :pitch 65} {:length 2 :pitch 160} {:length 14 :pitch 65}
+   {:length 28 :pitch 63} {:length 28 :pitch 160}])
+
+(def lead7
+  [{:duty 1 :volume 5 :length 12 :pitch 63} {:length 2 :pitch 160} {:length 14 :pitch 63}
+   {:length 12 :pitch 67} {:length 2 :pitch 160} {:length 14 :pitch 67}
+   {:length 12 :pitch 70} {:length 2 :pitch 160} {:length 14 :pitch 70}
+   {:length 12 :pitch 67} {:length 2 :pitch 160} {:length 14 :pitch 67}
+   {:length 14 :pitch 68} {:pitch 70} {:pitch 68} {:pitch 67}
+   {:length 28 :pitch 65} {:length 28 :pitch 160}])
+
+(def lead8
+  [{:length 21 :pitch 68} {:length 7 :pitch 70} {:length 14 :pitch 72} {:pitch 68}
+   {:pitch 70} {:pitch 68} {:pitch 67} {:pitch 160}
+   {:pitch 68} {:pitch 72} {:pitch 68}
+   {:pitch 67} {:length 28 :pitch 65} {:length 14 :pitch 62} {:pitch 160}])
+
+(defn fade-in [n notes]
+  (let [head (map-indexed (fn [index note] 
+                            (assoc note :volume (min index 5))) (take n notes))
+        tail (drop n notes)]
+    (concat head tail)))
+
+(defn arp-swell [[n1 n2 n3]]
   (concat 
-    [{:length 20 :volume 6 :duty 0 :pitch 45} {:length 2 :pitch 57} 
-     {:pitch 64} {:pitch 57} {:pitch 69} {:pitch 160} {:pitch 57}
-     {:pitch 64} {:pitch 57} {:pitch 69} {:pitch 57} 
-     {:length 20 :pitch 45} {:length 2 :pitch 57} {:pitch 64}
-     {:pitch 57} {:pitch 69} {:pitch 57} {:length 10 :pitch 160}
-     {:length 20 :pitch 50} {:length 2 :pitch 62} {:pitch 69} 
-     {:pitch 62} {:pitch 74} {:pitch 160} {:pitch 62} {:pitch 69}
-     {:pitch 62} {:pitch 74} {:pitch 62} {:length 10 :pitch 160}
-     {:length 10 :pitch 50} {:length 2 :pitch 62} {:pitch 69} 
-     {:pitch 62} {:pitch 74} {:pitch 62} {:length 10 :pitch 50}]))
+     (r 16)
+     [{:length 1 :volume 1 :duty 2}]
+     (loop2 8 [{:pitch n1} {:pitch n2} {:pitch n3}])
+     [{:volume 2 :duty 3}]
+     (loop2 8 [{:pitch n1} {:pitch n2} {:pitch n3}])
+     [{:volume 3 :duty 0}]
+     (loop2 8 [{:pitch n1} {:pitch n2} {:pitch n3}])
+     [{:volume 4 :duty 1}]
+     (loop2 8 [{:pitch n1} {:pitch n2} {:pitch n3}])))
 
 (def sq1
-  (concat (loop1 3 sq1a) (take 56 sq1a) sq1b (loop1 3 sq1c) (take 18 sq1c) sq1b))
+  (concat 
+    (loop1 16 (r 20))
+    [{:volume 1 :length 95 :pitch 43}
+           {:volume 1 :length 95 :pitch 43}
+           {:volume 1 :length 95 :pitch 43}
+           {:volume 1 :length 95 :pitch 43}
+           {:volume 1 :length 95 :pitch 43}
+           {:volume 1 :length 33 :pitch 43}
+           {:duty 1 :volume 6 :length 7 :pitch 60}]
+    (concat [{:vibrato 2}] [[7 160] [28 60] [28 62]] lead1)
+    [{:duty 0}] (fade-in 15 (slide 53 68 49))
+    [{:length 7 :pitch 160} {:length 14 :pitch 63} {:pitch 62} {:pitch 60}]
+    (concat [{:vibrato 2}] lead1)
+    [{:volume 1}]
+    (concat [{:vibrato 2}] [[2 69.9] [2 70.9] [14 71.9] [14 69.9] 
+       [14 66.9] [14 64.9] [28 62.9] [14 59.9]])
+    [{:duty 0 :volume 1 :pitch 160 :length 12}] lead3-echo
+    lead6 lead7 lead8 lead6
+    [{:duty 1 :volume 6 :length 44 :pitch 160} {:length 7 :pitch 60}]
+    (concat [{:vibrato 2}] [[7 160] [28 60] [28 62]] lead1
+      [{:duty 0}] (fade-in 15 (slide 53 68 49))
+    [{:length 7 :pitch 160} {:length 14 :pitch 63} {:pitch 62} {:pitch 60}]
+    (concat [{:vibrato 2}] lead1))))
 
-(def sq1d
-  (concat [{:length 10 :pitch 160}]
-  (loop1 4 (concat 
-    [{:length 10 :volume 4 :duty 0 :pitch 57} 
-     {:pitch 61} {:pitch 64} {:pitch 69} {:pitch 64} {:pitch 61} {:pitch 64}
-     {:pitch 160} {:pitch 62} {:pitch 65} {:pitch 69}] {:duty 1 :volume 3}
-    (vib-all [{:length 10 :pitch 86} {:length 10 :pitch 81} 
-              {:length 10 :pitch 77} {:length 20 :pitch 81}] 0.7 0.4)))))
+(def arps8
+  (concat
+    (arp-swell [63 67 70]) (arp-swell [58 62 65])
+    (arp-swell [55 58 62]) (arp-swell [60 63 67])
+    (arp-swell [63 67 70]) (arp-swell [58 62 65])
+    (arp-swell [60 63 67]) (arp-swell [60 63 67])))
 
-(def sq2c
-  (vib (concat [{:length 80 :duty 0 :pitch 33}
-           {:length 80 :pitch 38}]) 0.5 0.12))
+(def arps7
+  (concat
+    (arp-swell [63 67 70]) (arp-swell [58 62 65])
+    (arp-swell [55 58 62]) (arp-swell [60 63 67])
+    (arp-swell [63 67 70]) (arp-swell [58 62 65])
+    (arp-swell [60 63 67])))
 
-(def tri4
-  (concat [{:length 80 :pitch 45} {:length 80 :pitch 50} ]))
+(def sq2
+  (concat
+    arps8 arps7
+     [{:length 112 :pitch 160 :duty 1}]
+    (concat [{:vibrato 2}] lead2)
+    (concat [{:vibrato 3}] [[1 70] [1 71] [14 72] [14 70] [14 67] [14 65] 
+     [1 62] [1 62.1] [2 62.2] [2 62.3] [2 62.4] [2 62.5] 
+     [2 62.6] [2 62.7] [2 62.8] [2 62.9] [12 63] [14 60]])
+    [{:duty 0 :volume 5 :length 12 :pitch 160}]
+    lead3 lead3 lead4 lead5 lead3
+    [{:volume 5 :duty 2}]
+    (concat [[1 58] [1 59] [14 60] [14 58] [14 55] [14 53] 
+     [1 50] [1 50.1] [2 50.2] [2 50.3] [2 50.4] [2 50.5] 
+     [2 50.6] [2 50.7] [2 50.8] [2 50.9] [8 51] [18 48]])
+    arps7 (r 122) (concat [{:vibrato 2}] lead2)))
 
-(def drums4
-  (loop1 8 (concat (crash 20 5) (crash 20 7) (crash 20 9) (crash 20 10))))
+(def tri
+  (concat 
+    (tri1 63) (tri1 58) (tri1 55) (tri1 60)
+    (tri1 63) (tri1 58) (tri1 60) (tri1 60)
+    tri-verse [{:length 112 :pitch 160}] tri-verse
+    [{:length 112 :pitch 160}]
+    trigwen1 trigwen2 trigwen3 trigwen4 trigwen2 trigwen5
+    tri-verse
+    [{:length 112 :pitch 160}]
+    tri-verse))
+
+(def drums
+  (concat 
+    [{:length 42 :volume 0 :pitch 0}]
+     (loop1 61 [{:length 14 :pitch 0 :volume 0}])
+    drums-verse
+     [{:length 112 :volume 0 :pitch 0}]
+    drums-verse [{:length 112 :volume 0 :pitch 0}]
+    [{:length 224 :volume 0 :pitch 0}] (loop1 4 drums2)
+     (concat (kick 14) (hat 7) (hat 7) (snare 14) (hat 7) (hat 7)
+     (kick 14) (kick 14) (snare 14) (hat 7) (hat 7))
+    drums-verse
+    [{:length 112 :volume 0 :pitch 0}]
+    drums-verse))
 
 (play
-  (concat sq1 [{:length 5 :pitch 160}] sq1d)
-  (concat (loop1 3 sq2a) (take 9 sq2a)
-    [{:length 60 :pitch 160}] (loop1 3 sq2b) (take 8 sq2b)
-    [{:length 60 :pitch 160 :volume 2}] (loop1 4 sq2c))
-  (concat (loop1 2 tri1) tri2 (take 50 tri2)
-   [{:length 60 :pitch 160}] (loop1 3 tri3) (take 32 tri3)
-    [{:length 60 :pitch 160}] (loop1 4 tri4))
-  (concat (loop1 2 drums1) drums2 (take 95 drums2)
-    (r 70) (loop1 3 drums3) (take 58 drums3) (r 70) drums4))`,
+  {:square1 sq1
+   :square2 sq2
+   :triangle tri
+   :noise drums})`,
   extensions: [basicSetup, clojure()]
 })
 
@@ -244,8 +309,117 @@ document.getElementById("keymap").innerHTML = keyBindings;
 
 document.querySelector('#app').onclick = (e) => updateDocBar(view)
 
+let c2 = el("oscview2");
+c2.width = 160;
+c2.height = 90;
+let ctx2 = c2.getContext("2d");
+
+function calcPeriod() {
+  let h = (apu.registers[11] & 0x7) << 8
+  return h + apu.registers[10]
+}
+
+let lastFrame = new Float32Array(0)
+let previousFrame = new Float32Array(0)
+
+let threeFrames = new Float32Array(89343);
+
+function drawTriggeredWave(vals) {
+  ctx2.fillStyle = "rgb(0,0,0)";
+  ctx2.fillRect(0, 0, c2.width, c2.height);
+  ctx2.lineWidth = 1;
+  ctx2.strokeStyle = "rgb(255,62,165)";
+  ctx2.beginPath();
+  const sliceWidth = c2.width / 29781;
+  let x = 0
+  //console.log(threeFrames.slice(29785))
+  threeFrames.set(threeFrames.slice(29785), 0);
+  threeFrames.set(threeFrames.slice(59560), 29787);
+  threeFrames.set(vals, 59562);
+  let bottom = 0
+  for (let i = 0; i < threeFrames.length; i++) {
+    const v = threeFrames[i];
+    const y = (v * c2.height) + (c2.height / 4)
+    if(y > 249) {
+        //console.log("triangle bottom xpos: " + bottom)
+        break;
+    } else {
+      bottom = i
+    }
+  }
+  for (let i = bottom; i < 29781 + bottom; i++) {
+    const v = threeFrames[i];
+    const y = (v * c2.height) + (c2.height / 4)
+    if (i === 0) {
+      ctx2.moveTo(x, y);
+    } else {
+      ctx2.lineTo(x, y);
+    }
+    x += sliceWidth;
+  }
+  ctx2.stroke();
+}
+
+function drawWave(vals) {
+  ctx2.fillStyle = "rgb(0,0,0)";
+  ctx2.fillRect(0, 0, c2.width, c2.height);
+  ctx2.lineWidth = 1;
+  ctx2.strokeStyle = "rgb(255,62,165)";
+  ctx2.beginPath();
+  const sliceWidth = c2.width / 29781;
+  let x = 0
+  for (let i = 0; i < 29781; i++) {
+    const v = vals[i];
+    const y = (v * c2.height) + (c2.height / 4)
+    if (i === 0) {
+      ctx2.moveTo(x, y);
+    } else {
+      ctx2.lineTo(x, y);
+    }
+   x += sliceWidth;
+   }
+   ctx2.stroke();
+}
+
+export function drawSample(vals) {
+  // unpack each of the bytes
+  //console.log(vals)
+  let bits = []
+  for (let i = 0; i < vals.length; i++) {
+    for (let j = 0; j < 8; j++) {
+      if((vals[i] >> j) % 2 != 0) {
+        bits.push(1)
+      } else {
+        bits.push(0)
+      }
+    }
+  }
+  //console.log(bits)
+  ctx2.fillStyle = "rgb(0,0,0)";
+  ctx2.fillRect(0, 0, c2.width, c2.height);
+  ctx2.lineWidth = 1;
+  ctx2.strokeStyle = "rgb(255,62,165)";
+  ctx2.beginPath();
+  const sliceWidth = c2.width / bits.length;
+  let x = 0
+  let y = 180
+  for (let i = 0; i < bits.length; i++) {
+    if (bits[i] === 1) {
+      y = y - 4
+    } else {
+      y = y + 4
+    }
+    if (i === 0) {
+      ctx2.moveTo(x, y);
+    } else {
+      ctx2.lineTo(x, y);
+    }
+   x += sliceWidth;
+   }
+   ctx2.stroke();
+}
+
 el("rom").onchange = function (e) {
-  framesPlayed = -20000  // we don't know how long the nsf is
   let freader = new FileReader();
   freader.onload = function () {
     let buf = freader.result;
@@ -253,6 +427,81 @@ el("rom").onchange = function (e) {
     loadRom(arr);
   }
   freader.readAsArrayBuffer(e.target.files[0]);
+}
+
+el("pause").onclick = function(e) {
+  if(paused && loaded) {
+    unpause();
+  } else {
+    pause();
+  }
+}
+
+function pause() {
+  if(!paused) {
+    cancelAnimationFrame(loopId);
+    audio.stop();
+    paused = true;
+    el("pause").innerText = "Resume";
+    if(loaded) {
+      //db.updateDebugView();
+    }
+  }
+}
+
+function unpause() {
+  if(paused) {
+    loopId = requestAnimationFrame(update);
+    audio.start();
+    paused = false;
+    el("pause").innerText = "Pause";
+  }
+}
+
+el("runframe").onclick = function() {
+  if(!loaded) return;
+  runFrame();
+  //db.updateDebugView();
+}
+
+el("sample").onchange = function (e) {
+  for (let i = 0; i < e.target.files.length; i++) {
+    let freader = new FileReader();
+    freader.onload = function () {
+      let buf = freader.result;
+      let arr = new Uint8Array(buf);
+      const filename = e.target.files[i].name
+      samples.push({name: filename.substring(0, filename.length - 4), bytes: arr})
+      renderSamples()
+      }
+    freader.readAsArrayBuffer(e.target.files[i]);
+  }
+}
+
+export var samples = []
+
+export function renderSamples() {
+  el("samples").innerHTML = ""
+  //let buttonNum = 0
+  samples.forEach((sample) => {
+    var samplespan = document.createElement('span')
+    samplespan.innerHTML = sample.name + " "
+    var buttonspan = document.createElement('span')
+    //var deleteButton = document.createElement('button')
+    //deleteButton.id = "button-" + buttonNum
+    //buttonNum++
+    var br = document.createElement('br')
+    //deleteButton.innerHTML = "x"
+    //buttonspan.appendChild(deleteButton)
+    //samplespan.appendChild(buttonspan)
+    samplespan.appendChild(br)
+    el("samples").appendChild(samplespan)
+  })
+}
+
+export function updateSamples(vals) {
+  samples = vals
+  console.log(samples)
 }
 
 export function getByteRep(val) {
@@ -314,11 +563,11 @@ function el(id) {
 let currentSong = 1;
 
 export function loadRom(rom) {
+  framesPlayed = -100
+  audio.start();
+  audio.actx.resume()
   if (loadNsf(rom)) {
     if (!loaded && !paused) {
-      framesPlayed = -80
-      audio.start();
-      audio.actx.resume()
       loopId = requestAnimationFrame(update);
     }
     loaded = true;
@@ -453,15 +702,9 @@ function playSong(songNum) {
 let framesPlayed = 0
 
 function update() {
-  if (framesPlayed === audio.songLength) {
-    audio.stop()
-    cancelAnimationFrame(loopId)
-    loaded = false
-  } else {
-    runFrame();
-    framesPlayed++
-    loopId = requestAnimationFrame(update);
-  }
+  runFrame();
+  framesPlayed++
+  loopId = requestAnimationFrame(update);
 }
 
 function runFrame() {
@@ -485,7 +728,8 @@ function runFrame() {
   }
   audio.getSamples(audio.sampleBuffer, audio.samplesPerFrame);
   updateDebugView()
-  
+  //drawTriggeredWave(apu.outputValues)
+  drawWave(apu.outputValues)
 }
 
 export function read(adr) {

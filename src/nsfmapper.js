@@ -46,7 +46,7 @@ export function reset() {
             romData[i] = data[0x80 + (i - loadAdr)];
         }
     } else {
-        romData = new Uint8Array(0x8000);
+        romData = new Uint8Array(0x10000);
         // fill the romdata
         for (let i = loadAdr; i < 0x10000; i++) {
             if (0x80 + (i - loadAdr) >= data.length) {
@@ -54,11 +54,13 @@ export function reset() {
                 break;
             }
             romData[i - 0x8000] = data[0x80 + (i - loadAdr)];
+            romData[i - 0x4000] = data[0x80 + (i - loadAdr)];
         }
     }
 }
 
 export function read(adr) {
+    //console.log("reading adr " + adr)
     if (adr < 0x6000) {
         return 0;
     }

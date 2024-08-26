@@ -1,17 +1,23 @@
 import { loadNsf, setLoaded, startSong, playReturned, setPlayReturned,
-  dmcIrqWanted, frameIrqWanted } from "../main";
+  dmcIrqWanted, frameIrqWanted, samples } from "../main";
 import * as cpu from "./cpu";
 import * as apu from "./apu";
-import { s1, addEnvelope, resetEnvelopes, currentEnvelopes } from "./nsf"
+import {songLength} from './compiler'
+import { s1, s2, s3, s4, s5, s6, s7, s8, addVolEnvelope, resetVolEnvelopes, currentVolEnvelopes, addPitchEnvelope, resetPitchEnvelopes, currentPitchEnvelopes } from "./nsf"
 
 export const actx = new AudioContext()
 export const samplesPerFrame = actx.sampleRate / 60;
 export let sampleBuffer = new Float32Array(samplesPerFrame);
 
-await actx.audioWorklet.addModule("audioworklet.js");
+import workletURL from './audioworklet.js?url'
+await actx.audioWorklet.addModule(workletURL);
 
 export const processor = new AudioWorkletNode(actx, "audioworklet")
 let sourceNode = null
+
+const biquadFilter = actx.createBiquadFilter();
+biquadFilter.type = "highpass";
+biquadFilter.frequency.setValueAtTime(37, actx.currentTime);
 
 export function resume() {
     actx.resume();
@@ -19,7 +25,8 @@ export function resume() {
 
 export function start() {
   sourceNode = actx.createBufferSource();
-  processor.connect(actx.destination);
+  processor.connect(biquadFilter);
+  biquadFilter.connect(actx.destination);
   sourceNode.start();
 }
 
@@ -31,225 +38,12 @@ export function stop() {
     processor.disconnect();
 }
 
-function freqToPeriod(freq) {
-    const c = 1789773;
-    return c / (freq * 16) - 1
-}
-
-function midiToFreq(n) {
-    return 440 * (Math.pow(2, ((n-69) / 12)))
-}
-
-function fmtWord(n) {
-  // need to handle edge case of note 41, which happens to
-  // return [0, 5], and the driver uses 0 as rests.
-  // But we want to return a [0, 0] for 160 because
-  // it's convenient to use for rests. So we'll use
-  // any pitch above 127, or below period 7.91.
-  if (n < 7.91) {
-    return [0, 0]
-  }
-  n = Math.round(n)
-  const pad = String(n.toString(16)).padStart(4, '0');
-  return [Math.max(1, parseInt(pad.slice(2), 16)),
-          parseInt(pad.slice(0, 2), 16)];
-}
-
-export let songLength = 0
-
-export function resetSongLength() {
-  songLength = 0
-}
-
 function hex(n) {
     return "$" + (n).toString(16);
 }
 
-function fmt(n) {
-  const lo = hex(fmtWord(n)[0])
-  const hi = hex(fmtWord(n)[1])
-  return hi + lo.substring(1, 3)
-}
-
-let streams = []
-
-export function assembleStream(noteSequence, streamNum) {
-    let notes = expandNotes(noteSequence)
-    //console.log("Assembling stream " + streamNum)
-    let stream = []
-    let currentLength = 0
-    let totalLength = 0
-    let loopPoint = s1
-    let arpPoint = s1
-    let s2
-    let s3
-    let loopCounter
-    let loopTotal = 0
-    //console.log("s1 is at " + fmt(s1))
-    if (streamNum === 1) {
-      loopPoint = s1 + streams[0].length
-      s2 = s1 + streams[0].length
-      //console.log("stream 2 is at " + fmt(loopPoint))
-    }
-    if (streamNum === 2) {
-      loopPoint = s1 + streams[0].length + streams[1].length
-      s3 = s1 + streams[0].length + streams[1].length
-      //console.log("stream 3 is at " + fmt(loopPoint))
-    }
-    for (let i = 0; i < notes.length; i++) {
-        if (notes[i].has("ʞloop")) {
-          if (notes[i].get("ʞloop") === "ʞend") {
-            // loop opcode $A5 followed by the address to loop to
-            stream = stream.concat([0xA5], fmtWord(loopPoint))
-            // To update totalLength, we multiply it by the value of the
-            // loop counter minus 1 (because it's already been counted once)
-            totalLength += loopTotal * (loopCounter - 1)
-          } else {
-            // set loop point variable and loop counter
-          loopPoint = (stream.length + [s1, s2, s3][streamNum]) + 2
-          stream.push(0xA4, notes[i].get("ʞloop"))
-          // update loopCounter variable for calculating song length above,
-          // and reset the loopTotal
-          loopCounter = notes[i].get("ʞloop")
-          loopTotal = 0
-          }
-        }
-        if (notes[i].has("ʞarp")) {
-          if (notes[i].get("ʞarp") === "ʞend") {
-            stream = stream.concat([0xAA], fmtWord(arpPoint))
-          } else {
-            // set arp point variable and arp counter
-          arpPoint = (stream.length + [s1, s2, s3][streamNum]) + 2
-          stream.push(0xA9, notes[i].get("ʞarp"))
-          }
-        }
-        if (notes[i].has("ʞlength")) {
-          const l = notes[i].get("ʞlength")
-          // lengths > 25 need to be handled differently, since
-          // the driver expects them to be from 0x81-0x99. so if
-          // it's too large, we set it to 25 and handle it later.
-          // in case of long volume envelopes, we need to note the 
-          // position so it can create a new shorter one,
-          // and switch back afterwards. Arps too...
-          if (l > 25) {
-            stream.push(25 + 0x80)
-          }
-          currentLength = l
-        }
-        if (notes[i].has("ʞenvelope")) {
-          if (!containsEnvelope(notes[i].get("ʞenvelope"), currentEnvelopes)) {
-            console.log("not found")
-          }
-          addEnvelope(notes[i].get("ʞenvelope"))
-        }
-        if (notes[i].has("ʞvolume")) {
-          stream.push(0xa2, notes[i].get("ʞvolume"))
-        }
-        if (notes[i].has("ʞduty")) {
-          stream.push(0xA3)
-          const duties = [0x30, 0x70, 0xB0, 0xF0]
-          stream.push(duties[notes[i].get("ʞduty")])
-        }
-        if (notes[i].has("ʞpitch")) {
-             const freq = midiToFreq(notes[i].get("ʞpitch"))
-             const period = freqToPeriod(freq)
-             const word = fmtWord(period)
-             // to deal with lengths > 25, we push the note as many
-             // times as needed to make the proper length.
-             // if < 25 this will simply be 0.
-             const reps = Math.floor(currentLength / 25)
-             for (let i = 0; i < reps; i++) {
-               stream.push(word[1])
-               stream.push(word[0])
-             }
-             // switch length to remainder and push the last note
-             stream.push((currentLength % 25) + 0x80)
-             stream.push(word[1])
-             stream.push(word[0])
-             totalLength += currentLength
-             loopTotal += currentLength
-        }
-    }
-    // $A0 = opcode to end stream
-    stream.push(0xa0)
-    console.log("Stream " + streamNum + " length " + totalLength + " frames")
-    if (totalLength > songLength) {songLength = totalLength}
-    streams[streamNum] = stream
-    //console.log("Assembled " + stream.length + " bytes")
-    return stream
-}
-
-function arraysEqual(a, b) {
-  if (a === b) return true;
-  if (a == null || b == null) return false;
-  if (a.length !== b.length) return false;
-
-  for (var i = 0; i < a.length; ++i) {
-    if (a[i] !== b[i]) return false;
-  }
-  return true;
-}
-
-function containsEnvelope(env, envs) {
-  for (var i = 0; i < envs.length; i++) {
-     if (arraysEqual(env, envs[i])) {
-       return true
-     }
-  }
-  return false
-}
-
-let noiseLen = 0
-
-export function assembleNoise(notes) {
-    let stream = []
-    let totalLength = 0
-    let loopPoint = s1 + streams[0].length + streams[1].length + streams[2].length
-    let s4 = s1 + streams[0].length + streams[1].length + streams[2].length
-    let loopCounter
-    let loopTotal = 0
-    for (let i = 0; i < notes.length; i++) {
-        if (notes[i].has("ʞloop")) {
-          if (notes[i].get("ʞloop") === "ʞend") {
-            // loop opcode $A5 followed by the address to loop to
-            stream = stream.concat([0xA5], fmtWord(loopPoint))
-            totalLength += loopTotal * (loopCounter - 1)
-          } else {
-            // set loop point variable and loop counter
-          loopPoint = (stream.length + s4) + 2
-          stream.push(0xA4, notes[i].get("ʞloop"))
-          loopCounter = notes[i].get("ʞloop")
-          loopTotal = 0
-          }
-        }
-        if (notes[i].has("ʞlength")) {
-          const l = notes[i].get("ʞlength")
-          stream.push(Math.min(25, l) + 0x80)
-          noiseLen = l
-        }
-        if (notes[i].has("ʞvolume")) {
-          stream.push(0xa2, notes[i].get("ʞvolume"))
-        }
-        if (notes[i].has("ʞduty")) {
-          stream.push(notes[i].get("ʞduty") + 0xf0)
-        }
-        if (notes[i].has("ʞpitch") && (noiseLen != 0)) {
-             // deal with lengths > 25
-             const reps = Math.floor(noiseLen / 25)
-             for (let i = 0; i < reps; i++) {
-                stream.push(notes[i].get("ʞpitch"))
-             }
-             // switch length to remainder
-             stream.push((noiseLen % 25) + 0x80)
-             stream.push(notes[i].get("ʞpitch"))
-             totalLength += noiseLen
-             loopTotal += noiseLen
-        }
-    }
-    stream.push(0xa0)
-    console.log("Noise length " + totalLength + " frames")
-    if (totalLength > songLength) {songLength = totalLength}
-    return stream
+function el(id) {
+  return document.getElementById(id);
 }
 
 export function lengthPitch(pairs) {
@@ -261,21 +55,6 @@ export function lengthPitch(pairs) {
     notes.push(m)
   }
   return notes
-}
-
-function expandNotes(notes) {
-  let expanded = []
-  for (let i = 0; i < notes.length; i++) {
-    if (Array.isArray(notes[i])) {
-      let m = new Map()
-      m.set("ʞlength", notes[i][0])
-      m.set("ʞpitch", notes[i][1])
-      expanded.push(m)
-    } else {
-      expanded.push(notes[i])
-    }
-  }
-  return expanded
 }
 
 // apply vibrato to a single note
@@ -301,7 +80,7 @@ export function vib(notes, speed, width) {
   return noteSeq
 }
 
-// affects entire notee
+// affects entire note
 export function vib_all(notes, speed, width) {
   let noteSeq = []
   for (let i = 0; i < notes.length; i++) {
@@ -379,8 +158,6 @@ function vibAll(length, pitch, speed, width) {
   return [len1].concat(tail, rem)
 }
 
-//console.log(vibAll(28, 40, 0.5, 0.3))
-
 function bufferToWave(abuffer, len) {
     var numOfChan = abuffer.numberOfChannels,
         length = len * numOfChan * 2 + 44,
@@ -412,8 +189,9 @@ function bufferToWave(abuffer, len) {
 
     while (pos < length) {
         for (i = 0; i < numOfChan; i++) {             // interleave channels
-            const boosted = channels[i][offset] * 1.5  // boost by 3dB
-            sample = Math.max(-1, Math.min(1, boosted)); // clamp
+            //const level = channels[i][offset] * 1.5  // boost by 3dB
+            const level = channels[i][offset]
+            sample = Math.max(-1, Math.min(1, level)); // clamp
             sample *= 32768; // scale to 16-bit signed int
             view.setInt16(pos, sample, true);          // write 16-bit sample
             pos += 2;
@@ -519,5 +297,3 @@ function runFrameSilent() {
   }
   getSamples(sampleBuffer, samplesPerFrame);
 }
-
-

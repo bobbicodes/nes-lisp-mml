@@ -2,9 +2,10 @@ import { Prec } from '@codemirror/state'
 import { keymap } from '@codemirror/view'
 import { syntaxTree } from "@codemirror/language"
 import { evalString, repp, PRINT, repl_env } from "./interpreter"
-import { out_buffer, appendBuffer, clearBuffer, playNSF, spitNSF, saveWav } from './core'
+import { out_buffer, appendBuffer, clearBuffer, playNSF, spitNSF, saveWav, compilePattern, saveMp4 } from './core'
 import { _symbol } from './types.js'
-import {outView} from '../main'
+import {compileDpcm} from './compiler'
+import {outView, samples, renderSamples, updateSamples, drawSample} from '../main'
 
 const up = (node) => node.parent;
 const isTopType = (nodeType) => nodeType.isTop
@@ -74,6 +75,7 @@ import Worker from './lisp-worker.js?worker'
 const lispworker = new Worker();
 
 lispworker.onmessage = function(e) {
+  //console.log("received message of type " + e.data.type)
   if (e.data.type === 'repl') {
     updateEditor(outView, out_buffer + e.data.out, 0)
     //console.log(e.data.env)
@@ -81,12 +83,119 @@ lispworker.onmessage = function(e) {
   if (e.data.type === 'play') {
     playNSF(...e.data.streams)
   }
+  if (e.data.type === 'mp4') {
+    saveMp4(...e.data.streams)
+  }
   if (e.data.type === 'savensf') {
     spitNSF(...e.data.streams)
   }
   if (e.data.type === 'savewav') {
     saveWav(...e.data.streams)
   }
+  if (e.data.type === 'savepcm') {
+    //console.log("received message w/ pcm data")
+    savePCM(e.data.name, e.data.data)
+  }
+  if (e.data.type === 'pattern') {
+    compilePattern(e.data.data)
+  }
+  if (e.data.type === 'savedmc') {
+    //console.log("received message w/ dmc data")
+    saveDMC(e.data.name, e.data.data)
+  }
+  if (e.data.type === 'dpcmstream') {
+    //console.log("received message w/ dmc data")
+    compileDpcm(e.data.stream)
+  }
+
+  if (e.data.type === 'sample') {
+    updateSamples(samples.filter(obj => obj.name !== e.data.name))
+    samples.push({"name": e.data.name, "bytes": e.data.bytes})
+    renderSamples()
+    drawSample(e.data.bytes)
+  }
+}
+
+function saveDMC(name, bytes) {
+    let buffer = new ArrayBuffer(bytes.length);
+    let view = new DataView(buffer)
+    for (let i = 0; i < bytes.length; i++) {
+      view.setInt8(i, bytes[i]); 
+    }
+    const blob = new Blob([view], { type: "application/octet-stream" }); 
+    var new_file = URL.createObjectURL(blob);
+    var downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href", new_file);
+    downloadAnchorNode.setAttribute("download", name);
+    document.body.appendChild(downloadAnchorNode); // required for firefox
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+}
+
+function bufferToWave(abuffer, len) {
+    var numOfChan = 1,
+        length = len * numOfChan * 2 + 44,
+        buffer = new ArrayBuffer(length),
+        view = new DataView(buffer),
+        channels = [], i, sample,
+        offset = 0,
+        pos = 0;
+    // write WAVE header
+    setUint32(0x46464952);                         // "RIFF"
+    setUint32(length - 8);                         // file length - 8
+    setUint32(0x45564157);                         // "WAVE"
+
+    setUint32(0x20746d66);                         // "fmt " chunk
+    setUint32(16);                                 // length = 16
+    setUint16(1);                                  // PCM (uncompressed)
+    setUint16(numOfChan);
+    setUint32(44100);
+    setUint32(44100 * 2 * numOfChan); // avg. bytes/sec
+    setUint16(numOfChan * 2);                      // block-align
+    setUint16(16);                                 // 16-bit (hardcoded in this demo)
+
+    setUint32(0x61746164);                         // "data" - chunk
+    setUint32(length - pos - 4);                   // chunk length
+
+    // write interleaved data
+    for (i = 0; i < 1; i++)
+        channels.push(abuffer);
+
+    while (pos < length) {
+        for (i = 0; i < numOfChan; i++) {             // interleave channels
+            sample = Math.max(-1, Math.min(1, channels[i][offset])); // clamp
+            sample *= 32768; // scale to 16-bit signed int
+            view.setInt16(pos, sample, true);          // write 16-bit sample
+            pos += 2;
+        }
+        offset++                                     // next source sample
+    }
+    // create Blob
+    return new Blob([buffer], { type: "audio/wav" });
+
+    function setUint16(data) {
+        view.setUint16(pos, data, true);
+        pos += 2;
+    }
+
+    function setUint32(data) {
+        view.setUint32(pos, data, true);
+        pos += 4;
+    }
+}
+
+function buf_download(name, abuffer) {
+    var new_file = URL.createObjectURL(bufferToWave(abuffer, abuffer.length));
+    var downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href", new_file);
+    downloadAnchorNode.setAttribute("download", name);
+    document.body.appendChild(downloadAnchorNode); // required for firefox
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+}
+
+function savePCM(name, data) {
+  buf_download(name, data)
 }
 
 export function tryEval(s) {
