@@ -9,23 +9,46 @@
 </head>
 
 <body>
-  <div id="app"></div>
-<h4>Eval output</h4>
- <div id="out"></div>
-<div id="results"></div>
-  <div id="doc"></div>
 <div class='row'>
-<div class='column'>
-<span id="keymap"></span>
-<p>
-<strong>Import NSF</strong>
-<input id="rom" type="file" accept=".nsf">
+    <div class='column'>
+  <div id="app"></div>
+  <h4>Eval output</h4>
+  <div id="out"></div>
+  <div id="results"></div>
+  <div id="doc"></div>
+<div id='debug'></div>
 </div>
 <div class='column'>
-  <strong>APU Registers</strong>
-  <pre id="memory"></pre>
+<canvas id="oscview2"></canvas>
+      <strong>APU Registers</strong>
+      <pre id="memory">4000:
+4004:
+4008:
+400C:
+4010:
+9000:
+A000:
+B000:</pre>
+      <strong>DPCM samples</strong>
+      <div id= "samples"></div>
 </div>
+</div>
+  <div class='row'>
+    <div class='column'>
+      <span id="keymap"></span>
+      <p>
+      <strong>Import NSF</strong>
+      <input id="rom" type="file" accept=".nsf">
+      <br>
+      <strong>Import sample</strong>
+      <input id="sample" type="file" accept=".dmc"  multiple>
+    </div>
   </div>
+    <main>
+    </main>
+
+<button id="pause">Pause</button>
+<button id="runframe">Run frame</button>
   <script type="module" src="/main.js"></script>
 </body>
 
